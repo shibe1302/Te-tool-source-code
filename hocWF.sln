@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36623.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hocWF", "hocWF\hocWF.csproj", "{17284BE7-DC26-4528-B961-9316A0373C69}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup2", "Setup2\Setup2.vdproj", "{657E2043-FDBC-F1DC-4CD9-351906DA97D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Debug|x64 = Debug|x64
+		Release|Default = Release|Default
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Debug|Default.Build.0 = Debug|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Debug|x64.Build.0 = Debug|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Release|Default.ActiveCfg = Release|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Release|Default.Build.0 = Release|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Release|x64.ActiveCfg = Release|Any CPU
+		{17284BE7-DC26-4528-B961-9316A0373C69}.Release|x64.Build.0 = Release|Any CPU
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Debug|Default.ActiveCfg = Debug
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Debug|Default.Build.0 = Debug
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Debug|x64.ActiveCfg = Debug
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Release|Default.ActiveCfg = Release
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Release|Default.Build.0 = Release
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Release|x64.ActiveCfg = Release
+		{657E2043-FDBC-F1DC-4CD9-351906DA97D6}.Release|x64.Build.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {78F68458-FFD0-4EA1-894F-306E5826567B}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Debug|x64 = Debug|x64
+		Release|Default = Release|Default
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Debug|x64 = Debug|x64
+		Release|Default = Release|Default
+		Release|x64 = Release|x64
+	EndGlobalSection
+EndGlobal
