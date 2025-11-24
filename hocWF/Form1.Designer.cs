@@ -307,6 +307,7 @@ namespace hocWF
             button4.TabIndex = 17;
             button4.Text = "undo";
             button4.UseVisualStyleBackColor = true;
+
             // 
             // buttonToggleScroll
             // 
@@ -456,6 +457,8 @@ namespace hocWF
             tabPage3.PerformLayout();
             ResumeLayout(false);
 
+            //undo
+            button4.Click += button4_Click;
 
 
         }

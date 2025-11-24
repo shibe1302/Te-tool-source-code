@@ -19,6 +19,11 @@ namespace hocWF
         private object selectedFilePath1;
         private object selectedFilePath2;
 
+        private DateTime lastEditTime1 = DateTime.MinValue;
+        private DateTime lastEditTime2 = DateTime.MinValue;
+        private const int UNDO_GROUP_DELAY = 1000; // ms
+
+
         private StringBuilder migrationLog = new StringBuilder();
 
         private string selectedFolderPath = "";
@@ -577,33 +582,9 @@ namespace hocWF
             CompareAndHighlight();
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-            if (!isUndoing && !isHighlighting)
-            {
-                debounceTimer1.Stop();
-                debounceTimer1.Start();
-            }
+        
 
-            if (!isHighlighting)
-            {
-                CompareAndHighlight();
-            }
-        }
-
-        private void richTextBox2_TextChanged(object sender, EventArgs e)
-        {
-            if (!isUndoing && !isHighlighting)
-            {
-                debounceTimer2.Stop();
-                debounceTimer2.Start();
-            }
-
-            if (!isHighlighting)
-            {
-                CompareAndHighlight();
-            }
-        }
+        
 
         private void SaveToUndoStack(RichTextBox rtb, Stack<string> stack)
         {
@@ -627,9 +608,7 @@ namespace hocWF
 
         private void button4_Click(object sender, EventArgs e)
         {
-            debounceTimer1.Stop();
-            SaveToUndoStack(richTextBox1, undoStack1);
-            PerformUndo(richTextBox1, undoStack1);
+            UndoLastEdited();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -638,6 +617,63 @@ namespace hocWF
             SaveToUndoStack(richTextBox2, undoStack2);
             PerformUndo(richTextBox2, undoStack2);
         }
+
+        private RichTextBox lastEditedRichTextBox;
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            lastEditedRichTextBox = richTextBox1;
+
+            var now = DateTime.Now;
+            if ((now - lastEditTime1).TotalMilliseconds > UNDO_GROUP_DELAY)
+            {
+                // Nếu vượt quá 500ms kể từ lần trước -> lưu snapshot mới
+                SaveToUndoStack(richTextBox1, undoStack1);
+            }
+            else
+            {
+                // Nếu vẫn trong khoảng 500ms thì chỉ cập nhật text, không push thêm
+                // (có thể bỏ qua hoặc cập nhật top của stack)
+            }
+            lastEditTime1 = now;
+
+            CompareAndHighlight();
+        }
+
+        private void richTextBox2_TextChanged(object sender, EventArgs e)
+        {
+            lastEditedRichTextBox = richTextBox2;
+
+            var now = DateTime.Now;
+            if ((now - lastEditTime2).TotalMilliseconds > UNDO_GROUP_DELAY)
+            {
+                SaveToUndoStack(richTextBox2, undoStack2);
+            }
+            lastEditTime2 = now;
+
+            CompareAndHighlight();
+        }
+
+        private void UndoLastEdited()
+        {
+            if (lastEditedRichTextBox == richTextBox1)
+            {
+                debounceTimer1.Stop();
+                SaveToUndoStack(richTextBox1, undoStack1);
+                PerformUndo(richTextBox1, undoStack1);
+            }
+            else if (lastEditedRichTextBox == richTextBox2)
+            {
+                debounceTimer2.Stop();
+                SaveToUndoStack(richTextBox2, undoStack2);
+                PerformUndo(richTextBox2, undoStack2);
+            }
+            else
+            {
+                MessageBox.Show("Chưa có thao tác nào để Undo!");
+            }
+        }
+
 
         private void PerformUndo(RichTextBox rtb, Stack<string> stack)
         {
