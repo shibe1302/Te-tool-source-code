@@ -16,6 +16,7 @@ namespace hocWF
         public string LocalDownloadDestination { get; set; }
         public string WinscpDLL { get; set; }
         public string RemoteFolderScan { get; set; }
+        public string MacFilePath { get; set; }
         public string MaxThreadScan { get; set; }
     }
 }

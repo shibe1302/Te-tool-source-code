@@ -57,8 +57,8 @@ namespace hocWF
         private string selectedFolderPathOldFtu = "";
         private string iniFilePathOldFtu = "";
 
-        public string LocalDownLoadLogPath { get; set; }
-
+        public string LocalDownLoadLogPath = "";
+        public string MacFilePath = "";
         private string WinscpFilePath = "";
 
 
@@ -90,7 +90,7 @@ namespace hocWF
             checkedListBoxTests.AllowDrop = true;
 
             textBoxPath.Text = @"NHẬP VÀO LINK FOLDER HOẶC ZIP PATH";
-            LoadFormData("config.json");
+            LoadFormData("config_log_collector.json");
 
 
 
@@ -1624,21 +1624,47 @@ MessageBoxIcon.Question
         }
         public void SaveFormData(string filePath)
         {
-            var config = new LogCollectorConfig
+            // Kiểm tra PortNumber
+            if (!int.TryParse(TB_portNumber.Text, out int port) || port < 1 || port > 65535)
             {
-                Host = TB_host.Text,
-                User = TB_user.Text,
-                Password = TB_password.Text,
-                Protocol = CBB_protocol.SelectedItem?.ToString(),
-                PortNumber = TB_portNumber.Text,
-                LocalDownloadDestination = TB_localDestinationDownload.Text,
-                WinscpDLL = TB_winscpDLL.Text,
-                RemoteFolderScan = TB_severScan.Text,
-                MaxThreadScan = TB_maxThread.Text
-            };
+                MessageBox.Show("Port number phải nằm trong khoảng 1–65535!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(filePath, json);
+            // Kiểm tra MaxThread
+            if (!int.TryParse(TB_maxThread.Text, out int maxThread) || maxThread < 1 || maxThread > 1000)
+            {
+                MessageBox.Show("Max thread scan phải nằm trong khoảng 1–1000!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            try
+            {
+                var config = new LogCollectorConfig
+                {
+                    Host = TB_host.Text,
+                    User = TB_user.Text,
+                    Password = TB_password.Text,
+                    Protocol = CBB_protocol.SelectedItem?.ToString(),
+                    PortNumber = TB_portNumber.Text,
+                    LocalDownloadDestination = TB_localDestinationDownload.Text,
+                    WinscpDLL = TB_winscpDLL.Text,
+                    RemoteFolderScan = TB_severScan.Text,
+                    MaxThreadScan = TB_maxThread.Text,
+                    MacFilePath= TB_MacFilePath.Text
+
+                };
+
+                var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(filePath, json);
+
+                // Thông báo thành công
+                MessageBox.Show("Đã lưu cấu hình thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                // Thông báo thất bại
+                MessageBox.Show($"Lưu cấu hình thất bại!\nChi tiết: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         public void LoadFormData(string filePath)
         {
@@ -1658,12 +1684,13 @@ MessageBoxIcon.Question
                 TB_winscpDLL.Text = config.WinscpDLL;
                 TB_severScan.Text = config.RemoteFolderScan;
                 TB_maxThread.Text = config.MaxThreadScan;
+                TB_MacFilePath.Text = config.MacFilePath;
             }
         }
 
         private void BTN_saveFormInfo_Click(object sender, EventArgs e)
         {
-            SaveFormData("config.json");
+            SaveFormData("config_log_collector.json");
         }
 
         private void BTN_localFolderDownloadLog_Click(object sender, EventArgs e)
@@ -1702,8 +1729,117 @@ MessageBoxIcon.Question
                 TB_winscpDLL.Text = OFD_winscpDLL_File.FileName;
 
                 WinscpFilePath = OFD_winscpDLL_File.FileName;
+                Debug.WriteLine(WinscpFilePath);
+            }
+        }
+        private void TB_portNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Cho phép phím số và phím điều khiển (Backspace, Delete...)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Chặn ký tự không hợp lệ
+            }
+        }
+
+        private void TB_maxThread_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Cho phép phím số và phím điều khiển
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CB_showPass.Checked)
+            {
+                // Hiện mật khẩu
+                TB_password.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                // Ẩn mật khẩu
+                TB_password.UseSystemPasswordChar = true;
+            }
+        }
+
+        private void BTN_startScanLog_Click(object sender, EventArgs e)
+        {
+            string appDir = AppDomain.CurrentDomain.BaseDirectory;
+            string scriptPath = Path.Combine(appDir, "log_collection_ps1", "hash-set.ps1");
+
+            if (!File.Exists(scriptPath))
+            {
+                MessageBox.Show($"Không tìm thấy hash-set.ps1 tại:\n{scriptPath}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            try
+            {
+                // Lấy dữ liệu từ form
+                string scpHost = TB_host.Text;
+                string port = TB_portNumber.Text;
+                string scpUser = TB_user.Text;
+                string scpPassword = TB_password.Text;
+                string protocol = CBB_protocol.SelectedItem?.ToString() ?? "";
+                string remoteFolder = TB_severScan.Text;
+                string localDestination = TB_localDestinationDownload.Text;
+                string winscpDllPath = TB_winscpDLL.Text;
+                string macFilePath = TB_MacFilePath.Text;
+                int maxScanThreads = int.TryParse(TB_maxThread.Text, out int tmp) ? tmp : 1;
+
+                // Chuẩn bị tham số truyền cho PowerShell
+                string arguments =
+                    $"-NoExit -ExecutionPolicy Bypass -File \"{scriptPath}\" " +
+                    $"-ScpHost \"{scpHost}\" " +
+                    $"-Port \"{port}\" " +
+                    $"-ScpUser \"{scpUser}\" " +
+                    $"-ScpPassword \"{scpPassword}\" " +
+                    $"-Protocol \"{protocol}\" " +
+                    $"-RemoteFolder \"{remoteFolder}\" " +
+                    $"-LocalDestination \"{localDestination}\" " +
+                    $"-winscpDllPath \"{winscpDllPath}\" " +
+                    $"-MacFilePath \"{macFilePath}\" " +
+                    $"-MaxScanThreads {maxScanThreads}";
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "powershell.exe",
+                    Arguments = arguments,
+                    UseShellExecute = true,
+                    CreateNoWindow = false
+                };
+                SaveFormData("config_log_collector.json");
+                Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Không thể chạy script!\nChi tiết: {ex.Message}", "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BTN_macFilePath_Click(object sender, EventArgs e)
+        {
+            OFD_macFilePath.Title = "Chọn file MAC";
+            OFD_macFilePath.Filter = "Tất cả các file (*.*)|*.*";
+
+            // Nếu người dùng chọn OK
+            if (OFD_macFilePath.ShowDialog() == DialogResult.OK)
+            {
+                // Lấy đường dẫn
+                string selectedPath = OFD_macFilePath.FileName;
+
+                // Gán vào TextBox
+                TB_MacFilePath.Text = selectedPath;
+
+                // Lưu vào property trong class
+                MacFilePath = selectedPath;
+                Debug.WriteLine(MacFilePath);
             }
         }
     }
+    }
 
-}

@@ -40,6 +40,10 @@ namespace hocWF
             buttonRunPS = new Button();
             textBoxPath = new TextBox();
             tabPage4 = new TabPage();
+            BTN_macFilePath = new Button();
+            TB_MacFilePath = new TextBox();
+            label14 = new Label();
+            CB_showPass = new CheckBox();
             BTN_saveFormInfo = new Button();
             BTN_startScanLog = new Button();
             label7 = new Label();
@@ -94,6 +98,7 @@ namespace hocWF
             FBD_localDesDownLoad = new FolderBrowserDialog();
             FBD_winscpDLL = new FolderBrowserDialog();
             OFD_winscpDLL_File = new OpenFileDialog();
+            OFD_macFilePath = new OpenFileDialog();
             tabControl1.SuspendLayout();
             tabPage3.SuspendLayout();
             tabPage4.SuspendLayout();
@@ -193,6 +198,10 @@ namespace hocWF
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(BTN_macFilePath);
+            tabPage4.Controls.Add(TB_MacFilePath);
+            tabPage4.Controls.Add(label14);
+            tabPage4.Controls.Add(CB_showPass);
             tabPage4.Controls.Add(BTN_saveFormInfo);
             tabPage4.Controls.Add(BTN_startScanLog);
             tabPage4.Controls.Add(label7);
@@ -224,9 +233,46 @@ namespace hocWF
             tabPage4.Text = "Thu thập log trên sever";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // BTN_macFilePath
+            // 
+            BTN_macFilePath.Location = new Point(353, 470);
+            BTN_macFilePath.Name = "BTN_macFilePath";
+            BTN_macFilePath.Size = new Size(94, 29);
+            BTN_macFilePath.TabIndex = 29;
+            BTN_macFilePath.Text = "Browser";
+            BTN_macFilePath.UseVisualStyleBackColor = true;
+            BTN_macFilePath.Click += BTN_macFilePath_Click;
+            // 
+            // TB_MacFilePath
+            // 
+            TB_MacFilePath.Location = new Point(90, 472);
+            TB_MacFilePath.Name = "TB_MacFilePath";
+            TB_MacFilePath.Size = new Size(242, 27);
+            TB_MacFilePath.TabIndex = 28;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new Point(90, 449);
+            label14.Name = "label14";
+            label14.Size = new Size(96, 20);
+            label14.TabIndex = 27;
+            label14.Text = "Mac file path";
+            // 
+            // CB_showPass
+            // 
+            CB_showPass.AutoSize = true;
+            CB_showPass.Location = new Point(944, 213);
+            CB_showPass.Name = "CB_showPass";
+            CB_showPass.Size = new Size(65, 24);
+            CB_showPass.TabIndex = 26;
+            CB_showPass.Text = "show";
+            CB_showPass.UseVisualStyleBackColor = true;
+            CB_showPass.CheckedChanged += checkBox3_CheckedChanged;
+            // 
             // BTN_saveFormInfo
             // 
-            BTN_saveFormInfo.Location = new Point(90, 505);
+            BTN_saveFormInfo.Location = new Point(90, 538);
             BTN_saveFormInfo.Name = "BTN_saveFormInfo";
             BTN_saveFormInfo.Size = new Size(242, 29);
             BTN_saveFormInfo.TabIndex = 25;
@@ -236,12 +282,13 @@ namespace hocWF
             // 
             // BTN_startScanLog
             // 
-            BTN_startScanLog.Location = new Point(637, 505);
+            BTN_startScanLog.Location = new Point(637, 494);
             BTN_startScanLog.Name = "BTN_startScanLog";
             BTN_startScanLog.Size = new Size(372, 73);
             BTN_startScanLog.TabIndex = 24;
             BTN_startScanLog.Text = "Bới lông tìm vết";
             BTN_startScanLog.UseVisualStyleBackColor = true;
+            BTN_startScanLog.Click += BTN_startScanLog_Click;
             // 
             // label7
             // 
@@ -256,7 +303,7 @@ namespace hocWF
             // 
             // BTN_winscpDll_file
             // 
-            BTN_winscpDll_file.Location = new Point(353, 428);
+            BTN_winscpDll_file.Location = new Point(353, 395);
             BTN_winscpDll_file.Name = "BTN_winscpDll_file";
             BTN_winscpDll_file.Size = new Size(94, 29);
             BTN_winscpDll_file.TabIndex = 22;
@@ -266,7 +313,7 @@ namespace hocWF
             // 
             // BTN_localFolderDownloadLog
             // 
-            BTN_localFolderDownloadLog.Location = new Point(353, 348);
+            BTN_localFolderDownloadLog.Location = new Point(353, 315);
             BTN_localFolderDownloadLog.Name = "BTN_localFolderDownloadLog";
             BTN_localFolderDownloadLog.Size = new Size(94, 29);
             BTN_localFolderDownloadLog.TabIndex = 21;
@@ -279,30 +326,30 @@ namespace hocWF
             CBB_protocol.DropDownStyle = ComboBoxStyle.DropDownList;
             CBB_protocol.FormattingEnabled = true;
             CBB_protocol.Items.AddRange(new object[] { "SFTP", "SCP", "SFT" });
-            CBB_protocol.Location = new Point(637, 190);
+            CBB_protocol.Location = new Point(637, 157);
             CBB_protocol.Name = "CBB_protocol";
             CBB_protocol.Size = new Size(151, 28);
             CBB_protocol.TabIndex = 20;
             // 
             // TB_maxThread
             // 
-            TB_maxThread.Location = new Point(637, 430);
+            TB_maxThread.Location = new Point(637, 397);
             TB_maxThread.Name = "TB_maxThread";
             TB_maxThread.Size = new Size(372, 27);
             TB_maxThread.TabIndex = 18;
+            TB_maxThread.KeyPress += TB_maxThread_KeyPress;
             // 
             // TB_severScan
             // 
-            TB_severScan.Location = new Point(637, 350);
+            TB_severScan.Location = new Point(637, 317);
             TB_severScan.Name = "TB_severScan";
             TB_severScan.Size = new Size(372, 27);
             TB_severScan.TabIndex = 17;
             // 
             // TB_password
             // 
-            TB_password.Location = new Point(637, 270);
+            TB_password.Location = new Point(637, 237);
             TB_password.Name = "TB_password";
-            TB_password.PasswordChar = 'Ư';
             TB_password.Size = new Size(372, 27);
             TB_password.TabIndex = 16;
             TB_password.UseSystemPasswordChar = true;
@@ -310,7 +357,7 @@ namespace hocWF
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(637, 407);
+            label10.Location = new Point(637, 374);
             label10.Name = "label10";
             label10.Size = new Size(117, 20);
             label10.TabIndex = 13;
@@ -320,7 +367,7 @@ namespace hocWF
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(637, 327);
+            label11.Location = new Point(637, 294);
             label11.Name = "label11";
             label11.Size = new Size(138, 20);
             label11.TabIndex = 12;
@@ -329,7 +376,7 @@ namespace hocWF
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(637, 247);
+            label12.Location = new Point(637, 213);
             label12.Name = "label12";
             label12.Size = new Size(70, 20);
             label12.TabIndex = 11;
@@ -338,7 +385,7 @@ namespace hocWF
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(637, 167);
+            label13.Location = new Point(637, 134);
             label13.Name = "label13";
             label13.Size = new Size(65, 20);
             label13.TabIndex = 10;
@@ -346,35 +393,36 @@ namespace hocWF
             // 
             // TB_winscpDLL
             // 
-            TB_winscpDLL.Location = new Point(90, 430);
+            TB_winscpDLL.Location = new Point(90, 397);
             TB_winscpDLL.Name = "TB_winscpDLL";
             TB_winscpDLL.Size = new Size(242, 27);
             TB_winscpDLL.TabIndex = 9;
             // 
             // TB_localDestinationDownload
             // 
-            TB_localDestinationDownload.Location = new Point(90, 350);
+            TB_localDestinationDownload.Location = new Point(90, 317);
             TB_localDestinationDownload.Name = "TB_localDestinationDownload";
             TB_localDestinationDownload.Size = new Size(242, 27);
             TB_localDestinationDownload.TabIndex = 8;
             // 
             // TB_portNumber
             // 
-            TB_portNumber.Location = new Point(813, 190);
+            TB_portNumber.Location = new Point(813, 157);
             TB_portNumber.Name = "TB_portNumber";
             TB_portNumber.Size = new Size(196, 27);
             TB_portNumber.TabIndex = 7;
+            TB_portNumber.KeyPress += TB_portNumber_KeyPress;
             // 
             // TB_user
             // 
-            TB_user.Location = new Point(90, 270);
+            TB_user.Location = new Point(90, 237);
             TB_user.Name = "TB_user";
             TB_user.Size = new Size(357, 27);
             TB_user.TabIndex = 6;
             // 
             // TB_host
             // 
-            TB_host.Location = new Point(90, 190);
+            TB_host.Location = new Point(90, 157);
             TB_host.Name = "TB_host";
             TB_host.Size = new Size(357, 27);
             TB_host.TabIndex = 5;
@@ -382,7 +430,7 @@ namespace hocWF
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(90, 407);
+            label8.Location = new Point(90, 374);
             label8.Name = "label8";
             label8.Size = new Size(107, 20);
             label8.TabIndex = 4;
@@ -391,7 +439,7 @@ namespace hocWF
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(90, 327);
+            label9.Location = new Point(90, 294);
             label9.Name = "label9";
             label9.Size = new Size(193, 20);
             label9.TabIndex = 3;
@@ -400,7 +448,7 @@ namespace hocWF
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(813, 167);
+            label6.Location = new Point(813, 134);
             label6.Name = "label6";
             label6.Size = new Size(86, 20);
             label6.TabIndex = 2;
@@ -409,7 +457,7 @@ namespace hocWF
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(90, 247);
+            label5.Location = new Point(90, 214);
             label5.Name = "label5";
             label5.Size = new Size(38, 20);
             label5.TabIndex = 1;
@@ -419,7 +467,7 @@ namespace hocWF
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(90, 167);
+            label4.Location = new Point(90, 134);
             label4.Name = "label4";
             label4.Size = new Size(59, 20);
             label4.TabIndex = 0;
@@ -716,6 +764,10 @@ namespace hocWF
             // 
             OFD_winscpDLL_File.FileName = "openFileDialog4";
             // 
+            // OFD_macFilePath
+            // 
+            OFD_macFilePath.FileName = "OFD_macFilePath";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -828,5 +880,10 @@ namespace hocWF
         private Button BTN_startScanLog;
         private OpenFileDialog OFD_winscpDLL_File;
         private Button BTN_saveFormInfo;
+        private CheckBox CB_showPass;
+        private Button BTN_macFilePath;
+        private TextBox TB_MacFilePath;
+        private Label label14;
+        private OpenFileDialog OFD_macFilePath;
     }
 }
