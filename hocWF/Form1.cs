@@ -21,8 +21,7 @@ namespace hocWF
 
         private DateTime lastEditTime1 = DateTime.MinValue;
         private DateTime lastEditTime2 = DateTime.MinValue;
-        private const int UNDO_GROUP_DELAY = 1000; // ms
-
+        private const int UNDO_GROUP_DELAY = 1000;
 
         private StringBuilder migrationLog = new StringBuilder();
 
@@ -54,10 +53,15 @@ namespace hocWF
         private Rectangle dragBoxFromMouseDown;
         private object draggedItem;
         private bool isDraggedItemChecked;
-        private string selectedFolderOldFtu = "";
         private string jsonFilePathOldFtu = "";
         private string selectedFolderPathOldFtu = "";
         private string iniFilePathOldFtu = "";
+
+        public string LocalDownLoadLogPath { get; set; }
+
+        private string WinscpFilePath = "";
+
+
 
         public Form1()
 
@@ -85,8 +89,10 @@ namespace hocWF
             checkedListBoxTests.DragDrop += CheckedListBoxTests_DragDrop;
             checkedListBoxTests.AllowDrop = true;
 
-            // Set giá trị mặc định cho tab Lọc Log
             textBoxPath.Text = @"NHẬP VÀO LINK FOLDER HOẶC ZIP PATH";
+            LoadFormData("config.json");
+
+
 
 
         }
@@ -112,7 +118,6 @@ namespace hocWF
                 migrationLog.AppendLine($"Chế độ: {(migrateAllFromJson ? "TẤT CẢ items từ JSON" : "Chỉ items từ INI")}");
                 migrationLog.AppendLine();
 
-                // Đọc file JSON cũ
                 if (!File.Exists(jsonFilePathOldFtu))
                 {
                     MessageBox.Show("Không tìm thấy file JSON của FTU cũ!", "Lỗi",
@@ -134,13 +139,11 @@ namespace hocWF
 
                 if (migrateAllFromJson)
                 {
-                    // ✅ MIGRATE TẤT CẢ từ JSON cũ
                     filteredOldItems = oldConfig.DiagTestItems;
                     migrationLog.AppendLine($"Tổng số items trong JSON cũ: {filteredOldItems.Count}");
                 }
                 else
                 {
-                    // ✅ CHỈ MIGRATE items có trong INI cũ
                     if (!File.Exists(iniFilePathOldFtu))
                     {
                         MessageBox.Show("Không tìm thấy file INI của FTU cũ!", "Lỗi",
@@ -179,7 +182,6 @@ namespace hocWF
                 }
                 migrationLog.AppendLine();
 
-                // Kiểm tra trong JSON mới
                 if (diagTestItems == null || diagTestItems.Count == 0)
                 {
                     MessageBox.Show("Vui lòng load JSON mới trước khi migrate!", "Lỗi",
@@ -263,24 +265,20 @@ namespace hocWF
 
             checkedListBoxTests.BeginUpdate();
 
-            // ✅ BƯỚC 1: UNCHECK TẤT CẢ
             for (int i = 0; i < checkedListBoxTests.Items.Count; i++)
             {
                 checkedListBoxTests.SetItemChecked(i, false);
             }
 
-            // ✅ BƯỚC 2: TẠO DANH SÁCH MỚI (items migrate + items còn lại)
             List<DiagTestItem> newDiagTestItems = new List<DiagTestItem>();
             HashSet<int> migratedIds = new HashSet<int>();
 
-            // Thêm items cần migrate vào đầu (theo thứ tự JSON cũ)
             foreach (var migrateItem in itemsToMigrate)
             {
                 newDiagTestItems.Add(migrateItem.OldItem);
                 migratedIds.Add(migrateItem.OldItem.ID);
             }
 
-            // Thêm các items còn lại (không bị migrate)
             foreach (var item in diagTestItems)
             {
                 if (!migratedIds.Contains(item.ID))
@@ -289,7 +287,6 @@ namespace hocWF
                 }
             }
 
-            // ✅ BƯỚC 3: CẬP NHẬT LẠI TOÀN BỘ
             diagTestItems.Clear();
             diagTestItems.AddRange(newDiagTestItems);
 
@@ -300,7 +297,6 @@ namespace hocWF
                 checkedListBoxTests.Items.Add(displayText);
             }
 
-            // ✅ BƯỚC 4: CHECK CÁC ITEMS ĐÃ MIGRATE (N items đầu tiên)
             for (int i = 0; i < itemsToMigrate.Count; i++)
             {
                 checkedListBoxTests.SetItemChecked(i, true);
@@ -308,13 +304,11 @@ namespace hocWF
 
             checkedListBoxTests.EndUpdate();
 
-            // Scroll về đầu
             if (checkedListBoxTests.Items.Count > 0)
             {
                 checkedListBoxTests.TopIndex = 0;
             }
         }
-        // Khai báo biến toàn cục để giữ process exe
         private Process ftuExeProcess;
 
         private void OpenFtuExeFile()
@@ -328,7 +322,6 @@ namespace hocWF
                     return;
                 }
 
-                // Tìm file FTU_*.exe trong folder (đệ quy)
                 string[] exeFiles = Directory.GetFiles(selectedFolderPath, "FTU_*.exe", SearchOption.AllDirectories);
 
                 if (exeFiles.Length == 0)
@@ -338,7 +331,6 @@ namespace hocWF
                     return;
                 }
 
-                // Ưu tiên file ở root folder nếu có nhiều
                 string exeFilePath = exeFiles[0];
                 if (exeFiles.Length > 1)
                 {
@@ -356,7 +348,6 @@ namespace hocWF
 
                 Debug.WriteLine($"Running FTU exe: {exeFilePath}");
 
-                // Chạy trực tiếp exe với tham số
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = exeFilePath,
@@ -366,10 +357,9 @@ namespace hocWF
                     CreateNoWindow = false
                 };
 
-                // Lưu lại process để sau này kill
                 ftuExeProcess = Process.Start(startInfo);
 
-               
+
             }
             catch (Exception ex)
             {
@@ -402,7 +392,6 @@ namespace hocWF
 
 
 
-        // Class hỗ trợ cho việc di chuyển
         private class ItemMoveInfo
         {
             public DiagTestItem Item { get; set; }
@@ -422,7 +411,6 @@ namespace hocWF
             logTextBox.ReadOnly = true;
             logTextBox.Text = migrationLog.ToString();
 
-            // Highlight
             HighlightLogText(logTextBox);
 
             Button btnClose = new Button();
@@ -444,12 +432,10 @@ namespace hocWF
             logForm.ShowDialog();
         }
 
-        // Highlight màu cho log
         private void HighlightLogText(RichTextBox rtb)
         {
             string text = rtb.Text;
 
-            // Highlight "✓" màu xanh
             int index = 0;
             while ((index = text.IndexOf("✓", index)) != -1)
             {
@@ -458,7 +444,6 @@ namespace hocWF
                 index++;
             }
 
-            // Highlight "✗" màu đỏ
             index = 0;
             while ((index = text.IndexOf("✗", index)) != -1)
             {
@@ -467,7 +452,6 @@ namespace hocWF
                 index++;
             }
 
-            // Highlight tiêu đề
             string[] headers = { "===", "KẾT QUẢ", "BÁO CÁO", "HOÀN TẤT" };
             foreach (string header in headers)
             {
@@ -488,7 +472,6 @@ namespace hocWF
             rtb.Select(0, 0);
         }
 
-        // Lưu log ra file
         private void SaveLogToFile()
         {
             try
@@ -511,7 +494,6 @@ namespace hocWF
             }
         }
 
-        // Class hỗ trợ
         private class MigrateItem
         {
             public DiagTestItem OldItem { get; set; }
@@ -582,9 +564,9 @@ namespace hocWF
             CompareAndHighlight();
         }
 
-        
 
-        
+
+
 
         private void SaveToUndoStack(RichTextBox rtb, Stack<string> stack)
         {
@@ -627,13 +609,10 @@ namespace hocWF
             var now = DateTime.Now;
             if ((now - lastEditTime1).TotalMilliseconds > UNDO_GROUP_DELAY)
             {
-                // Nếu vượt quá 500ms kể từ lần trước -> lưu snapshot mới
                 SaveToUndoStack(richTextBox1, undoStack1);
             }
             else
             {
-                // Nếu vẫn trong khoảng 500ms thì chỉ cập nhật text, không push thêm
-                // (có thể bỏ qua hoặc cập nhật top của stack)
             }
             lastEditTime1 = now;
 
@@ -780,7 +759,6 @@ namespace hocWF
             return result.ToString();
         }
 
-        // Helper: tìm index dòng không-trống tiếp theo, hoặc trả về length nếu không còn
         int NextNonEmptyIndex(string[] lines, int start)
         {
             int k = start;
@@ -798,7 +776,6 @@ namespace hocWF
             if (!CanCompare() || isHighlighting) return;
             isHighlighting = true;
 
-            // Lưu scroll và selection
             int scrollPos1 = GetScrollPos(richTextBox1.Handle, SB_VERT);
             int scrollPos2 = GetScrollPos(richTextBox2.Handle, SB_VERT);
             int selStart1 = richTextBox1.SelectionStart;
@@ -806,13 +783,11 @@ namespace hocWF
             int selStart2 = richTextBox2.SelectionStart;
             int selLength2 = richTextBox2.SelectionLength;
 
-            // Tắt redraw để tránh flicker
             SendMessage(richTextBox1.Handle, WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
             SendMessage(richTextBox2.Handle, WM_SETREDRAW, IntPtr.Zero, IntPtr.Zero);
 
             try
             {
-                // Reset background
                 richTextBox1.Select(0, richTextBox1.Text.Length);
                 richTextBox1.SelectionBackColor = Color.White;
                 richTextBox2.Select(0, richTextBox2.Text.Length);
@@ -831,10 +806,8 @@ namespace hocWF
                     bool end1 = i >= lines1.Length;
                     bool end2 = j >= lines2.Length;
 
-                    // Nếu cả hai đều hết dòng không-trống -> xong
                     if (end1 && end2) break;
 
-                    // Nếu một bên hết nhưng bên kia vẫn còn -> highlight phần còn lại là khác
                     if (end1 ^ end2)
                     {
                         if (!end1)
@@ -855,13 +828,11 @@ namespace hocWF
                                 richTextBox2.SelectionBackColor = Color.LightBlue;
                             }
                         }
-                        // Tiến con trỏ phía còn lại cho đến hết hoặc đến dòng không-trống tiếp theo
                         if (!end1) i++;
                         if (!end2) j++;
                         continue;
                     }
 
-                    // Cả hai đều còn dòng không-trống -> so sánh sau khi Trim
                     string l1 = lines1[i].Trim();
                     string l2 = lines2[j].Trim();
 
@@ -882,24 +853,20 @@ namespace hocWF
                         }
                     }
 
-                    // Tiến cả hai con trỏ sang dòng tiếp theo
                     i++;
                     j++;
                 }
 
-                // Khôi phục selection
                 richTextBox1.SelectionStart = selStart1;
                 richTextBox1.SelectionLength = selLength1;
                 richTextBox2.SelectionStart = selStart2;
                 richTextBox2.SelectionLength = selLength2;
 
-                // Khôi phục scroll
                 SendMessage(richTextBox1.Handle, WM_VSCROLL, (IntPtr)(SB_THUMBPOSITION + 0x10000 * scrollPos1), IntPtr.Zero);
                 SendMessage(richTextBox2.Handle, WM_VSCROLL, (IntPtr)(SB_THUMBPOSITION + 0x10000 * scrollPos2), IntPtr.Zero);
             }
             finally
             {
-                // Bật redraw lại
                 SendMessage(richTextBox1.Handle, WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
                 SendMessage(richTextBox2.Handle, WM_SETREDRAW, new IntPtr(1), IntPtr.Zero);
                 richTextBox1.Invalidate();
@@ -1015,7 +982,6 @@ namespace hocWF
         }
         public string[] ExtractItemsId(string input)
         {
-            // Sửa regex để match cả newline giữa [ITEMS] và id
             string pattern = @"\[ITEMS\]\r?\n\s*id\s*=\s*(?<numbers>[\d,\s]+)";
             Match match = Regex.Match(input, pattern, RegexOptions.IgnoreCase);
 
@@ -1023,12 +989,11 @@ namespace hocWF
             {
                 string numbersString = match.Groups["numbers"].Value;
 
-                // Tách và loại bỏ khoảng trắng thừa
                 string[] numbersArray = numbersString
-                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s => s.Trim())
-                    .Where(s => !string.IsNullOrEmpty(s))
-                    .ToArray();
+    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+    .Select(s => s.Trim())
+    .Where(s => !string.IsNullOrEmpty(s))
+    .ToArray();
 
                 return numbersArray;
             }
@@ -1039,7 +1004,6 @@ namespace hocWF
         }
         private void button6_Click(object sender, EventArgs e)
         {
-            // Chọn folder
             using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
             {
                 folderDialog.Description = "Chọn folder chứa file JSON và INI";
@@ -1049,15 +1013,12 @@ namespace hocWF
                     selectedFolderPath = folderDialog.SelectedPath;
                     Debug.WriteLine("Selected folder: " + selectedFolderPath);
 
-                    // Tìm 2 files
                     if (FindRequiredFiles())
                     {
-                        // Load JSON
                         if (LoadJsonFile())
                         {
-                            // Load INI và hiển thị
                             LoadIniFileAndDisplay();
-                            
+
 
                         }
                     }
@@ -1068,7 +1029,6 @@ namespace hocWF
         {
             try
             {
-                // Tìm file *_reorder.json - ĐỆ QUY
                 string[] jsonFiles = Directory.GetFiles(selectedFolderPath, "*_reorder.json", SearchOption.AllDirectories);
 
                 if (jsonFiles.Length == 0)
@@ -1080,7 +1040,6 @@ namespace hocWF
 
                 if (jsonFiles.Length > 1)
                 {
-                    // Hiển thị đường dẫn đầy đủ để dễ phân biệt
                     string fileList = string.Join("\n", jsonFiles.Select(f => f.Replace(selectedFolderPath, ".")));
                     MessageBox.Show($"Tìm thấy {jsonFiles.Length} file *_reorder.json:\n{fileList}\n\nSẽ sử dụng file: {jsonFiles[0].Replace(selectedFolderPath, ".")}",
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1089,12 +1048,10 @@ namespace hocWF
                 jsonFilePath = jsonFiles[0];
                 Debug.WriteLine("Found JSON: " + jsonFilePath);
 
-                // Tìm file selected_items.ini - ĐỆ QUY
                 string[] iniFiles = Directory.GetFiles(selectedFolderPath, "selected_items.ini", SearchOption.AllDirectories);
 
                 if (iniFiles.Length == 0)
                 {
-                    // Nếu không tìm thấy, tạo mới ở cùng thư mục với file JSON
                     string jsonDirectory = Path.GetDirectoryName(jsonFilePath);
                     iniFilePath = Path.Combine(jsonDirectory, "selected_items.ini");
 
@@ -1105,7 +1062,6 @@ namespace hocWF
                 {
                     if (iniFiles.Length > 1)
                     {
-                        // Nếu có nhiều file INI, ưu tiên file ở cùng folder với JSON
                         string jsonDirectory = Path.GetDirectoryName(jsonFilePath);
                         string sameDirectoryIni = iniFiles.FirstOrDefault(f => Path.GetDirectoryName(f) == jsonDirectory);
 
@@ -1170,7 +1126,6 @@ namespace hocWF
                 jsonFilePathOldFtu = jsonFiles[0];
                 Debug.WriteLine("Found JSON: " + jsonFilePathOldFtu);
 
-                // Tìm file selected_items.ini - ĐỆ QUY
                 string[] iniFiles = Directory.GetFiles(selectedFolderPathOldFtu, "selected_items.ini", SearchOption.AllDirectories);
 
                 if (iniFiles.Length == 0)
@@ -1182,7 +1137,6 @@ namespace hocWF
                 {
                     if (iniFiles.Length > 1)
                     {
-                        // Nếu có nhiều file INI, ưu tiên file ở cùng folder với JSON
                         string jsonDirectory = Path.GetDirectoryName(jsonFilePathOldFtu);
                         string sameDirectoryIni = iniFiles.FirstOrDefault(f => Path.GetDirectoryName(f) == jsonDirectory);
 
@@ -1245,7 +1199,6 @@ namespace hocWF
         {
             try
             {
-                // Nếu file INI tồn tại, đọc nội dung
                 if (File.Exists(iniFilePath))
                 {
                     originalIniFileContent = File.ReadAllText(iniFilePath);
@@ -1255,23 +1208,18 @@ namespace hocWF
                     {
                         string resultMessage = string.Join(", ", currentCheckedItemIds);
                         Debug.WriteLine("Checked IDs from INI: " + resultMessage);
-                        //textBox1.Text = resultMessage;
                     }
                     else
                     {
-                        //textBox1.Text = "";
                         Debug.WriteLine("No checked items found in INI");
                     }
                 }
                 else
                 {
-                    // File chưa tồn tại
                     originalIniFileContent = "[ITEMS]\nid = ";
                     currentCheckedItemIds = new string[0];
-                    //textBox1.Text = "";
                 }
 
-                // Hiển thị lên CheckedListBox
                 PopulateCheckedListBoxFromIni();
 
                 MessageBox.Show($"Đã load thành công!\n\nJSON: {Path.GetFileName(jsonFilePath)}\nINI: {Path.GetFileName(iniFilePath)}\n\nTổng items: {diagTestItems.Count}\nItems được check: {currentCheckedItemIds.Length}",
@@ -1287,14 +1235,12 @@ namespace hocWF
         {
             checkedListBoxTests.Items.Clear();
 
-            // Convert string[] sang HashSet để tra cứu nhanh
             HashSet<string> checkedIdSet = new HashSet<string>(currentCheckedItemIds);
 
             foreach (var item in diagTestItems)
             {
                 string displayText = $"{item.ID} - {item.Name}";
 
-                // Check nếu ID có trong danh sách từ INI
                 bool isChecked = checkedIdSet.Contains(item.ID.ToString());
 
                 checkedListBoxTests.Items.Add(displayText, isChecked);
@@ -1323,13 +1269,11 @@ namespace hocWF
                 return;
             }
 
-            // Lấy danh sách IDs từ textBox1
             string newIdList = textBox1.Text.Trim();
             newIdList = NormalizeIdList(newIdList);
 
             try
             {
-                // ========== NHIỆM VỤ 1: Lưu INI file ==========
                 if (string.IsNullOrEmpty(originalIniFileContent))
                 {
                     originalIniFileContent = "[ITEMS]\nid = ";
@@ -1348,7 +1292,6 @@ MessageBoxIcon.Question
                 originalIniFileContent = finalContent;
                 currentCheckedItemIds = ExtractItemsId(finalContent);
 
-                // ========== NHIỆM VỤ 2: Lưu JSON file với thứ tự mới ==========
                 if (!string.IsNullOrEmpty(jsonFilePath))
                 {
                     SaveJsonWithNewOrder();
@@ -1423,7 +1366,6 @@ MessageBoxIcon.Question
         }
         private void CheckedListBoxTests_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            // BeginInvoke để đợi trạng thái checked được cập nhật
             this.BeginInvoke(new Action(() => UpdateTextBoxFromCheckedItems()));
         }
         private void UpdateTextBoxFromCheckedItems()
@@ -1454,7 +1396,6 @@ MessageBoxIcon.Question
         }
 
 
-        //===========================
         private void CheckedListBoxTests_MouseDown(object sender, MouseEventArgs e)
         {
             if (checkedListBoxTests.Items.Count == 0)
@@ -1464,7 +1405,6 @@ MessageBoxIcon.Question
 
             if (dragIndex != ListBox.NoMatches)
             {
-                // Lưu vùng để xác định khi nào bắt đầu drag
                 Size dragSize = SystemInformation.DragSize;
                 dragBoxFromMouseDown = new Rectangle(
                     new Point(e.X - (dragSize.Width / 2), e.Y - (dragSize.Height / 2)),
@@ -1479,13 +1419,11 @@ MessageBoxIcon.Question
         {
             e.Effect = DragDropEffects.Move;
 
-            // Tính toán vị trí hiện tại
             Point point = checkedListBoxTests.PointToClient(new Point(e.X, e.Y));
             int currentIndex = checkedListBoxTests.IndexFromPoint(point);
 
             if (currentIndex != ListBox.NoMatches && currentIndex != dragIndex)
             {
-                // Highlight item đang hover
                 if (lastHighlightedIndex != currentIndex)
                 {
                     checkedListBoxTests.SelectedIndex = currentIndex;
@@ -1498,22 +1436,17 @@ MessageBoxIcon.Question
         {
             if ((e.Button & MouseButtons.Left) == MouseButtons.Left)
             {
-                // Kiểm tra xem chuột đã di chuyển ra ngoài vùng dragBox chưa
                 if (dragBoxFromMouseDown != Rectangle.Empty &&
-                    !dragBoxFromMouseDown.Contains(e.X, e.Y) &&
-                    dragIndex != -1)
+    !dragBoxFromMouseDown.Contains(e.X, e.Y) &&
+    dragIndex != -1)
                 {
-                    // Lưu item và trạng thái checked
                     draggedItem = checkedListBoxTests.Items[dragIndex];
                     isDraggedItemChecked = checkedListBoxTests.GetItemChecked(dragIndex);
 
-                    // Highlight item đang drag
                     checkedListBoxTests.SelectedIndex = dragIndex;
 
-                    // Bắt đầu drag
                     checkedListBoxTests.DoDragDrop(draggedItem, DragDropEffects.Move);
 
-                    // Reset
                     dragBoxFromMouseDown = Rectangle.Empty;
                 }
             }
@@ -1522,7 +1455,6 @@ MessageBoxIcon.Question
         {
             dragBoxFromMouseDown = Rectangle.Empty;
         }
-        // Xử lý khi thả
         private void CheckedListBoxTests_DragDrop(object sender, DragEventArgs e)
         {
             Point point = checkedListBoxTests.PointToClient(new Point(e.X, e.Y));
@@ -1533,30 +1465,23 @@ MessageBoxIcon.Question
 
             if (dragIndex != -1 && dropIndex != -1 && dragIndex != dropIndex)
             {
-                // Tạm thời tắt redraw để tránh flicker
                 checkedListBoxTests.BeginUpdate();
 
-                // Swap trong diagTestItems
                 var tempItem = diagTestItems[dragIndex];
                 diagTestItems.RemoveAt(dragIndex);
                 diagTestItems.Insert(dropIndex, tempItem);
 
-                // Cập nhật UI
                 checkedListBoxTests.Items.RemoveAt(dragIndex);
                 checkedListBoxTests.Items.Insert(dropIndex, draggedItem);
                 checkedListBoxTests.SetItemChecked(dropIndex, isDraggedItemChecked);
 
-                // Chọn item vừa thả
                 checkedListBoxTests.SelectedIndex = dropIndex;
 
-                // Bật lại redraw
                 checkedListBoxTests.EndUpdate();
 
-                // Cập nhật textBox
                 UpdateTextBoxFromCheckedItems();
             }
 
-            // Reset
             dragIndex = -1;
             lastHighlightedIndex = -1;
             dragBoxFromMouseDown = Rectangle.Empty;
@@ -1606,8 +1531,7 @@ MessageBoxIcon.Question
 
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                selectedFolderPathOldFtu = folderBrowserDialog1.SelectedPath;  // ✅ Gán đúng biến
-                Debug.WriteLine("Selected folder: " + selectedFolderPathOldFtu);
+                selectedFolderPathOldFtu = folderBrowserDialog1.SelectedPath; Debug.WriteLine("Selected folder: " + selectedFolderPathOldFtu);
 
                 if (FindJsonOldFTU())
                 {
@@ -1635,7 +1559,6 @@ MessageBoxIcon.Question
                 return;
             }
 
-            // Kiểm tra đã chọn FTU cũ chưa
             if (string.IsNullOrEmpty(jsonFilePathOldFtu) || string.IsNullOrEmpty(iniFilePathOldFtu))
             {
                 MessageBox.Show("Vui lòng chọn FTU cũ trước (btnFTUcu)!", "Cảnh báo",
@@ -1643,15 +1566,14 @@ MessageBoxIcon.Question
                 return;
             }
 
-            // Xác nhận
             DialogResult result = MessageBox.Show(
-                "Bạn có chắc muốn migrate items từ FTU cũ?\n\n" +
-                $"FTU cũ: {Path.GetFileName(jsonFilePathOldFtu)}\n" +
-                $"FTU mới: {Path.GetFileName(jsonFilePath)}",
-                "Xác nhận Migrate",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
+    "Bạn có chắc muốn migrate items từ FTU cũ?\n\n" +
+    $"FTU cũ: {Path.GetFileName(jsonFilePathOldFtu)}\n" +
+    $"FTU mới: {Path.GetFileName(jsonFilePath)}",
+    "Xác nhận Migrate",
+    MessageBoxButtons.YesNo,
+    MessageBoxIcon.Question
+);
 
             if (result == DialogResult.Yes)
             {
@@ -1664,7 +1586,7 @@ MessageBoxIcon.Question
 
         }
 
-   
+
 
         private void button2_Click_1(object sender, EventArgs e)
         {
@@ -1684,6 +1606,103 @@ MessageBoxIcon.Question
         private void textBoxFTU_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+        public void SaveFormData(string filePath)
+        {
+            var config = new LogCollectorConfig
+            {
+                Host = TB_host.Text,
+                User = TB_user.Text,
+                Password = TB_password.Text,
+                Protocol = CBB_protocol.SelectedItem?.ToString(),
+                PortNumber = TB_portNumber.Text,
+                LocalDownloadDestination = TB_localDestinationDownload.Text,
+                WinscpDLL = TB_winscpDLL.Text,
+                RemoteFolderScan = TB_severScan.Text,
+                MaxThreadScan = TB_maxThread.Text
+            };
+
+            var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(filePath, json);
+        }
+        public void LoadFormData(string filePath)
+        {
+            if (!File.Exists(filePath)) return;
+
+            var json = File.ReadAllText(filePath);
+            var config = JsonSerializer.Deserialize<LogCollectorConfig>(json);
+
+            if (config != null)
+            {
+                TB_host.Text = config.Host;
+                TB_user.Text = config.User;
+                TB_password.Text = config.Password;
+                CBB_protocol.SelectedItem = config.Protocol;
+                TB_portNumber.Text = config.PortNumber;
+                TB_localDestinationDownload.Text = config.LocalDownloadDestination;
+                TB_winscpDLL.Text = config.WinscpDLL;
+                TB_severScan.Text = config.RemoteFolderScan;
+                TB_maxThread.Text = config.MaxThreadScan;
+            }
+        }
+
+        private void BTN_saveFormInfo_Click(object sender, EventArgs e)
+        {
+            SaveFormData("config.json");
+        }
+
+        private void BTN_localFolderDownloadLog_Click(object sender, EventArgs e)
+        {
+
+            if (FBD_localDesDownLoad == null)
+                FBD_localDesDownLoad = new FolderBrowserDialog();
+
+
+            DialogResult result = FBD_localDesDownLoad.ShowDialog();
+
+
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(FBD_localDesDownLoad.SelectedPath))
+            {
+
+                TB_localDestinationDownload.Text = FBD_localDesDownLoad.SelectedPath;
+
+
+                LocalDownLoadLogPath = FBD_localDesDownLoad.SelectedPath;
+                Debug.WriteLine(LocalDownLoadLogPath);
+            }
+        }
+
+        private void BTN_winscpDll_file_Click(object sender, EventArgs e)
+        {
+            if (OFD_winscpDLL_File == null)
+                OFD_winscpDLL_File = new OpenFileDialog();
+
+            OFD_winscpDLL_File.Filter = "DLL files (*.dll)|*.dll|All files (*.*)|*.*";
+            OFD_winscpDLL_File.Title = "Chọn WinscpDLL file";
+
+            DialogResult result = OFD_winscpDLL_File.ShowDialog();
+
+            if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(OFD_winscpDLL_File.FileName))
+            {
+                TB_winscpDLL.Text = OFD_winscpDLL_File.FileName;
+
+                WinscpFilePath = OFD_winscpDLL_File.FileName;
+            }
         }
     }
 
