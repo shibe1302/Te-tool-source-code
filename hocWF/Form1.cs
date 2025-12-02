@@ -1650,7 +1650,7 @@ MessageBoxIcon.Question
                     WinscpDLL = TB_winscpDLL.Text,
                     RemoteFolderScan = TB_severScan.Text,
                     MaxThreadScan = TB_maxThread.Text,
-                    MacFilePath= TB_MacFilePath.Text
+                    MacFilePath = TB_MacFilePath.Text
 
                 };
 
@@ -1766,59 +1766,99 @@ MessageBoxIcon.Question
 
         private void BTN_startScanLog_Click(object sender, EventArgs e)
         {
-            string appDir = AppDomain.CurrentDomain.BaseDirectory;
-            string scriptPath = Path.Combine(appDir, "log_collection_ps1", "hash-set.ps1");
-
-            if (!File.Exists(scriptPath))
+            if (CB_LocalScan.Checked)
             {
-                MessageBox.Show($"Không tìm thấy hash-set.ps1 tại:\n{scriptPath}", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+                // Scan local mode
+                string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log_collection_ps1", "scan-local-new-algorithm.ps1");
 
-            try
-            {
-                // Lấy dữ liệu từ form
-                string scpHost = TB_host.Text;
-                string port = TB_portNumber.Text;
-                string scpUser = TB_user.Text;
-                string scpPassword = TB_password.Text;
-                string protocol = CBB_protocol.SelectedItem?.ToString() ?? "";
-                string remoteFolder = TB_severScan.Text;
-                string localDestination = TB_localDestinationDownload.Text;
-                string winscpDllPath = TB_winscpDLL.Text;
+                if (!File.Exists(scriptPath))
+                {
+                    MessageBox.Show("Không tìm thấy script scan-local-new-algorithm.ps1!", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Các tham số truyền vào
+                string sourceFolder = TB_severScan.Text; 
+                string destinationFolder = TB_localDestinationDownload.Text;
                 string macFilePath = TB_MacFilePath.Text;
-                int maxScanThreads = int.TryParse(TB_maxThread.Text, out int tmp) ? tmp : 1;
+                int maxScanThreads = int.TryParse(TB_maxThread.Text, out int tmp) ? tmp : 1; 
 
-                // Chuẩn bị tham số truyền cho PowerShell
-                string arguments =
-                    $"-NoExit -ExecutionPolicy Bypass -File \"{scriptPath}\" " +
-                    $"-ScpHost \"{scpHost}\" " +
-                    $"-Port \"{port}\" " +
-                    $"-ScpUser \"{scpUser}\" " +
-                    $"-ScpPassword \"{scpPassword}\" " +
-                    $"-Protocol \"{protocol}\" " +
-                    $"-RemoteFolder \"{remoteFolder}\" " +
-                    $"-LocalDestination \"{localDestination}\" " +
-                    $"-winscpDllPath \"{winscpDllPath}\" " +
-                    $"-MacFilePath \"{macFilePath}\" " +
-                    $"-MaxScanThreads {maxScanThreads}";
+                string arguments = $"-NoExit -ExecutionPolicy Bypass -File \"{scriptPath}\" " +
+                                   $"-SourceFolder \"{sourceFolder}\" " +
+                                   $"-DestinationFolder \"{destinationFolder}\" " +
+                                   $"-MacFilePath \"{macFilePath}\" " +
+                                   $"-MaxScanThreads {maxScanThreads}";
 
-                var psi = new ProcessStartInfo
+                ProcessStartInfo psi = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
                     Arguments = arguments,
                     UseShellExecute = true,
                     CreateNoWindow = false
                 };
+
                 SaveFormData("config_log_collector.json");
                 Process.Start(psi);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Không thể chạy script!\nChi tiết: {ex.Message}", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string appDir = AppDomain.CurrentDomain.BaseDirectory;
+                string scriptPath = Path.Combine(appDir, "log_collection_ps1", "hash-set-new-algorithm.ps1");
+
+                if (!File.Exists(scriptPath))
+                {
+                    MessageBox.Show($"Không tìm thấy hash-set.ps1 tại:\n{scriptPath}", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                try
+                {
+                    // Lấy dữ liệu từ form
+                    string scpHost = TB_host.Text;
+                    string port = TB_portNumber.Text;
+                    string scpUser = TB_user.Text;
+                    string scpPassword = TB_password.Text;
+                    string protocol = CBB_protocol.SelectedItem?.ToString() ?? "";
+                    string remoteFolder = TB_severScan.Text;
+                    string localDestination = TB_localDestinationDownload.Text;
+                    string winscpDllPath = TB_winscpDLL.Text;
+                    string macFilePath = TB_MacFilePath.Text;
+                    int maxScanThreads = int.TryParse(TB_maxThread.Text, out int tmp) ? tmp : 1;
+
+                    // Chuẩn bị tham số truyền cho PowerShell
+                    string arguments =
+                        $"-NoExit -ExecutionPolicy Bypass -File \"{scriptPath}\" " +
+                        $"-ScpHost \"{scpHost}\" " +
+                        $"-Port \"{port}\" " +
+                        $"-ScpUser \"{scpUser}\" " +
+                        $"-ScpPassword \"{scpPassword}\" " +
+                        $"-Protocol \"{protocol}\" " +
+                        $"-RemoteFolder \"{remoteFolder}\" " +
+                        $"-LocalDestination \"{localDestination}\" " +
+                        $"-winscpDllPath \"{winscpDllPath}\" " +
+                        $"-MacFilePath \"{macFilePath}\" " +
+                        $"-MaxScanThreads {maxScanThreads}";
+
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "powershell.exe",
+                        Arguments = arguments,
+                        UseShellExecute = true,
+                        CreateNoWindow = false
+                    };
+                    SaveFormData("config_log_collector.json");
+                    Process.Start(psi);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Không thể chạy script!\nChi tiết: {ex.Message}", "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+
+
         }
 
         private void BTN_macFilePath_Click(object sender, EventArgs e)
@@ -1840,6 +1880,18 @@ MessageBoxIcon.Question
                 Debug.WriteLine(MacFilePath);
             }
         }
+
+        private void CB_LocalScan_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CB_LocalScan.Checked)
+            {
+                label11.Text = "Local folder scan";
+            }
+            else
+            {
+                label11.Text = "Remote folder scan";
+            }
+        }
     }
-    }
+}
 
