@@ -912,7 +912,8 @@ namespace hocWF
                     FileName = "powershell.exe",
                     Arguments = $"-NoExit -ExecutionPolicy Bypass -File \"{mainPs1}\" \"{filePath}\"",
                     UseShellExecute = true,
-                    CreateNoWindow = false
+                    CreateNoWindow = false,
+                    WorkingDirectory = Path.Combine(appDir, "loc-log-ps1")
                 };
 
                 Process.Start(psi);
