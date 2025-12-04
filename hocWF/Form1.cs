@@ -1652,7 +1652,7 @@ MessageBoxIcon.Question
                     PortNumber = TB_portNumber.Text,
                     LocalDownloadDestination = TB_localDestinationDownload.Text,
                     WinscpDLL = TB_winscpDLL.Text,
-                    RemoteFolderScan = TB_severScan.Text.Split(':', StringSplitOptions.RemoveEmptyEntries)
+                    RemoteFolderScan = TB_severScan.Text.Split(';', StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => s.Trim())
                     .ToList(),
                     MaxThreadScan = TB_maxThread.Text,
@@ -1664,8 +1664,7 @@ MessageBoxIcon.Question
                 var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(filePath, json);
 
-                // Thông báo thành công
-                MessageBox.Show("Đã lưu cấu hình thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
             }
             catch (Exception ex)
             {
@@ -1689,11 +1688,11 @@ MessageBoxIcon.Question
                 TB_portNumber.Text = config.PortNumber;
                 TB_localDestinationDownload.Text = config.LocalDownloadDestination;
                 TB_winscpDLL.Text = config.WinscpDLL;
-                TB_severScan.Text = string.Join(":", config.RemoteFolderScan);
+                TB_severScan.Text = string.Join(";", config.RemoteFolderScan);
                 TB_maxThread.Text = config.MaxThreadScan;
                 TB_MacFilePath.Text = config.MacFilePath;
                 CB_LocalScan.Checked = config.ScanLocalMode;
-                var cleaned = config.RemoteFolderScan
+                List<string> cleaned = config.RemoteFolderScan
                 .Select(p => p.EndsWith("\\") ? p.Substring(0, p.Length - 1) : p)
                 .ToList();
                 this.list_path_remote_or_local = cleaned;
@@ -1704,6 +1703,8 @@ MessageBoxIcon.Question
         private void BTN_saveFormInfo_Click(object sender, EventArgs e)
         {
             SaveFormData("config_log_collector.json");
+            // Thông báo thành công
+            MessageBox.Show("Đã lưu cấu hình thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void BTN_localFolderDownloadLog_Click(object sender, EventArgs e)
@@ -1842,7 +1843,7 @@ MessageBoxIcon.Question
                         string scpUser = TB_user.Text;
                         string scpPassword = TB_password.Text;
                         string protocol = CBB_protocol.SelectedItem?.ToString() ?? "";
-                        string remoteFolder = TB_severScan.Text;
+                        string remoteFolder = item;
                         string localDestination = TB_localDestinationDownload.Text;
                         string winscpDllPath = TB_winscpDLL.Text;
                         string macFilePath = TB_MacFilePath.Text;
