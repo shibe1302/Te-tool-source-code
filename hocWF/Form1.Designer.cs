@@ -31,7 +31,6 @@ namespace hocWF
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            openFileDialog1 = new OpenFileDialog();
             openFileDialog2 = new OpenFileDialog();
             tabControl1 = new TabControl();
             tabPage3 = new TabPage();
@@ -82,9 +81,7 @@ namespace hocWF
             richTextBox2 = new RichTextBox();
             richTextBox1 = new RichTextBox();
             tabPage2 = new TabPage();
-            label1 = new Label();
             btnFTUcu = new Button();
-            textBox2 = new TextBox();
             groupBoxTestContent = new GroupBox();
             btnMigrateFromOldFtu = new Button();
             checkedListBoxTests = new CheckedListBox();
@@ -92,8 +89,6 @@ namespace hocWF
             btnSelectAll = new Button();
             btnDisSelectAll = new Button();
             btnOpenFolder = new Button();
-            textBox1 = new TextBox();
-            pictureBox1 = new PictureBox();
             openFileDialog3 = new OpenFileDialog();
             folderBrowserDialog1 = new FolderBrowserDialog();
             folderBrowserDialog2 = new FolderBrowserDialog();
@@ -102,18 +97,14 @@ namespace hocWF
             OFD_winscpDLL_File = new OpenFileDialog();
             OFD_macFilePath = new OpenFileDialog();
             contextMenuStrip1 = new ContextMenuStrip(components);
+            openFileDialog1 = new OpenFileDialog();
             tabControl1.SuspendLayout();
             tabPage3.SuspendLayout();
             tabPage4.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             groupBoxTestContent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // openFileDialog1
-            // 
-            openFileDialog1.FileName = "openFileDialog1";
             // 
             // openFileDialog2
             // 
@@ -624,13 +615,9 @@ namespace hocWF
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(label1);
             tabPage2.Controls.Add(btnFTUcu);
-            tabPage2.Controls.Add(textBox2);
             tabPage2.Controls.Add(groupBoxTestContent);
             tabPage2.Controls.Add(btnOpenFolder);
-            tabPage2.Controls.Add(textBox1);
-            tabPage2.Controls.Add(pictureBox1);
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -639,15 +626,6 @@ namespace hocWF
             tabPage2.Text = "copy test funtion";
             tabPage2.UseVisualStyleBackColor = true;
             tabPage2.Click += tabPage2_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(834, 560);
-            label1.Name = "label1";
-            label1.Size = new Size(243, 20);
-            label1.TabIndex = 9;
-            label1.Text = "Ít thì 5 quả trứng nhiều thì 1 tên lửa";
             // 
             // btnFTUcu
             // 
@@ -658,14 +636,6 @@ namespace hocWF
             btnFTUcu.Text = "LOAD FTU CŨ";
             btnFTUcu.UseVisualStyleBackColor = true;
             btnFTUcu.Click += btnFTUcu_Click;
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(365, 83);
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.Size = new Size(448, 27);
-            textBox2.TabIndex = 5;
             // 
             // groupBoxTestContent
             // 
@@ -747,24 +717,6 @@ namespace hocWF
             btnOpenFolder.UseVisualStyleBackColor = true;
             btnOpenFolder.Click += button6_Click;
             // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(365, 33);
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(448, 27);
-            textBox1.TabIndex = 0;
-            textBox1.TextChanged += textBox1_TextChanged;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(100, 100);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(200, 200);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 10;
-            pictureBox1.TabStop = false;
-            // 
             // openFileDialog3
             // 
             openFileDialog3.FileName = "openFileDialog3";
@@ -791,6 +743,10 @@ namespace hocWF
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -808,9 +764,7 @@ namespace hocWF
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
-            tabPage2.PerformLayout();
             groupBoxTestContent.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
 
 
@@ -839,7 +793,6 @@ namespace hocWF
         }
 
         #endregion
-        private OpenFileDialog openFileDialog1;
         private OpenFileDialog openFileDialog2;
         private TabControl tabControl1;
         private TabPage tabPage1;
@@ -855,7 +808,6 @@ namespace hocWF
         private Button button1;
         private RichTextBox richTextBox2;
         private RichTextBox richTextBox1;
-        private TextBox textBox1;
         private Button btnOpenFolder;
         private OpenFileDialog openFileDialog3;
         private Button btnSaveIni;
@@ -863,13 +815,9 @@ namespace hocWF
         private Button btnSelectAll;
         private Button btnDisSelectAll;
         private CheckedListBox checkedListBoxTests;
-        private Button btnFTUcu;
-        private TextBox textBox2;
         private FolderBrowserDialog folderBrowserDialog1;
         private FolderBrowserDialog folderBrowserDialog2;
         private Button btnMigrateFromOldFtu;
-        private PictureBox pictureBox1;
-        private Label label1;
         private TabPage tabPage3;
         private Label label2;
         private Label labelPath;
@@ -910,5 +858,7 @@ namespace hocWF
         private OpenFileDialog OFD_macFilePath;
         private ContextMenuStrip contextMenuStrip1;
         private CheckBox CB_LocalScan;
+        private Button btnFTUcu;
+        private OpenFileDialog openFileDialog1;
     }
 }

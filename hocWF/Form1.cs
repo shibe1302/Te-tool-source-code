@@ -1266,60 +1266,7 @@ namespace hocWF
         }
         private void button7_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(iniFilePath))
-            {
-                MessageBox.Show("Vui lòng chọn folder trước khi lưu!", "Lỗi Lưu File",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            string newIdList = textBox1.Text.Trim();
-            newIdList = NormalizeIdList(newIdList);
-
-            try
-            {
-                if (string.IsNullOrEmpty(originalIniFileContent))
-                {
-                    originalIniFileContent = "[ITEMS]\nid = ";
-                }
-
-                string finalContent = ReplaceItemsId(originalIniFileContent, newIdList);
-                finalContent = finalContent.Replace("\uFEFF", string.Empty);
-                DialogResult openFtuResult = MessageBox.Show(
-"Ngài có chắc sẽ làm điều này không ?",
-"Save",
-MessageBoxButtons.YesNo,
-MessageBoxIcon.Question
-);
-                File.WriteAllText(iniFilePath, finalContent, new UTF8Encoding(false));
-
-                originalIniFileContent = finalContent;
-                currentCheckedItemIds = ExtractItemsId(finalContent);
-
-                if (!string.IsNullOrEmpty(jsonFilePath))
-                {
-                    SaveJsonWithNewOrder();
-                }
-
-                MessageBox.Show($"Đã lưu thành công!\n\nINI: {Path.GetFileName(iniFilePath)}\nJSON: {Path.GetFileName(jsonFilePath)}\n\nItems được check: {currentCheckedItemIds.Length}",
-                    "Lưu Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                DialogResult openFtuResult1 = MessageBox.Show(
-"Bạn có muốn mở FTU để kiểm tra lại không?",
-"Mở FTU",
-MessageBoxButtons.YesNo,
-MessageBoxIcon.Question
-);
-
-                if (openFtuResult1 == DialogResult.Yes)
-                {
-                    OpenFtuExeFile();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Đã xảy ra lỗi khi ghi file: {ex.Message}", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
         private void SaveJsonWithNewOrder()
         {
@@ -1384,7 +1331,7 @@ MessageBoxIcon.Question
                 }
             }
 
-            textBox1.Text = string.Join(", ", checkedIds);
+            
         }
 
         private string NormalizeIdList(string idList)
@@ -1506,9 +1453,6 @@ MessageBoxIcon.Question
 
 
 
-
-
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -1531,17 +1475,7 @@ MessageBoxIcon.Question
 
         private void btnFTUcu_Click(object sender, EventArgs e)
         {
-            folderBrowserDialog1.Description = "Chọn folder chứa file JSON và INI";
 
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                selectedFolderPathOldFtu = folderBrowserDialog1.SelectedPath; Debug.WriteLine("Selected folder: " + selectedFolderPathOldFtu);
-
-                if (FindJsonOldFTU())
-                {
-                    textBox2.Text = selectedFolderPathOldFtu;
-                }
-            }
         }
 
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
@@ -1556,33 +1490,7 @@ MessageBoxIcon.Question
 
         private void btnMigrateFromOldFtu_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(jsonFilePath) || diagTestItems == null || diagTestItems.Count == 0)
-            {
-                MessageBox.Show("Vui lòng load FTU mới trước (button6)!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            if (string.IsNullOrEmpty(jsonFilePathOldFtu) || string.IsNullOrEmpty(iniFilePathOldFtu))
-            {
-                MessageBox.Show("Vui lòng chọn FTU cũ trước (btnFTUcu)!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            DialogResult result = MessageBox.Show(
-    "Bạn có chắc muốn migrate items từ FTU cũ?\n\n" +
-    $"FTU cũ: {Path.GetFileName(jsonFilePathOldFtu)}\n" +
-    $"FTU mới: {Path.GetFileName(jsonFilePath)}",
-    "Xác nhận Migrate",
-    MessageBoxButtons.YesNo,
-    MessageBoxIcon.Question
-);
-
-            if (result == DialogResult.Yes)
-            {
-                ProcessOldFtuItems();
-            }
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
