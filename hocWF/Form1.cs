@@ -24,7 +24,6 @@ namespace hocWF
         private DateTime lastEditTime2 = DateTime.MinValue;
         private const int UNDO_GROUP_DELAY = 1000;
 
-        private StringBuilder migrationLog = new StringBuilder();
 
         private string selectedFolderPath = "";
         private string jsonFilePath = "";
@@ -33,7 +32,6 @@ namespace hocWF
         private string originalIniFileContent = "";
         private string[] currentCheckedItemIds = new string[0];
 
-        private int dragIndex = -1;
 
         private bool isSyncingScroll = false;
         private bool isSyncScroll = false;
@@ -50,13 +48,7 @@ namespace hocWF
         private const int DEBOUNCE_DELAY = 1000;
 
 
-        private int lastHighlightedIndex = -1;
-        private Rectangle dragBoxFromMouseDown;
-        private object draggedItem;
-        private bool isDraggedItemChecked;
-        private string jsonFilePathOldFtu = "";
-        private string selectedFolderPathOldFtu = "";
-        private string iniFilePathOldFtu = "";
+
 
         public string LocalDownLoadLogPath = "";
         public string MacFilePath = "";
@@ -106,13 +98,6 @@ namespace hocWF
             debounceTimer2.Stop();
             SaveToUndoStack(richTextBox2, undoStack2);
         }
-
-
-        private Process ftuExeProcess;
-
-
-
-
 
 
 
@@ -214,12 +199,7 @@ namespace hocWF
             UndoLastEdited();
         }
 
-        private void button5_Click(object sender, EventArgs e)
-        {
-            debounceTimer2.Stop();
-            SaveToUndoStack(richTextBox2, undoStack2);
-            PerformUndo(richTextBox2, undoStack2);
-        }
+
 
         private RichTextBox lastEditedRichTextBox;
 
