@@ -1,3 +1,5 @@
+using TE_TOOL;
+
 namespace hocWF
 {
     internal static class Program
@@ -12,6 +14,8 @@ namespace hocWF
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
+            //Application.Run(new FORM_FTU());
+            //Application.Run(new Form1());
         }
     }
 }

@@ -94,7 +94,7 @@ namespace hocWF
 
             textBoxPath.Text = @"NHẬP VÀO LINK FOLDER HOẶC ZIP PATH";
             LoadFormData("config_log_collector.json");
-     
+
 
 
 
@@ -111,287 +111,9 @@ namespace hocWF
             debounceTimer2.Stop();
             SaveToUndoStack(richTextBox2, undoStack2);
         }
-        private void ProcessOldFtuItems(bool migrateAllFromJson = false)
-        {
-            try
-            {
-                migrationLog.Clear();
-                migrationLog.AppendLine("=== BÁO CÁO MIGRATE TỪ FTU CŨ ===");
-                migrationLog.AppendLine($"Thời gian: {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-                migrationLog.AppendLine($"Chế độ: {(migrateAllFromJson ? "TẤT CẢ items từ JSON" : "Chỉ items từ INI")}");
-                migrationLog.AppendLine();
 
-                if (!File.Exists(jsonFilePathOldFtu))
-                {
-                    MessageBox.Show("Không tìm thấy file JSON của FTU cũ!", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
 
-                string oldJsonContent = File.ReadAllText(jsonFilePathOldFtu);
-                DiagTestConfig oldConfig = JsonSerializer.Deserialize<DiagTestConfig>(oldJsonContent);
-
-                if (oldConfig == null || oldConfig.DiagTestItems == null)
-                {
-                    MessageBox.Show("File JSON cũ không hợp lệ!", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                List<DiagTestItem> filteredOldItems = new List<DiagTestItem>();
-
-                if (migrateAllFromJson)
-                {
-                    filteredOldItems = oldConfig.DiagTestItems;
-                    migrationLog.AppendLine($"Tổng số items trong JSON cũ: {filteredOldItems.Count}");
-                }
-                else
-                {
-                    if (!File.Exists(iniFilePathOldFtu))
-                    {
-                        MessageBox.Show("Không tìm thấy file INI của FTU cũ!", "Lỗi",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    string oldIniContent = File.ReadAllText(iniFilePathOldFtu);
-                    string[] oldCheckedIds = ExtractItemsId(oldIniContent);
-
-                    if (oldCheckedIds.Length == 0)
-                    {
-                        MessageBox.Show("File INI cũ không có item nào được chọn!", "Thông báo",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
-
-                    HashSet<string> oldCheckedIdSet = new HashSet<string>(oldCheckedIds);
-
-                    foreach (var item in oldConfig.DiagTestItems)
-                    {
-                        if (oldCheckedIdSet.Contains(item.ID.ToString()))
-                        {
-                            filteredOldItems.Add(item);
-                        }
-                    }
-
-                    migrationLog.AppendLine($"Tổng số items trong INI cũ: {oldCheckedIds.Length}");
-                    migrationLog.AppendLine($"Danh sách ID từ INI: {string.Join(", ", oldCheckedIds)}");
-                }
-
-                migrationLog.AppendLine($"Items sẽ migrate (theo thứ tự JSON cũ): {filteredOldItems.Count}");
-                foreach (var item in filteredOldItems)
-                {
-                    migrationLog.AppendLine($"  - ID: {item.ID}, Name: {item.Name}");
-                }
-                migrationLog.AppendLine();
-
-                if (diagTestItems == null || diagTestItems.Count == 0)
-                {
-                    MessageBox.Show("Vui lòng load JSON mới trước khi migrate!", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                Dictionary<int, int> newJsonIdToIndex = new Dictionary<int, int>();
-                for (int i = 0; i < diagTestItems.Count; i++)
-                {
-                    newJsonIdToIndex[diagTestItems[i].ID] = i;
-                }
-
-                List<MigrateItem> itemsToMigrate = new List<MigrateItem>();
-                List<DiagTestItem> itemsNotFound = new List<DiagTestItem>();
-
-                foreach (var oldItem in filteredOldItems)
-                {
-                    if (newJsonIdToIndex.ContainsKey(oldItem.ID))
-                    {
-                        itemsToMigrate.Add(new MigrateItem
-                        {
-                            OldItem = oldItem,
-                            NewIndex = newJsonIdToIndex[oldItem.ID]
-                        });
-                    }
-                    else
-                    {
-                        itemsNotFound.Add(oldItem);
-                    }
-                }
-
-                migrationLog.AppendLine("=== KẾT QUẢ KIỂM TRA ===");
-                migrationLog.AppendLine($"✓ Tìm thấy trong FTU mới: {itemsToMigrate.Count} items");
-                foreach (var item in itemsToMigrate)
-                {
-                    migrationLog.AppendLine($"  ✓ ID: {item.OldItem.ID}, Name: {item.OldItem.Name}");
-                }
-                migrationLog.AppendLine();
-
-                if (itemsNotFound.Count > 0)
-                {
-                    migrationLog.AppendLine($"✗ KHÔNG tìm thấy trong FTU mới: {itemsNotFound.Count} items");
-                    foreach (var item in itemsNotFound)
-                    {
-                        migrationLog.AppendLine($"  ✗ ID: {item.ID}, Name: {item.Name}");
-                    }
-                    migrationLog.AppendLine();
-                }
-
-                if (itemsToMigrate.Count > 0)
-                {
-                    MigrateItemsToTop(itemsToMigrate);
-                    migrationLog.AppendLine("=== ĐÃ HOÀN TẤT MIGRATE ===");
-                    migrationLog.AppendLine($"Đã xếp {itemsToMigrate.Count} items lên đầu danh sách và đánh dấu checked.");
-                }
-
-                ShowMigrationLog();
-                UpdateTextBoxFromCheckedItems();
-
-                string summaryMessage = $"Migrate hoàn tất!\n\n" +
-                                        $"✓ Thành công: {itemsToMigrate.Count} items\n" +
-                                        $"✗ Không tìm thấy: {itemsNotFound.Count} items\n\n" +
-                                        $"Xem chi tiết trong log.";
-
-                MessageBox.Show(summaryMessage, "Kết quả Migrate",
-                    MessageBoxButtons.OK,
-                    itemsNotFound.Count > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi xử lý migrate: {ex.Message}\n\n{ex.StackTrace}",
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void MigrateItemsToTop(List<MigrateItem> itemsToMigrate)
-        {
-            if (itemsToMigrate == null || itemsToMigrate.Count == 0)
-                return;
-
-            checkedListBoxTests.BeginUpdate();
-
-            for (int i = 0; i < checkedListBoxTests.Items.Count; i++)
-            {
-                checkedListBoxTests.SetItemChecked(i, false);
-            }
-
-            List<DiagTestItem> newDiagTestItems = new List<DiagTestItem>();
-            HashSet<int> migratedIds = new HashSet<int>();
-
-            foreach (var migrateItem in itemsToMigrate)
-            {
-                newDiagTestItems.Add(migrateItem.OldItem);
-                migratedIds.Add(migrateItem.OldItem.ID);
-            }
-
-            foreach (var item in diagTestItems)
-            {
-                if (!migratedIds.Contains(item.ID))
-                {
-                    newDiagTestItems.Add(item);
-                }
-            }
-
-            diagTestItems.Clear();
-            diagTestItems.AddRange(newDiagTestItems);
-
-            checkedListBoxTests.Items.Clear();
-            foreach (var item in diagTestItems)
-            {
-                string displayText = $"{item.ID} - {item.Name}";
-                checkedListBoxTests.Items.Add(displayText);
-            }
-
-            for (int i = 0; i < itemsToMigrate.Count; i++)
-            {
-                checkedListBoxTests.SetItemChecked(i, true);
-            }
-
-            checkedListBoxTests.EndUpdate();
-
-            if (checkedListBoxTests.Items.Count > 0)
-            {
-                checkedListBoxTests.TopIndex = 0;
-            }
-        }
         private Process ftuExeProcess;
-
-        private void OpenFtuExeFile()
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(selectedFolderPath))
-                {
-                    MessageBox.Show("Không tìm thấy đường dẫn FTU!", "Lỗi",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                string[] exeFiles = Directory.GetFiles(selectedFolderPath, "FTU_*.exe", SearchOption.AllDirectories);
-
-                if (exeFiles.Length == 0)
-                {
-                    MessageBox.Show($"Không tìm thấy file FTU_*.exe trong folder:\n{selectedFolderPath}",
-                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                string exeFilePath = exeFiles[0];
-                if (exeFiles.Length > 1)
-                {
-                    var rootExe = exeFiles.FirstOrDefault(f =>
-                        Path.GetDirectoryName(f) == selectedFolderPath);
-
-                    if (!string.IsNullOrEmpty(rootExe))
-                    {
-                        exeFilePath = rootExe;
-                    }
-
-                    MessageBox.Show($"Tìm thấy {exeFiles.Length} file FTU_*.exe.\nSẽ chạy: {exeFilePath.Replace(selectedFolderPath, ".")}",
-                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                Debug.WriteLine($"Running FTU exe: {exeFilePath}");
-
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    FileName = exeFilePath,
-                    Arguments = "-p=UniFiDream --mvc",
-                    WorkingDirectory = Path.GetDirectoryName(exeFilePath),
-                    UseShellExecute = false,
-                    CreateNoWindow = false
-                };
-
-                ftuExeProcess = Process.Start(startInfo);
-
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi chạy FTU_*.exe:\n{ex.Message}", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        private void KillFtuExe()
-        {
-            try
-            {
-                if (ftuExeProcess != null && !ftuExeProcess.HasExited)
-                {
-                    ftuExeProcess.Kill();
-                    ftuExeProcess.Dispose();
-                    ftuExeProcess = null;
-                    MessageBox.Show("Đã kill FTU exe thành công!");
-                }
-                else
-                {
-                    MessageBox.Show("Không có FTU exe nào đang chạy.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi kill FTU exe: {ex.Message}");
-            }
-        }
-
 
 
 
@@ -401,101 +123,11 @@ namespace hocWF
             public int CurrentIndex { get; set; }
             public int TargetIndex { get; set; }
         }
-        private void ShowMigrationLog()
-        {
-            Form logForm = new Form();
-            logForm.Text = "Migration Log";
-            logForm.Size = new Size(800, 600);
-            logForm.StartPosition = FormStartPosition.CenterParent;
 
-            RichTextBox logTextBox = new RichTextBox();
-            logTextBox.Dock = DockStyle.Fill;
-            logTextBox.Font = new Font("Consolas", 10);
-            logTextBox.ReadOnly = true;
-            logTextBox.Text = migrationLog.ToString();
 
-            HighlightLogText(logTextBox);
 
-            Button btnClose = new Button();
-            btnClose.Text = "Đóng";
-            btnClose.Dock = DockStyle.Bottom;
-            btnClose.Height = 40;
-            btnClose.Click += (s, e) => logForm.Close();
 
-            Button btnSaveLog = new Button();
-            btnSaveLog.Text = "Lưu Log";
-            btnSaveLog.Dock = DockStyle.Bottom;
-            btnSaveLog.Height = 40;
-            btnSaveLog.Click += (s, e) => SaveLogToFile();
 
-            logForm.Controls.Add(logTextBox);
-            logForm.Controls.Add(btnSaveLog);
-            logForm.Controls.Add(btnClose);
-
-            logForm.ShowDialog();
-        }
-
-        private void HighlightLogText(RichTextBox rtb)
-        {
-            string text = rtb.Text;
-
-            int index = 0;
-            while ((index = text.IndexOf("✓", index)) != -1)
-            {
-                rtb.Select(index, 1);
-                rtb.SelectionColor = Color.Green;
-                index++;
-            }
-
-            index = 0;
-            while ((index = text.IndexOf("✗", index)) != -1)
-            {
-                rtb.Select(index, 1);
-                rtb.SelectionColor = Color.Red;
-                index++;
-            }
-
-            string[] headers = { "===", "KẾT QUẢ", "BÁO CÁO", "HOÀN TẤT" };
-            foreach (string header in headers)
-            {
-                index = 0;
-                while ((index = text.IndexOf(header, index)) != -1)
-                {
-                    int lineStart = text.LastIndexOf('\n', index) + 1;
-                    int lineEnd = text.IndexOf('\n', index);
-                    if (lineEnd == -1) lineEnd = text.Length;
-
-                    rtb.Select(lineStart, lineEnd - lineStart);
-                    rtb.SelectionFont = new Font(rtb.Font, FontStyle.Bold);
-                    rtb.SelectionColor = Color.DarkBlue;
-                    index = lineEnd;
-                }
-            }
-
-            rtb.Select(0, 0);
-        }
-
-        private void SaveLogToFile()
-        {
-            try
-            {
-                string logFileName = $"migration_log_{DateTime.Now:yyyyMMdd_HHmmss}.txt";
-                string logPath = Path.Combine(
-                    string.IsNullOrEmpty(selectedFolderPath) ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop) : selectedFolderPath,
-                    logFileName
-                );
-
-                File.WriteAllText(logPath, migrationLog.ToString(), Encoding.UTF8);
-
-                MessageBox.Show($"Đã lưu log tại:\n{logPath}", "Lưu thành công",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi lưu log: {ex.Message}", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         private class MigrateItem
         {
@@ -896,7 +528,7 @@ namespace hocWF
             }
 
             string appDir = AppDomain.CurrentDomain.BaseDirectory;
-            string mainPs1 = Path.Combine(appDir,"loc-log-ps1", "main.ps1");
+            string mainPs1 = Path.Combine(appDir, "loc-log-ps1", "main.ps1");
 
             if (!File.Exists(mainPs1))
             {
@@ -1331,7 +963,7 @@ namespace hocWF
                 }
             }
 
-            
+
         }
 
         private string NormalizeIdList(string idList)
@@ -1475,7 +1107,14 @@ namespace hocWF
 
         private void btnFTUcu_Click(object sender, EventArgs e)
         {
+            FORM_FTU form_ftu = new FORM_FTU();
 
+            form_ftu.DataSaved += (content) =>
+            {
+                LB_ftu_load_status.Text = content;
+            };
+
+            form_ftu.Show();
         }
 
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
@@ -1572,7 +1211,7 @@ namespace hocWF
                 var json = JsonSerializer.Serialize(config, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(filePath, json);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -1604,8 +1243,8 @@ namespace hocWF
                 .Select(p => p.EndsWith("\\") ? p.Substring(0, p.Length - 1) : p)
                 .ToList();
                 this.list_path_remote_or_local = cleaned;
-                
-    }
+
+            }
         }
 
         private void BTN_saveFormInfo_Click(object sender, EventArgs e)
@@ -1688,7 +1327,7 @@ namespace hocWF
 
         private void BTN_startScanLog_Click(object sender, EventArgs e)
         {
-            
+
             foreach (var item in list_path_remote_or_local)
             {
 

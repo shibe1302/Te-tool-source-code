@@ -98,6 +98,7 @@ namespace hocWF
             OFD_macFilePath = new OpenFileDialog();
             contextMenuStrip1 = new ContextMenuStrip(components);
             openFileDialog1 = new OpenFileDialog();
+            LB_ftu_load_status = new Label();
             tabControl1.SuspendLayout();
             tabPage3.SuspendLayout();
             tabPage4.SuspendLayout();
@@ -615,6 +616,7 @@ namespace hocWF
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(LB_ftu_load_status);
             tabPage2.Controls.Add(btnFTUcu);
             tabPage2.Controls.Add(groupBoxTestContent);
             tabPage2.Controls.Add(btnOpenFolder);
@@ -747,6 +749,14 @@ namespace hocWF
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // LB_ftu_load_status
+            // 
+            LB_ftu_load_status.AutoSize = true;
+            LB_ftu_load_status.Location = new Point(367, 85);
+            LB_ftu_load_status.Name = "LB_ftu_load_status";
+            LB_ftu_load_status.Size = new Size(0, 20);
+            LB_ftu_load_status.TabIndex = 7;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -764,6 +774,7 @@ namespace hocWF
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
             groupBoxTestContent.ResumeLayout(false);
             ResumeLayout(false);
 
@@ -860,5 +871,6 @@ namespace hocWF
         private CheckBox CB_LocalScan;
         private Button btnFTUcu;
         private OpenFileDialog openFileDialog1;
+        private Label LB_ftu_load_status;
     }
 }
