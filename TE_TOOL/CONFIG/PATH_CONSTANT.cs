@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace TE_TOOL.CONFIG
+{
+    public static class PATH_FILE_CONSTANT
+    {
+        private static readonly string _appDirectory;
+        public static readonly string _scriptFolder;
+        public static readonly string SCRIPT_PATH_LOC_LOG;
+
+
+        static PATH_FILE_CONSTANT()
+        {
+            // path loc log script
+            _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            _scriptFolder = Path.Combine(_appDirectory, "loc-log-ps1");
+            SCRIPT_PATH_LOC_LOG = Path.Combine(_scriptFolder, "main.ps1");
+
+            // Có thể thêm các đường dẫn tệp khác tại đây
+        }
+    }
+}

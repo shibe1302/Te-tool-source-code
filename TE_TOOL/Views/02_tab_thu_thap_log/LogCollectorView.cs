@@ -30,19 +30,21 @@ namespace TE_TOOL.Views._02_tab_thu_thap_log
         }
         public void SaveFormData(string filePath)
         {
-            // Kiểm tra PortNumber
-            if (!int.TryParse(TB_portNumber.Text, out int port) || port < 1 || port > 65535)
+            if (!CB_LocalScan.Checked)
             {
-                MessageBox.Show("Port number phải nằm trong khoảng 1–65535!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (!int.TryParse(TB_portNumber.Text, out int port) || port < 1 || port > 65535)
+                {
+                    MessageBox.Show("Port number phải nằm trong khoảng 1–65535!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!int.TryParse(TB_maxThread.Text, out int maxThread) || maxThread < 1 || maxThread > 1000)
+                {
+                    MessageBox.Show("Max thread scan phải nằm trong khoảng 1–1000!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
 
-            // Kiểm tra MaxThread
-            if (!int.TryParse(TB_maxThread.Text, out int maxThread) || maxThread < 1 || maxThread > 1000)
-            {
-                MessageBox.Show("Max thread scan phải nằm trong khoảng 1–1000!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
             try
             {
                 var config = new LogCollectorConfig

@@ -154,7 +154,6 @@ namespace hocWF
             checkBox1.TabIndex = 19;
             checkBox1.Text = "So sánh file config.ini >< config lấy từ log";
             checkBox1.UseVisualStyleBackColor = true;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // comboBox1
             // 
@@ -247,7 +246,7 @@ namespace hocWF
             tabPage2.TabIndex = 1;
             tabPage2.Text = "copy test funtion";
             tabPage2.UseVisualStyleBackColor = true;
-            tabPage2.Click += tabPage2_Click;
+
             // 
             // LB_ftu_load_status
             // 
@@ -281,14 +280,6 @@ namespace hocWF
             // 
             openFileDialog3.FileName = "openFileDialog3";
             // 
-            // folderBrowserDialog1
-            // 
-            folderBrowserDialog1.HelpRequest += folderBrowserDialog1_HelpRequest;
-            // 
-            // folderBrowserDialog2
-            // 
-            folderBrowserDialog2.HelpRequest += folderBrowserDialog2_HelpRequest;
-            // 
             // OFD_winscpDLL_File
             // 
             OFD_winscpDLL_File.FileName = "openFileDialog4";
@@ -315,7 +306,7 @@ namespace hocWF
             Controls.Add(tabControl1);
             Name = "Form1";
             Text = "Tool hỗ trợ ve di phai";
-            Load += Form1_Load;
+
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();

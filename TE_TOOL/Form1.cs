@@ -27,15 +27,6 @@ namespace hocWF
         private DateTime lastEditTime2 = DateTime.MinValue;
         private const int UNDO_GROUP_DELAY = 1000;
 
-
-        private string selectedFolderPath = "";
-        private string jsonFilePath = "";
-        private string iniFilePath = "";
-
-        private string originalIniFileContent = "";
-        private string[] currentCheckedItemIds = new string[0];
-
-
         private bool isSyncingScroll = false;
         private bool isSyncScroll = false;
 
@@ -173,9 +164,6 @@ namespace hocWF
         {
             CompareAndHighlight();
         }
-
-
-
 
 
         private void SaveToUndoStack(RichTextBox rtb, Stack<string> stack)
@@ -482,12 +470,6 @@ namespace hocWF
 
 
 
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button5_Click_1(object sender, EventArgs e)
         {
             if (selectedFilePath1 == null || string.IsNullOrEmpty(selectedFilePath1.ToString()))
@@ -534,36 +516,6 @@ namespace hocWF
         }
 
 
-        private void tabPage2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkedListBoxTests_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnFTUcu_Click(object sender, EventArgs e)
         {
             FORM_FTU form_ftu = new FORM_FTU();
@@ -576,68 +528,6 @@ namespace hocWF
             form_ftu.Show();
         }
 
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
-        private void folderBrowserDialog2_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnMigrateFromOldFtu_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void buttonToggleScroll_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxFCD_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxFTU_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void TB_severScan_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 

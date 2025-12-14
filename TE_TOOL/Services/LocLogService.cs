@@ -4,18 +4,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TE_TOOL.CONFIG;
 
 namespace TE_TOOL.Services
 {
     public class LocLogService
     {
-        private readonly string _appDirectory;
-        private readonly string _scriptFolder;
+
 
         public LocLogService()
         {
-            _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            _scriptFolder = Path.Combine(_appDirectory, "loc-log-ps1");
+
         }
 
         public bool ValidateFilePath(string path)
@@ -28,13 +27,12 @@ namespace TE_TOOL.Services
 
         public bool CheckScriptExists()
         {
-            string scriptPath = Path.Combine(_scriptFolder, "main.ps1");
-            return File.Exists(scriptPath);
+            return File.Exists(PATH_FILE_CONSTANT.SCRIPT_PATH_LOC_LOG);
         }
 
         public string GetScriptPath()
         {
-            return Path.Combine(_scriptFolder, "main.ps1");
+            return PATH_FILE_CONSTANT.SCRIPT_PATH_LOC_LOG;
         }
 
         public Process RunFilterScript(string filePath)
@@ -53,7 +51,7 @@ namespace TE_TOOL.Services
                 Arguments = $"-NoExit -ExecutionPolicy Bypass -File \"{scriptPath}\" \"{filePath}\"",
                 UseShellExecute = true,
                 CreateNoWindow = false,
-                WorkingDirectory = _scriptFolder
+                WorkingDirectory = PATH_FILE_CONSTANT._scriptFolder
             };
 
             return Process.Start(startInfo);
