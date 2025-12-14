@@ -1,6 +1,4 @@
-﻿// ============================================
-// FILE: Views/02_tab_thu_thap_log/LogCollectorView.cs (THAY THẾ NỘI DUNG CŨ)
-// ============================================
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +17,6 @@ namespace TE_TOOL.Views._02_tab_thu_thap_log
         public LogCollectorView()
         {
             InitializeComponent();
-
-
             var service = new LogCollectorService();
             _presenter = new LogCollectorPresenter(this, service, CONFIG_CONSTANT.CONFIG_LOG_COLLECTOR);
             WireUpEvents();
@@ -150,9 +146,7 @@ namespace TE_TOOL.Views._02_tab_thu_thap_log
         public event EventHandler LocalScanModeChanged;
         public event EventHandler ShowPasswordChanged;
 
-        // ============================================
-        // UI-specific event handlers (CHỈ xử lý UI)
-        // ============================================
+
 
         private void OnBrowseLocalFolder(object sender, EventArgs e)
         {

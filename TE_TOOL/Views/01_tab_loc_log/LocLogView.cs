@@ -8,12 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TE_TOOL.Services;
+using TE_TOOL.Views._01_tab_loc_log;
 
 namespace TE_TOOL.Views
 {
-    public partial class LocLogView : UserControl
+    public partial class LocLogView : UserControl, ILocLogView
     {
         private readonly LocLogService _service;
+
+        public event EventHandler RunScriptClicked;
+        public event EventHandler OpenMacFileClicked;
+        public event EventHandler LogPathDropped;
+
+        public string LogPathInput { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string MacPathInput { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public LocLogView()
         {
             InitializeComponent();
@@ -51,7 +60,7 @@ namespace TE_TOOL.Views
                 if (files != null && files.Length > 0)
                 {
                     string filePath = files[0];
-                    textBoxPath.Text = filePath;
+                    txtFolderLog.Text = filePath;
 
                     // Hiển thị tên file
                     string displayName = _service.GetDisplayName(filePath);
@@ -70,7 +79,7 @@ namespace TE_TOOL.Views
         /// </summary>
         private void buttonRunPS_Click(object sender, EventArgs e)
         {
-            string filePath = textBoxPath.Text.Trim();
+            string filePath = txtFolderLog.Text.Trim();
 
             // Validate input
             if (!_service.ValidateFilePath(filePath))
@@ -142,8 +151,33 @@ namespace TE_TOOL.Views
         /// </summary>
         public void ClearForm()
         {
-            textBoxPath.Clear();
+            txtFolderLog.Clear();
             labelStatus.Text = string.Empty;
+        }
+
+        public void SetStatus(string message, Color color)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetRunButtonEnabled(bool enabled)
+        {
+            throw new NotImplementedException();
+        }
+
+        void ILocLogView.ShowWarning(string message)
+        {
+            ShowWarning(message);
+        }
+
+        void ILocLogView.ShowError(string message)
+        {
+            ShowError(message);
+        }
+
+        void ILocLogView.ShowInfo(string message)
+        {
+            ShowInfo(message);
         }
     }
 }

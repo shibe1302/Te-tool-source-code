@@ -1,19 +1,12 @@
-﻿// ============================================
-// FILE: Views/02_tab_thu_thap_log/ILogCollectorView.cs
-// ============================================
+﻿
 using System;
 
 namespace TE_TOOL.Views._02_tab_thu_thap_log
 {
-    /// <summary>
-    /// Interface giữa View và Presenter
-    /// Định nghĩa contract để Presenter có thể tương tác với View mà không phụ thuộc vào WinForms
-    /// </summary>
+
     public interface ILogCollectorView
     {
-        // ============================================
-        // Properties - Presenter đọc/ghi dữ liệu qua đây
-        // ============================================
+
         string Host { get; set; }
         string User { get; set; }
         string Password { get; set; }
@@ -27,9 +20,6 @@ namespace TE_TOOL.Views._02_tab_thu_thap_log
         bool IsLocalScanMode { get; set; }
         bool ShowPassword { get; set; }
 
-        // ============================================
-        // Methods - Presenter điều khiển View
-        // ============================================
 
  
         void ShowMessage(string message, string title, MessageType type);
@@ -40,9 +30,7 @@ namespace TE_TOOL.Views._02_tab_thu_thap_log
 
         void EnableControls(bool enabled);
 
-        // ============================================
-        // Events - View thông báo Presenter khi có action
-        // ============================================
+
         event EventHandler SaveFormInfoClicked;
         event EventHandler StartScanLogClicked;
         event EventHandler BrowseLocalFolderClicked;

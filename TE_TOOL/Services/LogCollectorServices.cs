@@ -1,6 +1,4 @@
-﻿// ============================================
-// FILE: Services/LogCollectorService.cs
-// ============================================
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,19 +9,15 @@ using TE_TOOL.Models;
 
 namespace TE_TOOL.Services
 {
-    /// <summary>
-    /// Service xử lý business logic cho LogCollector
-    /// </summary>
+
     public class LogCollectorService
     {
-        /// <summary>
-        /// Validate dữ liệu form trước khi lưu hoặc chạy scan
-        /// </summary>
+
         public ValidationResult ValidateFormData(LogCollectorFormData data)
         {
             if (!data.IsLocalScanMode)
             {
-                // Validate cho Remote Scan Mode
+
                 if (data.PortNumber < 1 || data.PortNumber > 65535)
                     return ValidationResult.Fail("Port number phải nằm trong khoảng 1–65535!");
 
@@ -43,7 +37,7 @@ namespace TE_TOOL.Services
                     return ValidationResult.Fail("Chưa chọn WinscpDLL file!");
             }
 
-            // Validate chung cho cả Local và Remote
+
             if (string.IsNullOrWhiteSpace(data.LocalDownloadDestination))
                 return ValidationResult.Fail("Chưa chọn thư mục download!");
 
@@ -56,9 +50,6 @@ namespace TE_TOOL.Services
             return ValidationResult.Success();
         }
 
-        /// <summary>
-        /// Lưu cấu hình vào file JSON
-        /// </summary>
         public void SaveConfiguration(string filePath, LogCollectorFormData data)
         {
             var config = new LogCollectorConfig
@@ -80,9 +71,7 @@ namespace TE_TOOL.Services
             File.WriteAllText(filePath, json);
         }
 
-        /// <summary>
-        /// Load cấu hình từ file JSON
-        /// </summary>
+
         public LogCollectorFormData LoadConfiguration(string filePath)
         {
             if (!File.Exists(filePath))
@@ -122,9 +111,7 @@ namespace TE_TOOL.Services
             };
         }
 
-        /// <summary>
-        /// Thực thi quá trình scan (Local hoặc Remote)
-        /// </summary>
+
         public void ExecuteScanProcess(LogCollectorFormData data, string scriptBasePath)
         {
             foreach (var sourcePath in data.RemoteFolderPaths)
@@ -140,9 +127,6 @@ namespace TE_TOOL.Services
             }
         }
 
-        /// <summary>
-        /// Chạy Local Scan PowerShell script
-        /// </summary>
         private void ExecuteLocalScan(string sourcePath, LogCollectorFormData data, string scriptBasePath)
         {
             string scriptPath = Path.Combine(scriptBasePath, "log_collection_ps1", "scan-local.ps1");
@@ -159,9 +143,6 @@ namespace TE_TOOL.Services
             StartPowerShellProcess(arguments, Path.Combine(scriptBasePath, "log_collection_ps1"));
         }
 
-        /// <summary>
-        /// Chạy Remote Scan PowerShell script
-        /// </summary>
         private void ExecuteRemoteScan(string sourcePath, LogCollectorFormData data, string scriptBasePath)
         {
             string scriptPath = Path.Combine(scriptBasePath, "log_collection_ps1", "hash-set.ps1");
@@ -183,10 +164,6 @@ namespace TE_TOOL.Services
 
             StartPowerShellProcess(arguments, Path.Combine(scriptBasePath, "log_collection_ps1"));
         }
-
-        /// <summary>
-        /// Khởi động PowerShell process
-        /// </summary>
         private void StartPowerShellProcess(string arguments, string workingDir)
         {
             var psi = new ProcessStartInfo

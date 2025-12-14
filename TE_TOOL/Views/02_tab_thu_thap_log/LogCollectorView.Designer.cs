@@ -382,7 +382,6 @@
         private OpenFileDialog OFD_macFilePath;
         private FolderBrowserDialog FBD_localDesDownLoad;
         private OpenFileDialog OFD_winscpDLL_File;
-
         public string LocalDownLoadLogPath = "";
         private List<string> list_path_remote_or_local = new List<string>();
         private string WinscpFilePath = "";
