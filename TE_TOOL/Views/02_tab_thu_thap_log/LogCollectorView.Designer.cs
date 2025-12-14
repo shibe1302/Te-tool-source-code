@@ -114,7 +114,7 @@
             BTN_saveFormInfo.TabIndex = 81;
             BTN_saveFormInfo.Text = "Save information";
             BTN_saveFormInfo.UseVisualStyleBackColor = true;
-            BTN_saveFormInfo.Click += BTN_saveFormInfo_Click;
+
             // 
             // BTN_startScanLog
             // 
@@ -124,7 +124,7 @@
             BTN_startScanLog.TabIndex = 80;
             BTN_startScanLog.Text = "Bới lông tìm vết";
             BTN_startScanLog.UseVisualStyleBackColor = true;
-            BTN_startScanLog.Click += BTN_startScanLog_Click;
+
             // 
             // label7
             // 
@@ -307,10 +307,6 @@
             // 
             OFD_macFilePath.FileName = "OFD_macFilePath";
             // 
-            // FBD_localDesDownLoad
-            // 
-            FBD_localDesDownLoad.HelpRequest += FBD_localDesDownLoad_HelpRequest;
-            // 
             // OFD_winscpDLL_File
             // 
             OFD_winscpDLL_File.FileName = "OFD_winscpDLL_File";
@@ -386,5 +382,10 @@
         private OpenFileDialog OFD_macFilePath;
         private FolderBrowserDialog FBD_localDesDownLoad;
         private OpenFileDialog OFD_winscpDLL_File;
+
+        public string LocalDownLoadLogPath = "";
+        private List<string> list_path_remote_or_local = new List<string>();
+        private string WinscpFilePath = "";
+
     }
 }
