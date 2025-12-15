@@ -1,41 +1,85 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using TE_TOOL.Services;
 using TE_TOOL.Views._01_tab_loc_log;
 
 namespace TE_TOOL.Views
 {
+    /// <summary>
+    /// View trong mô hình MVP
+    /// - Chỉ chịu trách nhiệm hiển thị UI và nhận input từ user
+    /// - KHÔNG chứa business logic
+    /// - Communicate với Presenter qua Events và Interface methods
+    /// </summary>
     public partial class LocLogView : UserControl, ILocLogView
     {
-        private readonly LocLogService _service;
-
+        // ===========================================
+        // EVENTS - Raise khi user tương tác với UI
+        // ===========================================
         public event EventHandler RunScriptClicked;
         public event EventHandler OpenMacFileClicked;
         public event EventHandler LogPathDropped;
 
-        public string LogPathInput { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string MacPathInput { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        // ===========================================
+        // PROPERTIES - Expose UI controls data
+        // ===========================================
 
+        /// <summary>
+        /// Lấy/Set giá trị trong textbox log path
+        /// Presenter sẽ đọc property này khi cần
+        /// </summary>
+        public string LogPathInput
+        {
+            get => txtFolderLog.Text.Trim();
+            set => txtFolderLog.Text = value;
+        }
+
+        /// <summary>
+        /// MAC path input (để dành cho tương lai)
+        /// </summary>
+        public string MacPathInput
+        {
+            get => txtMacPath.Text.Trim(); // Chưa có control
+            set => txtMacPath.Text = value; // Chưa implement
+        }
+
+        // ===========================================
+        // CONSTRUCTOR
+        // ===========================================
         public LocLogView()
         {
             InitializeComponent();
-            _service = new LocLogService();
+            SetupEventHandlers();
             SetupDragDrop();
         }
 
+        // ===========================================
+        // PRIVATE METHODS - Chỉ liên quan đến UI
+        // ===========================================
+
+        /// <summary>
+        /// Đăng ký các event handlers cho controls
+        /// </summary>
+        private void SetupEventHandlers()
+        {
+            // Khi user click nút Run, raise event cho Presenter biết
+            buttonRunPS.Click += (sender, e) => RunScriptClicked?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Setup drag & drop cho form
+        /// </summary>
         private void SetupDragDrop()
         {
             this.AllowDrop = true;
             this.DragEnter += OnDragEnter;
             this.DragDrop += OnDragDrop;
         }
+
+        /// <summary>
+        /// Xử lý khi file được drag vào vùng drop
+        /// </summary>
         private void OnDragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -49,7 +93,9 @@ namespace TE_TOOL.Views
         }
 
         /// <summary>
-        /// Xử lý khi thả file
+        /// Xử lý khi file được thả vào
+        /// View chỉ lấy đường dẫn và hiển thị, KHÔNG validate
+        /// Validation sẽ do Presenter xử lý
         /// </summary>
         private void OnDragDrop(object sender, DragEventArgs e)
         {
@@ -59,125 +105,91 @@ namespace TE_TOOL.Views
 
                 if (files != null && files.Length > 0)
                 {
-                    string filePath = files[0];
-                    txtFolderLog.Text = filePath;
+                    // Chỉ lấy file đầu tiên
+                    LogPathInput = files[0];
 
-                    // Hiển thị tên file
-                    string displayName = _service.GetDisplayName(filePath);
-                    labelStatus.Text = $"Đã chọn: {displayName}";
-                    labelStatus.ForeColor = Color.Green;
+                    // Raise event để Presenter biết đã có file được drop
+                    LogPathDropped?.Invoke(this, EventArgs.Empty);
                 }
             }
             catch (Exception ex)
             {
-                ShowError($"Lỗi khi đọc file: {ex.Message}");
+                // View chỉ hiển thị lỗi UI-related
+                ShowError($"Không thể đọc file: {ex.Message}");
             }
         }
 
+        // ===========================================
+        // PUBLIC METHODS - Implement ILocLogView
+        // Presenter gọi các methods này để update UI
+        // ===========================================
+
         /// <summary>
-        /// Xử lý khi click nút Run
+        /// Hiển thị status message với màu tương ứng
         /// </summary>
-        private void buttonRunPS_Click(object sender, EventArgs e)
+        public void SetStatus(string message, Color color)
         {
-            string filePath = txtFolderLog.Text.Trim();
-
-            // Validate input
-            if (!_service.ValidateFilePath(filePath))
-            {
-                ShowWarning("Vui lòng nhập đường dẫn hợp lệ!\n\nBạn có thể:\n- Nhập đường dẫn vào ô text\n- Kéo thả file/folder vào đây");
-                return;
-            }
-
-            // Kiểm tra script
-            if (!_service.CheckScriptExists())
-            {
-                ShowError($"Không tìm thấy PowerShell script!\n\nĐường dẫn: {_service.GetScriptPath()}");
-                return;
-            }
-
-            // Chạy script
-            try
-            {
-                buttonRunPS.Enabled = false;
-                labelStatus.Text = "Đang chạy script...";
-                labelStatus.ForeColor = Color.Blue;
-
-                _service.RunFilterScript(filePath);
-
-                labelStatus.Text = "Script đã được chạy! Kiểm tra cửa sổ PowerShell.";
-                labelStatus.ForeColor = Color.Green;
-            }
-            catch (Exception ex)
-            {
-                ShowError($"Lỗi khi chạy script:\n{ex.Message}");
-                labelStatus.Text = "Lỗi!";
-                labelStatus.ForeColor = Color.Red;
-            }
-            finally
-            {
-                buttonRunPS.Enabled = true;
-            }
+            labelStatus.Text = message;
+            labelStatus.ForeColor = color;
         }
 
         /// <summary>
-        /// Hiển thị thông báo cảnh báo
+        /// Enable/Disable nút Run
+        /// Presenter disable nút này khi đang xử lý
         /// </summary>
-        private void ShowWarning(string message)
+        public void SetRunButtonEnabled(bool enabled)
+        {
+            buttonRunPS.Enabled = enabled;
+        }
+
+        /// <summary>
+        /// Hiển thị MessageBox cảnh báo
+        /// </summary>
+        public void ShowWarning(string message)
         {
             MessageBox.Show(message, "Cảnh báo",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         /// <summary>
-        /// Hiển thị thông báo lỗi
+        /// Hiển thị MessageBox lỗi
         /// </summary>
-        private void ShowError(string message)
+        public void ShowError(string message)
         {
             MessageBox.Show(message, "Lỗi",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
-        /// Hiển thị thông báo thông tin
+        /// Hiển thị MessageBox thông tin
         /// </summary>
-        private void ShowInfo(string message)
+        public void ShowInfo(string message)
         {
             MessageBox.Show(message, "Thông báo",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
-        /// Clear form
+        /// Reset form về trạng thái ban đầu
         /// </summary>
         public void ClearForm()
         {
             txtFolderLog.Clear();
             labelStatus.Text = string.Empty;
+            labelStatus.ForeColor = Color.Black;
         }
 
-        public void SetStatus(string message, Color color)
+        private void btnOpenFile_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
-        }
-
-        public void SetRunButtonEnabled(bool enabled)
-        {
-            throw new NotImplementedException();
-        }
-
-        void ILocLogView.ShowWarning(string message)
-        {
-            ShowWarning(message);
-        }
-
-        void ILocLogView.ShowError(string message)
-        {
-            ShowError(message);
-        }
-
-        void ILocLogView.ShowInfo(string message)
-        {
-            ShowInfo(message);
+            
+            {
+                odfMacPath.Filter = "Text files (*.txt)|*.txt";
+                if (odfMacPath.ShowDialog() == DialogResult.OK)
+                {
+                    MacPathInput= odfMacPath.FileName;
+                   
+                }
+            }
         }
     }
 }

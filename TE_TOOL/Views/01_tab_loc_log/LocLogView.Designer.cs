@@ -63,21 +63,20 @@
             buttonRunPS.BackColor = SystemColors.ButtonHighlight;
             buttonRunPS.Cursor = Cursors.Hand;
             buttonRunPS.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            buttonRunPS.Location = new Point(352, 386);
+            buttonRunPS.Location = new Point(354, 409);
             buttonRunPS.Name = "buttonRunPS";
             buttonRunPS.Size = new Size(333, 50);
             buttonRunPS.TabIndex = 8;
             buttonRunPS.Text = "🚀 Chạy Script Lọc Log";
             buttonRunPS.UseVisualStyleBackColor = false;
-            buttonRunPS.Click += buttonRunPS_Click;
             // 
             // txtFolderLog
             // 
-            txtFolderLog.Font = new Font("Segoe UI", 10F);
+            txtFolderLog.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtFolderLog.Location = new Point(192, 255);
             txtFolderLog.Name = "txtFolderLog";
             txtFolderLog.PlaceholderText = "Nhập đường dẫn file/folder hoặc kéo thả vào đây...";
-            txtFolderLog.Size = new Size(708, 30);
+            txtFolderLog.Size = new Size(708, 27);
             txtFolderLog.TabIndex = 7;
             // 
             // btnOpenFile
@@ -88,15 +87,16 @@
             btnOpenFile.TabIndex = 11;
             btnOpenFile.Text = "Open file";
             btnOpenFile.UseVisualStyleBackColor = true;
+            btnOpenFile.Click += btnOpenFile_Click;
             // 
             // txtMacPath
             // 
-            txtMacPath.Font = new Font("Segoe UI", 10F);
+            txtMacPath.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtMacPath.Location = new Point(192, 313);
             txtMacPath.Multiline = true;
             txtMacPath.Name = "txtMacPath";
             txtMacPath.PlaceholderText = "Nhập đường dẫn file MAC để kiểm tra xem có thiếu file không ...";
-            txtMacPath.Size = new Size(574, 30);
+            txtMacPath.Size = new Size(564, 30);
             txtMacPath.TabIndex = 12;
             // 
             // odfMacPath

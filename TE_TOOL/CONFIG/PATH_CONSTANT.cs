@@ -19,7 +19,7 @@ namespace TE_TOOL.CONFIG
             // path loc log script
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
             _scriptFolder = Path.Combine(_appDirectory, "loc-log-ps1");
-            SCRIPT_PATH_LOC_LOG = Path.Combine(_scriptFolder, "main.ps1");
+            SCRIPT_PATH_LOC_LOG = Path.Combine(_scriptFolder, "main-beta.ps1");
 
             // Có thể thêm các đường dẫn tệp khác tại đây
         }

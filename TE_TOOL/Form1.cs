@@ -11,7 +11,10 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using TE_TOOL;
 using TE_TOOL.Models;
+using TE_TOOL.Presenters;
+using TE_TOOL.Services;
 using TE_TOOL.Views;
+using TE_TOOL.Views._01_tab_loc_log;
 using TE_TOOL.Views._02_tab_thu_thap_log;
 
 namespace hocWF
@@ -53,7 +56,10 @@ namespace hocWF
         // Tab Views
         private LocLogView locLogView;
         private LogCollectorView logCollectorView;
+        private LocLogPresenter _locLogPresenter;
 
+        // Add this field to the Form1 class
+        private ILocLogView view;
 
 
         public Form1()
@@ -75,9 +81,19 @@ namespace hocWF
             undoStack2.Push("");
             comboBox1.SelectedIndex = 0;
 
+            InitializeMVP();
 
         }
 
+        private void InitializeMVP()
+        {
+            
+
+            var service = new LocLogService();
+
+
+            _locLogPresenter = new LocLogPresenter(view, service);
+        }
 
         private void InitializeTabViews()
         {
@@ -88,6 +104,9 @@ namespace hocWF
             ;
             tabPage3.Controls.Clear();
             tabPage3.Controls.Add(locLogView);
+
+            // Assign locLogView to the 'view' field for use in InitializeMVP
+            view = locLogView;
 
             logCollectorView = new LogCollectorView();
             {
