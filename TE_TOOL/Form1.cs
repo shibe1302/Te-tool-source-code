@@ -13,9 +13,11 @@ using TE_TOOL;
 using TE_TOOL.Models;
 using TE_TOOL.Presenters;
 using TE_TOOL.Services;
+using TE_TOOL.ShowDialogForm;
 using TE_TOOL.Views;
 using TE_TOOL.Views._01_tab_loc_log;
 using TE_TOOL.Views._02_tab_thu_thap_log;
+using TE_TOOL.Views._03_tab_copy_ftu;
 
 namespace hocWF
 {
@@ -57,9 +59,13 @@ namespace hocWF
         private LocLogView locLogView;
         private LogCollectorView logCollectorView;
         private LocLogPresenter _locLogPresenter;
+        private CopyFtuUserControl _copyFtuUserControl;
+        private CopyFtuPresenter _copyFtuPresenter;
 
         // Add this field to the Form1 class
         private ILocLogView view;
+        private IDialogOldFtuView _dialogOldFtuView;
+
 
 
         public Form1()
@@ -87,12 +93,11 @@ namespace hocWF
 
         private void InitializeMVP()
         {
-            
-
+            _dialogOldFtuView = new Form_FTU_LOG();
             var service = new LocLogService();
-
-
             _locLogPresenter = new LocLogPresenter(view, service);
+            _copyFtuPresenter = new CopyFtuPresenter(_copyFtuUserControl, _dialogOldFtuView);
+            
         }
 
         private void InitializeTabViews()
@@ -105,7 +110,6 @@ namespace hocWF
             tabPage3.Controls.Clear();
             tabPage3.Controls.Add(locLogView);
 
-            // Assign locLogView to the 'view' field for use in InitializeMVP
             view = locLogView;
 
             logCollectorView = new LogCollectorView();
@@ -115,6 +119,14 @@ namespace hocWF
             ;
             tabPage4.Controls.Clear();
             tabPage4.Controls.Add(logCollectorView);
+
+
+            _copyFtuUserControl = new CopyFtuUserControl();
+            {
+                Dock = DockStyle.Fill;
+            };
+            tabPage2.Controls.Clear();
+            tabPage2.Controls.Add(_copyFtuUserControl);
 
         }
 
@@ -535,17 +547,6 @@ namespace hocWF
         }
 
 
-        private void btnFTUcu_Click(object sender, EventArgs e)
-        {
-            FORM_FTU form_ftu = new FORM_FTU();
-
-            form_ftu.DataSaved += (content) =>
-            {
-                LB_ftu_load_status.Text = content;
-            };
-
-            form_ftu.Show();
-        }
 
     }
 }
