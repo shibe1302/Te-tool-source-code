@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace TE_TOOL.Services
 {
-    internal interface ICopyFtuServices
+    public interface ICopyFtuServices
     {
+        List<string> GetFunctionTest(string content);
+        string TxtListFunctionTest { get; set; }
 
-    }
+}
 }

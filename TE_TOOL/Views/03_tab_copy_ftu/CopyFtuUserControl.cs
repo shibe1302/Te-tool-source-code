@@ -36,7 +36,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
 
         public void UpdateStatus(string text)
         {
-            LB_ftu_load_status.Text = text;
+            lbFtuList.Text = text;
         }
 
         public void SetDialog(IDialogOldFtuView dialog)

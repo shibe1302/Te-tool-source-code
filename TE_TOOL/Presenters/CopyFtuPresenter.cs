@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TE_TOOL.Services;
 using TE_TOOL.ShowDialogForm;
 using TE_TOOL.Views._03_tab_copy_ftu;
 
@@ -13,20 +14,36 @@ namespace TE_TOOL.Presenters
     {
         private readonly ICopyFtuUserControl _view;
         private readonly IDialogOldFtuView _viewDialog;
-        public CopyFtuPresenter(ICopyFtuUserControl view, IDialogOldFtuView _viewDialog)
+        private readonly ICopyFtuServices _service;
+        public CopyFtuPresenter(ICopyFtuUserControl view, IDialogOldFtuView viewDialog, ICopyFtuServices service)
         {
-            Debug.WriteLine("Presenter created");
-            this._view = view;
-            this._viewDialog = _viewDialog;
-            this._view.btnOldFtuClicked += btnOldFtuClicked;
-            _viewDialog.SaveClicked += OnSaveClicked;
+
+            _view = view;
+            _viewDialog = viewDialog;
+            _service = service;
+
+            RegisterEven();
             view.SetDialog(_viewDialog);
-            
+
+
+        }
+
+        private void RegisterEven()
+        {
+            _view.btnOldFtuClicked += btnOldFtuClicked;
+            _viewDialog.SaveClicked += OnSaveClicked;
+            _viewDialog.btnGetFuntionTestClicked += OnGetFuntionTestClicked;
+        }
+
+        private void OnGetFuntionTestClicked(object? sender, EventArgs e)
+        {
+            _service.GetFunctionTest(_viewDialog.LogText);
+            _viewDialog.setRichTextBoxContent( _service.TxtListFunctionTest);
         }
 
         private void OnSaveClicked(object? sender, EventArgs e)
         {
-            string content = _viewDialog.LogText;
+            string content = _service.TxtListFunctionTest;
             _view.UpdateStatus(content);
             _viewDialog.CloseView();
         }

@@ -10,6 +10,11 @@ namespace TE_TOOL.ShowDialogForm
     {
         string LogText { get; set; }
         event EventHandler SaveClicked;
+
+        event EventHandler btnGetFuntionTestClicked;
+
+        string TxtListFunctionTest { get; set; }
+        void setRichTextBoxContent(string txt);
         void CloseView();
     }
 }

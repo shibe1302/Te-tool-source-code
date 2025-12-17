@@ -65,6 +65,7 @@ namespace hocWF
         // Add this field to the Form1 class
         private ILocLogView view;
         private IDialogOldFtuView _dialogOldFtuView;
+        private ICopyFtuServices _copyFtuServices;
 
 
 
@@ -93,15 +94,25 @@ namespace hocWF
 
         private void InitializeMVP()
         {
-            _dialogOldFtuView = new Form_FTU_LOG();
+            _dialogOldFtuView = new DialogOldFtuView();
             var service = new LocLogService();
             _locLogPresenter = new LocLogPresenter(view, service);
-            _copyFtuPresenter = new CopyFtuPresenter(_copyFtuUserControl, _dialogOldFtuView);
+
+
+
+            _copyFtuServices= new CopyFtuServices();
+            _copyFtuPresenter = new CopyFtuPresenter(_copyFtuUserControl, _dialogOldFtuView, _copyFtuServices);
             
+
         }
 
         private void InitializeTabViews()
         {
+            
+
+
+
+
             locLogView = new LocLogView();
             {
                 Dock = DockStyle.Fill;

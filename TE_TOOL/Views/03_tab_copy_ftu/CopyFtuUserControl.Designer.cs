@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            LB_ftu_load_status = new Label();
+            lbFtuList = new Label();
             btnFTUcu = new Button();
             btnOpenFolder = new Button();
             SuspendLayout();
             // 
-            // LB_ftu_load_status
+            // lbFtuList
             // 
-            LB_ftu_load_status.AutoSize = true;
-            LB_ftu_load_status.Location = new Point(309, 73);
-            LB_ftu_load_status.Name = "LB_ftu_load_status";
-            LB_ftu_load_status.Size = new Size(0, 15);
-            LB_ftu_load_status.TabIndex = 10;
+            lbFtuList.AutoSize = true;
+            lbFtuList.Location = new Point(309, 73);
+            lbFtuList.Name = "lbFtuList";
+            lbFtuList.Size = new Size(0, 15);
+            lbFtuList.TabIndex = 10;
             // 
             // btnFTUcu
             // 
@@ -50,7 +50,6 @@
             btnFTUcu.TabIndex = 9;
             btnFTUcu.Text = "LOAD FTU CŨ";
             btnFTUcu.UseVisualStyleBackColor = true;
-
             // 
             // btnOpenFolder
             // 
@@ -66,7 +65,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(LB_ftu_load_status);
+            Controls.Add(lbFtuList);
             Controls.Add(btnFTUcu);
             Controls.Add(btnOpenFolder);
             Name = "CopyFtuUserControl";
@@ -77,7 +76,7 @@
 
         #endregion
 
-        private Label LB_ftu_load_status;
+        private Label lbFtuList;
         private Button btnFTUcu;
         private Button btnOpenFolder;
     }
