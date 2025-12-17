@@ -39,6 +39,8 @@ namespace TE_TOOL.Presenters
         {
             _service.GetFunctionTest(_viewDialog.LogText);
             _viewDialog.setRichTextBoxContent( _service.TxtListFunctionTest);
+            _view.DocListITem(_service.ListItemTest);
+            Debug.WriteLine("GetFuntionTestClicked in Presenter called");
         }
 
         private void OnSaveClicked(object? sender, EventArgs e)

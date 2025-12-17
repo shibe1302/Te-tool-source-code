@@ -10,6 +10,7 @@ namespace TE_TOOL.Services
     {
         List<string> GetFunctionTest(string content);
         string TxtListFunctionTest { get; set; }
+        List<string> ListItemTest { get; set; }
 
-}
+    }
 }

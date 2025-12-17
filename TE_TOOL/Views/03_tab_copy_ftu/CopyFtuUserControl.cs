@@ -48,5 +48,11 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         {
             (_dialog as Form)?.ShowDialog();
         }
+
+        public void DocListITem(List<string> list)
+        {
+            list.ForEach(x => Debug.WriteLine($"[{x}]"));
+            
+        }
     }
 }

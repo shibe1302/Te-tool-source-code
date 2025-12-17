@@ -11,10 +11,10 @@ namespace TE_TOOL.Services
     public class CopyFtuServices : ICopyFtuServices
     {
         string txtListFunctionTest = "";
-        List<string> listItem;
+        List<string> listItemTest=new List<string>();
 
         public string TxtListFunctionTest { get => txtListFunctionTest; set => txtListFunctionTest = value; }
-
+        public List<string> ListItemTest { get => listItemTest; set => listItemTest = value; }
 
         public List<string> GetFunctionTest(string content)
         {
@@ -30,8 +30,8 @@ namespace TE_TOOL.Services
             );
                 return null;
             }
-            listItem = GetListItem(logContent);
-            return listItem;
+            ListItemTest = GetListItem(logContent);
+            return ListItemTest;
         }
 
         private string GetContentInRange(string text)

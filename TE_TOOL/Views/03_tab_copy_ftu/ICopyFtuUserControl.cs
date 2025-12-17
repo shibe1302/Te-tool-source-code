@@ -13,6 +13,6 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         void showForm();
         void UpdateStatus(string text);
         void SetDialog(IDialogOldFtuView dialog);
-
+        void DocListITem(List<string> list);
     }
 }
