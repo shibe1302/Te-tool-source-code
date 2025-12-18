@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 using System.Text.Json;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TE_TOOL.Services
 {
     public class CopyFtuServices : ICopyFtuServices
     {
         string txtListFunctionTest = "";
-        List<string> listItemTest=new List<string>();
+        List<string> listItemTest = new List<string>();
 
         public string TxtListFunctionTest { get => txtListFunctionTest; set => txtListFunctionTest = value; }
         public List<string> ListItemTest { get => listItemTest; set => listItemTest = value; }
@@ -81,9 +82,35 @@ namespace TE_TOOL.Services
             return listItem;
 
         }
-        public void LoadJsonOrderItems(string pathFile)
+
+
+        public void LoadJsonOrderItems(string pathFile,string ItemsTxt)
         {
-            using JsonDocument doc= JsonDocument.Parse(File.ReadAllText(pathFile));
+            using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(pathFile));
+            JsonElement root = doc.RootElement;
+            JsonElement items = root.GetProperty("DiagTestItems");
+            var ItemsFromLog = ItemsTxt.Split(", ").ToList();
+
+
+
+            foreach (JsonElement item in items.EnumerateArray())
+            {
+                try
+                {
+                    string file = item.GetProperty("File").GetString();
+                    string name = item.GetProperty("Name").GetString();
+                    int id = item.GetProperty("ID").GetInt32();
+                    int check = item.GetProperty("Check").GetInt32();
+                    int en = item.GetProperty("EN").GetInt32();
+                    Debug.WriteLine($"{id}-----{name}");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Có lỗi xảy ra.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
+
         }
 
     }

@@ -31,12 +31,20 @@ namespace TE_TOOL.Presenters
         private void RegisterEven()
         {
             _view.btnOldFtuClicked += btnOldFtuClicked;
+            _view.btnLoadClicked += OnLoadClicked;
             _viewDialog.SaveClicked += OnSaveClicked;
             _viewDialog.btnGetFuntionTestClicked += OnGetFuntionTestClicked;
 
+
         }
 
+        private void OnLoadClicked(object? sender, EventArgs e)
+        {
+            string reoderJsonPathFile = _view.JsonReorderPath;
+            string Items=_view.ItemFromLog;
+            _service.LoadJsonOrderItems(reoderJsonPathFile,Items);
 
+        }
 
         private void OnGetFuntionTestClicked(object? sender, EventArgs e)
         {

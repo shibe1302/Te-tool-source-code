@@ -12,6 +12,10 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
     {
         event EventHandler btnOldFtuClicked;
         event EventHandler textChangeSelectedTextbox;
+        event EventHandler btnLoadClicked;
+
+        string JsonReorderPath { get;  }
+        string ItemFromLog { get; }
         void showForm();
         void UpdateStatus(List<string> list);
         void SetDialog(IDialogOldFtuView dialog);

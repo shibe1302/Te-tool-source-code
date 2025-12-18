@@ -20,6 +20,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         private Tab3Ini tab3Ini;
         private List<string> listSelectedItem;
 
+
         public CopyFtuUserControl()
         {
             InitializeComponent();
@@ -28,6 +29,10 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             disbaleSelectedBTN();
             LoadItemToCheckListBox();
         }
+        public string JsonReorderPath { get => txtReorderJson.Text; }
+
+        public string ItemFromLog { get => txtGetItemFormLog.Text; }
+
         private void LoadItemToCheckListBox()
         {
             for (int i = 1; i < 50; i++)
@@ -56,27 +61,44 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         }
         void saveDatatoIni()
         {
-            tab3Ini.Item = txtGetItemFormLog.Text;
-            tab3Ini.Reoder = txtReorderJson.Text;
-            tab3Ini.Select = txtSelectedItem.Text;
-            getSelectedItem(txtSelectedItem.Text);
+            try
+            {
+                if (!string.IsNullOrEmpty(txtGetItemFormLog.Text))
+                    tab3Ini.Item = txtGetItemFormLog.Text;
+                if (!string.IsNullOrEmpty(txtReorderJson.Text))
+                    tab3Ini.Reoder = txtReorderJson.Text;
+                if (!string.IsNullOrEmpty(txtSelectedItem.Text))
+                    tab3Ini.Select = txtSelectedItem.Text;
+                if (!string.IsNullOrEmpty(txtSelectedItem.Text))
+                    getSelectedItem(txtSelectedItem.Text);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("Lỗi khi lưu dữ liệu vào ini");
+            }
+
         }
         public void DangKySuKien()
         {
             btnGetItemFromLog.Click += (s, e) =>
             {
                 btnOldFtuClicked?.Invoke(this, EventArgs.Empty);
-                Debug.Write(btnOldFtuClicked);
+                
             };
             txtSelectedItem.TextChanged += (s, e) =>
             {
                 textChangeSelectedTextbox?.Invoke(this, EventArgs.Empty);
+            };
+            btnLoad.Click += (s, e) =>
+            {
+                btnLoadClicked?.Invoke(this, EventArgs.Empty);
             };
 
         }
 
         public event EventHandler btnOldFtuClicked;
         public event EventHandler textChangeSelectedTextbox;
+        public event EventHandler btnLoadClicked;
 
         public void UpdateStatus(List<string> list)
         {
@@ -152,7 +174,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         public void SaveDatatoIni()
         {
             saveDatatoIni();
-            
+
         }
     }
 }

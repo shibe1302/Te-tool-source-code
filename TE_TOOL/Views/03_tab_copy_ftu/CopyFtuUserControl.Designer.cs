@@ -38,25 +38,24 @@
             txtReorderJson = new TextBox();
             panel1 = new Panel();
             clb_item_from_json = new CheckedListBox();
+            btnLoad = new Button();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnGetItemFromLog
             // 
-            btnGetItemFromLog.Location = new Point(41, 39);
-            btnGetItemFromLog.Margin = new Padding(3, 2, 3, 2);
+            btnGetItemFromLog.Location = new Point(47, 52);
             btnGetItemFromLog.Name = "btnGetItemFromLog";
-            btnGetItemFromLog.Size = new Size(178, 25);
+            btnGetItemFromLog.Size = new Size(203, 33);
             btnGetItemFromLog.TabIndex = 9;
             btnGetItemFromLog.Text = "LẤY ITEM TỪ LOG";
             btnGetItemFromLog.UseVisualStyleBackColor = true;
             // 
             // btnSelectedItem
             // 
-            btnSelectedItem.Location = new Point(41, 123);
-            btnSelectedItem.Margin = new Padding(3, 2, 3, 2);
+            btnSelectedItem.Location = new Point(47, 164);
             btnSelectedItem.Name = "btnSelectedItem";
-            btnSelectedItem.Size = new Size(178, 25);
+            btnSelectedItem.Size = new Size(203, 33);
             btnSelectedItem.TabIndex = 8;
             btnSelectedItem.Text = "SELECTED_ITEM.INI";
             btnSelectedItem.UseVisualStyleBackColor = true;
@@ -64,10 +63,9 @@
             // 
             // btnReorder
             // 
-            btnReorder.Location = new Point(41, 81);
-            btnReorder.Margin = new Padding(3, 2, 3, 2);
+            btnReorder.Location = new Point(47, 108);
             btnReorder.Name = "btnReorder";
-            btnReorder.Size = new Size(178, 25);
+            btnReorder.Size = new Size(203, 33);
             btnReorder.TabIndex = 11;
             btnReorder.Text = "REORDER.JSON";
             btnReorder.UseVisualStyleBackColor = true;
@@ -83,29 +81,31 @@
             // 
             // txtGetItemFormLog
             // 
-            txtGetItemFormLog.Location = new Point(235, 41);
+            txtGetItemFormLog.Location = new Point(269, 55);
+            txtGetItemFormLog.Margin = new Padding(3, 4, 3, 4);
             txtGetItemFormLog.Name = "txtGetItemFormLog";
             txtGetItemFormLog.PlaceholderText = "Copy nội dung file log";
             txtGetItemFormLog.ReadOnly = true;
-            txtGetItemFormLog.Size = new Size(236, 23);
+            txtGetItemFormLog.Size = new Size(269, 27);
             txtGetItemFormLog.TabIndex = 12;
             // 
             // txtSelectedItem
             // 
-            txtSelectedItem.Location = new Point(235, 125);
+            txtSelectedItem.Location = new Point(269, 167);
+            txtSelectedItem.Margin = new Padding(3, 4, 3, 4);
             txtSelectedItem.Name = "txtSelectedItem";
             txtSelectedItem.PlaceholderText = "Tìm file selected_items.ini trong FTU/data";
             txtSelectedItem.ReadOnly = true;
-            txtSelectedItem.Size = new Size(236, 23);
+            txtSelectedItem.Size = new Size(269, 27);
             txtSelectedItem.TabIndex = 13;
-
             // 
             // txtReorderJson
             // 
-            txtReorderJson.Location = new Point(235, 83);
+            txtReorderJson.Location = new Point(269, 111);
+            txtReorderJson.Margin = new Padding(3, 4, 3, 4);
             txtReorderJson.Name = "txtReorderJson";
             txtReorderJson.PlaceholderText = "Tìm file _reorder.sjon trong FTU/products/";
-            txtReorderJson.Size = new Size(236, 23);
+            txtReorderJson.Size = new Size(269, 27);
             txtReorderJson.TabIndex = 14;
             txtReorderJson.TextChanged += txtReorderJson_TextChanged;
             // 
@@ -113,24 +113,36 @@
             // 
             panel1.BorderStyle = BorderStyle.Fixed3D;
             panel1.Controls.Add(clb_item_from_json);
-            panel1.Location = new Point(494, 41);
+            panel1.Location = new Point(565, 55);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(454, 401);
+            panel1.Size = new Size(518, 533);
             panel1.TabIndex = 15;
             // 
             // clb_item_from_json
             // 
             clb_item_from_json.FormattingEnabled = true;
-            clb_item_from_json.Location = new Point(13, 21);
+            clb_item_from_json.Location = new Point(15, 28);
+            clb_item_from_json.Margin = new Padding(3, 4, 3, 4);
             clb_item_from_json.Name = "clb_item_from_json";
-            clb_item_from_json.Size = new Size(417, 364);
+            clb_item_from_json.Size = new Size(476, 466);
             clb_item_from_json.TabIndex = 0;
             clb_item_from_json.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged;
             // 
+            // btnLoad
+            // 
+            btnLoad.Location = new Point(47, 248);
+            btnLoad.Name = "btnLoad";
+            btnLoad.Size = new Size(491, 33);
+            btnLoad.TabIndex = 16;
+            btnLoad.Text = "LOAD";
+            btnLoad.UseVisualStyleBackColor = true;
+            // 
             // CopyFtuUserControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnLoad);
             Controls.Add(panel1);
             Controls.Add(txtReorderJson);
             Controls.Add(txtSelectedItem);
@@ -138,8 +150,9 @@
             Controls.Add(btnReorder);
             Controls.Add(btnGetItemFromLog);
             Controls.Add(btnSelectedItem);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "CopyFtuUserControl";
-            Size = new Size(970, 482);
+            Size = new Size(1109, 643);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -156,5 +169,6 @@
         private TextBox txtReorderJson;
         private Panel panel1;
         private CheckedListBox clb_item_from_json;
+        private Button btnLoad;
     }
 }
