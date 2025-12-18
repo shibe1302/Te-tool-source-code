@@ -97,21 +97,13 @@ namespace hocWF
             _dialogOldFtuView = new DialogOldFtuView();
             var service = new LocLogService();
             _locLogPresenter = new LocLogPresenter(view, service);
-
-
-
             _copyFtuServices= new CopyFtuServices();
             _copyFtuPresenter = new CopyFtuPresenter(_copyFtuUserControl, _dialogOldFtuView, _copyFtuServices);
             
-
         }
 
         private void InitializeTabViews()
         {
-            
-
-
-
 
             locLogView = new LocLogView();
             {
@@ -130,7 +122,6 @@ namespace hocWF
             ;
             tabPage4.Controls.Clear();
             tabPage4.Controls.Add(logCollectorView);
-
 
             _copyFtuUserControl = new CopyFtuUserControl();
             {

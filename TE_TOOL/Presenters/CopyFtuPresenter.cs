@@ -45,7 +45,7 @@ namespace TE_TOOL.Presenters
 
         private void OnSaveClicked(object? sender, EventArgs e)
         {
-            string content = _service.TxtListFunctionTest;
+            var content = _service.ListItemTest;
             _view.UpdateStatus(content);
             _viewDialog.CloseView();
         }

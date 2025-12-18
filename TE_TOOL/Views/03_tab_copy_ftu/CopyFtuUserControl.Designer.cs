@@ -28,46 +28,93 @@
         /// </summary>
         private void InitializeComponent()
         {
-            lbFtuList = new Label();
-            btnFTUcu = new Button();
-            btnOpenFolder = new Button();
+            btnGetItemFromLog = new Button();
+            btnSelectedItem = new Button();
+            btnReorder = new Button();
+            ofdSelectedItemInit = new OpenFileDialog();
+            ofdReorderJson = new OpenFileDialog();
+            txtGetItemFormLog = new TextBox();
+            txtSelectedItem = new TextBox();
+            txtReorderJson = new TextBox();
             SuspendLayout();
             // 
-            // lbFtuList
+            // btnGetItemFromLog
             // 
-            lbFtuList.AutoSize = true;
-            lbFtuList.Location = new Point(309, 73);
-            lbFtuList.Name = "lbFtuList";
-            lbFtuList.Size = new Size(0, 15);
-            lbFtuList.TabIndex = 10;
+            btnGetItemFromLog.Location = new Point(41, 39);
+            btnGetItemFromLog.Margin = new Padding(3, 2, 3, 2);
+            btnGetItemFromLog.Name = "btnGetItemFromLog";
+            btnGetItemFromLog.Size = new Size(178, 25);
+            btnGetItemFromLog.TabIndex = 9;
+            btnGetItemFromLog.Text = "LẤY ITEM TỪ LOG";
+            btnGetItemFromLog.UseVisualStyleBackColor = true;
             // 
-            // btnFTUcu
+            // btnSelectedItem
             // 
-            btnFTUcu.Location = new Point(46, 70);
-            btnFTUcu.Margin = new Padding(3, 2, 3, 2);
-            btnFTUcu.Name = "btnFTUcu";
-            btnFTUcu.Size = new Size(242, 22);
-            btnFTUcu.TabIndex = 9;
-            btnFTUcu.Text = "LOAD FTU CŨ";
-            btnFTUcu.UseVisualStyleBackColor = true;
+            btnSelectedItem.Location = new Point(41, 123);
+            btnSelectedItem.Margin = new Padding(3, 2, 3, 2);
+            btnSelectedItem.Name = "btnSelectedItem";
+            btnSelectedItem.Size = new Size(178, 25);
+            btnSelectedItem.TabIndex = 8;
+            btnSelectedItem.Text = "SELECTED_ITEM.INI";
+            btnSelectedItem.UseVisualStyleBackColor = true;
+            btnSelectedItem.Click += btnSelectedItem_Click;
             // 
-            // btnOpenFolder
+            // btnReorder
             // 
-            btnOpenFolder.Location = new Point(46, 32);
-            btnOpenFolder.Margin = new Padding(3, 2, 3, 2);
-            btnOpenFolder.Name = "btnOpenFolder";
-            btnOpenFolder.Size = new Size(242, 22);
-            btnOpenFolder.TabIndex = 8;
-            btnOpenFolder.Text = "FTU MỚI";
-            btnOpenFolder.UseVisualStyleBackColor = true;
+            btnReorder.Location = new Point(41, 81);
+            btnReorder.Margin = new Padding(3, 2, 3, 2);
+            btnReorder.Name = "btnReorder";
+            btnReorder.Size = new Size(178, 25);
+            btnReorder.TabIndex = 11;
+            btnReorder.Text = "REORDER.JSON";
+            btnReorder.UseVisualStyleBackColor = true;
+            btnReorder.Click += btnReorder_Click;
+            // 
+            // ofdSelectedItemInit
+            // 
+            ofdSelectedItemInit.FileName = "openFileDialog1";
+            // 
+            // ofdReorderJson
+            // 
+            ofdReorderJson.FileName = "ofdReorderJson";
+            // 
+            // txtGetItemFormLog
+            // 
+            txtGetItemFormLog.Location = new Point(235, 41);
+            txtGetItemFormLog.Name = "txtGetItemFormLog";
+            txtGetItemFormLog.PlaceholderText = "Copy nội dung file log";
+            txtGetItemFormLog.ReadOnly = true;
+            txtGetItemFormLog.Size = new Size(236, 23);
+            txtGetItemFormLog.TabIndex = 12;
+            // 
+            // txtSelectedItem
+            // 
+            txtSelectedItem.Location = new Point(235, 125);
+            txtSelectedItem.Name = "txtSelectedItem";
+            txtSelectedItem.PlaceholderText = "Tìm file selected_items.ini trong FTU/data";
+            txtSelectedItem.ReadOnly = true;
+            txtSelectedItem.Size = new Size(236, 23);
+            txtSelectedItem.TabIndex = 13;
+            // 
+            // txtReorderJson
+            // 
+            txtReorderJson.Location = new Point(235, 83);
+            txtReorderJson.Name = "txtReorderJson";
+            txtReorderJson.PlaceholderText = "Tìm file _reorder.sjon trong FTU/products/";
+            txtReorderJson.Size = new Size(236, 23);
+            txtReorderJson.TabIndex = 14;
+            txtReorderJson.TextChanged += txtReorderJson_TextChanged;
             // 
             // CopyFtuUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(lbFtuList);
-            Controls.Add(btnFTUcu);
-            Controls.Add(btnOpenFolder);
+            Controls.Add(txtReorderJson);
+            Controls.Add(txtSelectedItem);
+            Controls.Add(txtGetItemFormLog);
+            Controls.Add(btnReorder);
+            Controls.Add(btnGetItemFromLog);
+            Controls.Add(btnSelectedItem);
             Name = "CopyFtuUserControl";
             Size = new Size(970, 482);
             ResumeLayout(false);
@@ -75,9 +122,13 @@
         }
 
         #endregion
-
-        private Label lbFtuList;
-        private Button btnFTUcu;
-        private Button btnOpenFolder;
+        private Button btnGetItemFromLog;
+        private Button btnSelectedItem;
+        private Button btnReorder;
+        private OpenFileDialog ofdSelectedItemInit;
+        private OpenFileDialog ofdReorderJson;
+        private TextBox txtGetItemFormLog;
+        private TextBox txtSelectedItem;
+        private TextBox txtReorderJson;
     }
 }

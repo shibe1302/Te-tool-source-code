@@ -11,7 +11,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
     {
         event EventHandler btnOldFtuClicked;
         void showForm();
-        void UpdateStatus(string text);
+        void UpdateStatus(List<string> list);
         void SetDialog(IDialogOldFtuView dialog);
         void DocListITem(List<string> list);
     }
