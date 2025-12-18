@@ -33,7 +33,10 @@ namespace TE_TOOL.Presenters
             _view.btnOldFtuClicked += btnOldFtuClicked;
             _viewDialog.SaveClicked += OnSaveClicked;
             _viewDialog.btnGetFuntionTestClicked += OnGetFuntionTestClicked;
+
         }
+
+
 
         private void OnGetFuntionTestClicked(object? sender, EventArgs e)
         {
@@ -47,6 +50,7 @@ namespace TE_TOOL.Presenters
         {
             var content = _service.ListItemTest;
             _view.UpdateStatus(content);
+            _view.SaveDatatoIni();
             _viewDialog.CloseView();
         }
 

@@ -36,6 +36,9 @@
             txtGetItemFormLog = new TextBox();
             txtSelectedItem = new TextBox();
             txtReorderJson = new TextBox();
+            panel1 = new Panel();
+            clb_item_from_json = new CheckedListBox();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnGetItemFromLog
@@ -95,6 +98,7 @@
             txtSelectedItem.ReadOnly = true;
             txtSelectedItem.Size = new Size(236, 23);
             txtSelectedItem.TabIndex = 13;
+
             // 
             // txtReorderJson
             // 
@@ -105,10 +109,29 @@
             txtReorderJson.TabIndex = 14;
             txtReorderJson.TextChanged += txtReorderJson_TextChanged;
             // 
+            // panel1
+            // 
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(clb_item_from_json);
+            panel1.Location = new Point(494, 41);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(454, 401);
+            panel1.TabIndex = 15;
+            // 
+            // clb_item_from_json
+            // 
+            clb_item_from_json.FormattingEnabled = true;
+            clb_item_from_json.Location = new Point(13, 21);
+            clb_item_from_json.Name = "clb_item_from_json";
+            clb_item_from_json.Size = new Size(417, 364);
+            clb_item_from_json.TabIndex = 0;
+            clb_item_from_json.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged;
+            // 
             // CopyFtuUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(panel1);
             Controls.Add(txtReorderJson);
             Controls.Add(txtSelectedItem);
             Controls.Add(txtGetItemFormLog);
@@ -117,6 +140,7 @@
             Controls.Add(btnSelectedItem);
             Name = "CopyFtuUserControl";
             Size = new Size(970, 482);
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -130,5 +154,7 @@
         private TextBox txtGetItemFormLog;
         private TextBox txtSelectedItem;
         private TextBox txtReorderJson;
+        private Panel panel1;
+        private CheckedListBox clb_item_from_json;
     }
 }

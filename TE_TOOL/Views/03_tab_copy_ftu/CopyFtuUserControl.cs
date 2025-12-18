@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TE_TOOL.Presenters;
+using TE_TOOL.Services;
 using TE_TOOL.ShowDialogForm;
 
 namespace TE_TOOL.Views._03_tab_copy_ftu
@@ -16,14 +17,50 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
     public partial class CopyFtuUserControl : UserControl, ICopyFtuUserControl
     {
         private IDialogOldFtuView _dialog;
+        private Tab3Ini tab3Ini;
+        private List<string> listSelectedItem;
+
         public CopyFtuUserControl()
         {
             InitializeComponent();
             DangKySuKien();
-            btnSelectedItem.Enabled = false;
+            loadDataFromIni();
+            disbaleSelectedBTN();
+            LoadItemToCheckListBox();
+        }
+        private void LoadItemToCheckListBox()
+        {
+            for (int i = 1; i < 50; i++)
+            {
+                clb_item_from_json.Items.Add($"Item {i}");
+            }
 
         }
+        private void disbaleSelectedBTN()
+        {
+            if (!string.IsNullOrEmpty(txtReorderJson.Text))
+                btnSelectedItem.Enabled = true;
+            else
+                btnSelectedItem.Enabled = false;
+        }
 
+        void loadDataFromIni()
+        {
+            this.tab3Ini = new Tab3Ini(AppDomain.CurrentDomain.BaseDirectory);
+            string selectedItemLog = tab3Ini.Item;
+            string reorderJsonPath = tab3Ini.Reoder;
+            string selectedItem = tab3Ini.Select;
+            txtGetItemFormLog.Text = selectedItemLog;
+            txtReorderJson.Text = reorderJsonPath;
+            txtSelectedItem.Text = selectedItem;
+        }
+        void saveDatatoIni()
+        {
+            tab3Ini.Item = txtGetItemFormLog.Text;
+            tab3Ini.Reoder = txtReorderJson.Text;
+            tab3Ini.Select = txtSelectedItem.Text;
+            getSelectedItem(txtSelectedItem.Text);
+        }
         public void DangKySuKien()
         {
             btnGetItemFromLog.Click += (s, e) =>
@@ -31,10 +68,15 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
                 btnOldFtuClicked?.Invoke(this, EventArgs.Empty);
                 Debug.Write(btnOldFtuClicked);
             };
+            txtSelectedItem.TextChanged += (s, e) =>
+            {
+                textChangeSelectedTextbox?.Invoke(this, EventArgs.Empty);
+            };
 
         }
 
         public event EventHandler btnOldFtuClicked;
+        public event EventHandler textChangeSelectedTextbox;
 
         public void UpdateStatus(List<string> list)
         {
@@ -66,6 +108,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             {
                 txtSelectedItem.Text = ofdSelectedItemInit.FileName;
             }
+            saveDatatoIni();
         }
 
         private void btnReorder_Click(object sender, EventArgs e)
@@ -76,6 +119,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             {
                 txtReorderJson.Text = ofdReorderJson.FileName;
             }
+            saveDatatoIni();
         }
 
         private void txtReorderJson_TextChanged(object sender, EventArgs e)
@@ -88,6 +132,27 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             {
                 btnSelectedItem.Enabled = true;
             }
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void getSelectedItem(string filePath)
+        {
+            var selectedItems = new List<string>();
+            var iniFilePath = new IniFile(filePath);
+            string selectedItemsStr = iniFilePath.Read("ITEMS", "id");
+            var ids = selectedItemsStr.Split(',')
+                 .Select(s => s.Trim())
+                 .ToList();
+            listSelectedItem = ids;
+        }
+
+        public void SaveDatatoIni()
+        {
+            saveDatatoIni();
+            
         }
     }
 }

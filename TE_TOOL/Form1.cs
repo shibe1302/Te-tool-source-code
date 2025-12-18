@@ -75,6 +75,7 @@ namespace hocWF
             InitializeComponent();
             InitializeTabViews();
 
+
             richTextBox1.VScroll += RichTextBox1_VScroll;
             richTextBox2.VScroll += RichTextBox2_VScroll;
 

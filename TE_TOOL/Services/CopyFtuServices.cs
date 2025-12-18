@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text.Json;
 
 namespace TE_TOOL.Services
 {
@@ -33,6 +34,8 @@ namespace TE_TOOL.Services
             ListItemTest = GetListItem(logContent);
             return ListItemTest;
         }
+
+
 
         private string GetContentInRange(string text)
         {
@@ -77,6 +80,10 @@ namespace TE_TOOL.Services
             List<string> listItem = result.Split(", ").ToList();
             return listItem;
 
+        }
+        public void LoadJsonOrderItems(string pathFile)
+        {
+            using JsonDocument doc= JsonDocument.Parse(File.ReadAllText(pathFile));
         }
 
     }
