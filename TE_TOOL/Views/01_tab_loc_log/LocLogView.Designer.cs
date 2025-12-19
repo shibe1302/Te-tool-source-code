@@ -35,6 +35,7 @@
             btnOpenFile = new Button();
             txtMacPath = new TextBox();
             odfMacPath = new OpenFileDialog();
+            cbbTypeLog = new ComboBox();
             SuspendLayout();
             // 
             // label3
@@ -63,9 +64,9 @@
             buttonRunPS.BackColor = SystemColors.ButtonHighlight;
             buttonRunPS.Cursor = Cursors.Hand;
             buttonRunPS.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            buttonRunPS.Location = new Point(354, 409);
+            buttonRunPS.Location = new Point(614, 378);
             buttonRunPS.Name = "buttonRunPS";
-            buttonRunPS.Size = new Size(333, 50);
+            buttonRunPS.Size = new Size(286, 52);
             buttonRunPS.TabIndex = 8;
             buttonRunPS.Text = "🚀 Chạy Script Lọc Log";
             buttonRunPS.UseVisualStyleBackColor = false;
@@ -81,7 +82,7 @@
             // 
             // btnOpenFile
             // 
-            btnOpenFile.Location = new Point(784, 313);
+            btnOpenFile.Location = new Point(784, 315);
             btnOpenFile.Name = "btnOpenFile";
             btnOpenFile.Size = new Size(116, 30);
             btnOpenFile.TabIndex = 11;
@@ -92,21 +93,33 @@
             // txtMacPath
             // 
             txtMacPath.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMacPath.Location = new Point(192, 313);
+            txtMacPath.Location = new Point(192, 316);
             txtMacPath.Multiline = true;
             txtMacPath.Name = "txtMacPath";
             txtMacPath.PlaceholderText = "Nhập đường dẫn file MAC để kiểm tra xem có thiếu file không ...";
-            txtMacPath.Size = new Size(564, 30);
+            txtMacPath.Size = new Size(564, 28);
             txtMacPath.TabIndex = 12;
             // 
             // odfMacPath
             // 
             odfMacPath.FileName = "openFileDialog1";
             // 
+            // cbbTypeLog
+            // 
+            cbbTypeLog.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbbTypeLog.FormattingEnabled = true;
+            cbbTypeLog.ItemHeight = 20;
+            cbbTypeLog.Items.AddRange(new object[] { "New format", "Old format" });
+            cbbTypeLog.Location = new Point(192, 378);
+            cbbTypeLog.Name = "cbbTypeLog";
+            cbbTypeLog.Size = new Size(368, 28);
+            cbbTypeLog.TabIndex = 13;
+            // 
             // LocLogView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(cbbTypeLog);
             Controls.Add(txtMacPath);
             Controls.Add(btnOpenFile);
             Controls.Add(label3);
@@ -128,5 +141,6 @@
         private Button btnOpenFile;
         private TextBox txtMacPath;
         private OpenFileDialog odfMacPath;
+        private ComboBox cbbTypeLog;
     }
 }

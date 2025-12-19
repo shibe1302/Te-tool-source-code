@@ -44,6 +44,10 @@ namespace TE_TOOL.Views
             set => txtMacPath.Text = value; // Chưa implement
         }
 
+        public string modeLog { 
+        get => cbbTypeLog.SelectedItem.ToString();
+        }
+
         // ===========================================
         // CONSTRUCTOR
         // ===========================================
@@ -52,6 +56,12 @@ namespace TE_TOOL.Views
             InitializeComponent();
             SetupEventHandlers();
             SetupDragDrop();
+            InitSetupUI();
+        }
+
+        private void InitSetupUI()
+        {
+            cbbTypeLog.SelectedIndex = 0;
         }
 
         // ===========================================
@@ -181,15 +191,17 @@ namespace TE_TOOL.Views
 
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
-            
+
             {
                 odfMacPath.Filter = "Text files (*.txt)|*.txt";
                 if (odfMacPath.ShowDialog() == DialogResult.OK)
                 {
-                    MacPathInput= odfMacPath.FileName;
-                   
+                    MacPathInput = odfMacPath.FileName;
+
                 }
             }
         }
+
+
     }
 }

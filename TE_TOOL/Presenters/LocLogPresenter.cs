@@ -70,7 +70,7 @@ namespace TE_TOOL.Presenters
             {
                 // 1. Lấy dữ liệu từ View
                 string filePath = _view.LogPathInput;
-                string macPath = _view.MacPathInput; // Dành cho tương lai
+                string macPath = _view.MacPathInput; 
 
                 // 2. Validate input bằng Service
                 if (!_service.ValidateFilePath(filePath))
@@ -99,7 +99,14 @@ namespace TE_TOOL.Presenters
                 _view.SetStatus("Đang chạy script...", Color.Blue);
 
                 // 5. Gọi Service để chạy script
-                _service.RunFilterScript(filePath, macPath);
+                if (_view.modeLog == "Old format")
+                {
+                    _service.RunFilterScriptOldFormat(filePath, macPath);
+                }
+                else {
+                    _service.RunFilterScript(filePath, macPath);
+                }
+                    
 
                 // 6. Thông báo thành công
                 _view.SetStatus(
