@@ -32,21 +32,10 @@ namespace hocWF
         {
             components = new System.ComponentModel.Container();
             openFileDialog2 = new OpenFileDialog();
-            tabControl1 = new TabControl();
+            tabGetdatafromLog = new TabControl();
             tabPage3 = new TabPage();
             tabPage4 = new TabPage();
-            tabPage1 = new TabPage();
-            checkBox2 = new CheckBox();
-            button5 = new Button();
-            checkBox1 = new CheckBox();
-            comboBox1 = new ComboBox();
-            button4 = new Button();
-            buttonToggleScroll = new Button();
-            button3 = new Button();
-            button2 = new Button();
-            button1 = new Button();
-            richTextBox2 = new RichTextBox();
-            richTextBox1 = new RichTextBox();
+            tabPage5 = new TabPage();
             tabPage2 = new TabPage();
             openFileDialog3 = new OpenFileDialog();
             folderBrowserDialog1 = new FolderBrowserDialog();
@@ -57,32 +46,31 @@ namespace hocWF
             OFD_macFilePath = new OpenFileDialog();
             contextMenuStrip1 = new ContextMenuStrip(components);
             openFileDialog1 = new OpenFileDialog();
-            tabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
+            tabGetdatafromLog.SuspendLayout();
             SuspendLayout();
             // 
             // openFileDialog2
             // 
             openFileDialog2.FileName = "openFileDialog2";
             // 
-            // tabControl1
+            // tabGetdatafromLog
             // 
-            tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage4);
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Location = new Point(11, 12);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1115, 675);
-            tabControl1.TabIndex = 11;
+            tabGetdatafromLog.Controls.Add(tabPage3);
+            tabGetdatafromLog.Controls.Add(tabPage4);
+            tabGetdatafromLog.Controls.Add(tabPage5);
+            tabGetdatafromLog.Controls.Add(tabPage2);
+            tabGetdatafromLog.Location = new Point(11, 12);
+            tabGetdatafromLog.Name = "tabGetdatafromLog";
+            tabGetdatafromLog.SelectedIndex = 0;
+            tabGetdatafromLog.Size = new Size(1115, 675);
+            tabGetdatafromLog.TabIndex = 11;
             // 
             // tabPage3
             // 
             tabPage3.AllowDrop = true;
             tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3, 3, 3, 3);
+            tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(1107, 642);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Lọc Log";
@@ -93,148 +81,27 @@ namespace hocWF
             // 
             tabPage4.Location = new Point(4, 29);
             tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3, 3, 3, 3);
+            tabPage4.Padding = new Padding(3);
             tabPage4.Size = new Size(1107, 642);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Thu thập log trên sever";
             tabPage4.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // tabPage5
             // 
-            tabPage1.Controls.Add(checkBox2);
-            tabPage1.Controls.Add(button5);
-            tabPage1.Controls.Add(checkBox1);
-            tabPage1.Controls.Add(comboBox1);
-            tabPage1.Controls.Add(button4);
-            tabPage1.Controls.Add(buttonToggleScroll);
-            tabPage1.Controls.Add(button3);
-            tabPage1.Controls.Add(button2);
-            tabPage1.Controls.Add(button1);
-            tabPage1.Controls.Add(richTextBox2);
-            tabPage1.Controls.Add(richTextBox1);
-            tabPage1.Location = new Point(4, 29);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3, 3, 3, 3);
-            tabPage1.Size = new Size(1107, 642);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "Tool compare";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(627, 33);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(149, 24);
-            checkBox2.TabIndex = 21;
-            checkBox2.Text = "Enable edit mode";
-            checkBox2.UseVisualStyleBackColor = true;
-            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
-            // 
-            // button5
-            // 
-            button5.Location = new Point(245, 549);
-            button5.Name = "button5";
-            button5.Size = new Size(216, 29);
-            button5.TabIndex = 20;
-            button5.Text = "Save";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += button5_Click_1;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(23, 33);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(309, 24);
-            checkBox1.TabIndex = 19;
-            checkBox1.Text = "So sánh file config.ini >< config lấy từ log";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Get config from LOG", "File text" });
-            comboBox1.Location = new Point(863, 551);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(217, 28);
-            comboBox1.TabIndex = 18;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(483, 244);
-            button4.Name = "button4";
-            button4.Size = new Size(117, 29);
-            button4.TabIndex = 17;
-            button4.Text = "undo";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
-            // 
-            // buttonToggleScroll
-            // 
-            buttonToggleScroll.Location = new Point(483, 184);
-            buttonToggleScroll.Name = "buttonToggleScroll";
-            buttonToggleScroll.Size = new Size(117, 29);
-            buttonToggleScroll.TabIndex = 16;
-            buttonToggleScroll.Text = "đồng bộ roll";
-            buttonToggleScroll.UseVisualStyleBackColor = true;
-            buttonToggleScroll.Click += buttonToggleScroll_Click;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(483, 133);
-            button3.Name = "button3";
-            button3.Size = new Size(117, 29);
-            button3.TabIndex = 15;
-            button3.Text = "so sánh";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(627, 549);
-            button2.Name = "button2";
-            button2.Size = new Size(216, 29);
-            button2.TabIndex = 14;
-            button2.Text = "File cũ / log của trạm";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(23, 549);
-            button1.Name = "button1";
-            button1.Size = new Size(216, 29);
-            button1.TabIndex = 13;
-            button1.Text = "File mới";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // richTextBox2
-            // 
-            richTextBox2.Location = new Point(627, 75);
-            richTextBox2.Name = "richTextBox2";
-            richTextBox2.ReadOnly = true;
-            richTextBox2.Size = new Size(452, 444);
-            richTextBox2.TabIndex = 12;
-            richTextBox2.Text = "";
-            richTextBox2.TextChanged += richTextBox2_TextChanged;
-            // 
-            // richTextBox1
-            // 
-            richTextBox1.Location = new Point(23, 75);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(437, 444);
-            richTextBox1.TabIndex = 11;
-            richTextBox1.Text = "";
-            richTextBox1.TextChanged += richTextBox1_TextChanged;
+            tabPage5.Location = new Point(4, 29);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Padding = new Padding(3);
+            tabPage5.Size = new Size(1107, 642);
+            tabPage5.TabIndex = 4;
+            tabPage5.Text = "Tool cc gì cũng get được từ Log";
+            tabPage5.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
             tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3, 3, 3, 3);
+            tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(1107, 642);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "copy test funtion";
@@ -267,12 +134,10 @@ namespace hocWF
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1141, 699);
-            Controls.Add(tabControl1);
+            Controls.Add(tabGetdatafromLog);
             Name = "Form1";
             Text = "TE-TOOL-V3";
-            tabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            tabPage1.PerformLayout();
+            tabGetdatafromLog.ResumeLayout(false);
             ResumeLayout(false);
 
 
@@ -294,20 +159,8 @@ namespace hocWF
 
         #endregion
         private OpenFileDialog openFileDialog2;
-        private TabControl tabControl1;
-        private TabPage tabPage1;
+        private TabControl tabGetdatafromLog;
         private TabPage tabPage2;
-        private CheckBox checkBox2;
-        private Button button5;
-        private CheckBox checkBox1;
-        private ComboBox comboBox1;
-        private Button button4;
-        private Button buttonToggleScroll;
-        private Button button3;
-        private Button button2;
-        private Button button1;
-        private RichTextBox richTextBox2;
-        private RichTextBox richTextBox1;
         private OpenFileDialog openFileDialog3;
         private FolderBrowserDialog folderBrowserDialog1;
         private FolderBrowserDialog folderBrowserDialog2;
@@ -319,5 +172,6 @@ namespace hocWF
         private OpenFileDialog OFD_macFilePath;
         private ContextMenuStrip contextMenuStrip1;
         private OpenFileDialog openFileDialog1;
+        private TabPage tabPage5;
     }
 }
