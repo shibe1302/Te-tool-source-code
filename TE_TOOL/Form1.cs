@@ -18,6 +18,7 @@ using TE_TOOL.Views;
 using TE_TOOL.Views._01_tab_loc_log;
 using TE_TOOL.Views._02_tab_thu_thap_log;
 using TE_TOOL.Views._03_tab_copy_ftu;
+using TE_TOOL.Views._04_tab_get_cc_data;
 
 namespace hocWF
 {
@@ -58,9 +59,15 @@ namespace hocWF
         // Tab Views
         private LocLogView locLogView;
         private LogCollectorView logCollectorView;
+        private GetAllTypeDataInLogUserControl getAllTypeDataInLogUserControl;
+
+
+
+
         private LocLogPresenter _locLogPresenter;
         private CopyFtuUserControl _copyFtuUserControl;
         private CopyFtuPresenter _copyFtuPresenter;
+        private GetDataByRegexPresenter _getDataByRegexPresenter;
 
         // Add this field to the Form1 class
         private ILocLogView view;
@@ -99,6 +106,7 @@ namespace hocWF
             _locLogPresenter = new LocLogPresenter(view, service);
             _copyFtuServices = new CopyFtuServices();
             _copyFtuPresenter = new CopyFtuPresenter(_copyFtuUserControl, _dialogOldFtuView, _copyFtuServices);
+            _getDataByRegexPresenter = new GetDataByRegexPresenter(getAllTypeDataInLogUserControl, new GetAllTypeDataInLogService());
 
         }
 
@@ -131,6 +139,13 @@ namespace hocWF
             tabPage2.Controls.Clear();
             tabPage2.Controls.Add(_copyFtuUserControl);
 
+            //tabpage5
+            getAllTypeDataInLogUserControl = new GetAllTypeDataInLogUserControl();
+            {
+                Dock = DockStyle.Fill;
+            }
+            tabPage5.Controls.Clear();
+            tabPage5.Controls.Add(getAllTypeDataInLogUserControl);
         }
 
 

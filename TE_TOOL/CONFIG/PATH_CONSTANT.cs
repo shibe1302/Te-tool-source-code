@@ -13,6 +13,7 @@ namespace TE_TOOL.CONFIG
         public static readonly string _scriptFolder;
         public static readonly string SCRIPT_PATH_LOC_LOG;
         public static readonly string SCRIPT_PATH_LOC_LOG_OLD_FORMAT;
+        public static readonly string SCRIPT_PATH_GET_DATA_BY_REGEX;
 
 
         static PATH_FILE_CONSTANT()
@@ -22,6 +23,11 @@ namespace TE_TOOL.CONFIG
             _scriptFolder = Path.Combine(_appDirectory, "loc-log-ps1");
             SCRIPT_PATH_LOC_LOG = Path.Combine(_scriptFolder, "merge.ps1");
             SCRIPT_PATH_LOC_LOG_OLD_FORMAT = Path.Combine(_scriptFolder, "merge-old-format.ps1");
+
+
+            // path get data by regex script
+            var getDatabyRegex_Folder = Path.Combine(_appDirectory, "get-data-by-regex-ps1");
+            SCRIPT_PATH_GET_DATA_BY_REGEX = Path.Combine(getDatabyRegex_Folder, "get-data-by-regex.ps1");
 
             // Có thể thêm các đường dẫn tệp khác tại đây
         }

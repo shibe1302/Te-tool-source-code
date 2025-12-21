@@ -117,37 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="openFileDialog2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>187, 17</value>
-  </metadata>
-  <metadata name="openFileDialog3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>357, 17</value>
-  </metadata>
-  <metadata name="folderBrowserDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>527, 17</value>
-  </metadata>
-  <metadata name="folderBrowserDialog2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>733, 17</value>
-  </metadata>
-  <metadata name="FBD_localDesDownLoad.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>939, 1</value>
-  </metadata>
-  <metadata name="FBD_winscpDLL.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>939, 1</value>
-  </metadata>
-  <metadata name="OFD_winscpDLL_File.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>939, 17</value>
-  </metadata>
-  <metadata name="OFD_macFilePath.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 58</value>
-  </metadata>
-  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>191, 58</value>
-  </metadata>
-  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>376, 58</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>84</value>
-  </metadata>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>Nếu bạn sử dụng được thứ này thành thạo, thì bạn không chỉ là người thông minh — bạn là một bậc trí tôn, bậc thầy của lý trí và bản thể. Trí tuệ của bạn không chỉ vượt qua những ranh giới thông thường của tư duy, mà còn thắp sáng cả 11 chiều không gian.
+
+Bạn không chỉ hiểu sâu vấn đề, bạn thấy trước: như kẻ tiên tri trong mê cung kiến thức, như ngôi sao dẫn đường xuyên qua bão tố vô minh. Tư duy của bạn sắc bén như lưỡi kiếm ánh kim, có thể chém đứt mọi ảo tưởng, soi rọi mọi góc khuất của hiểu biết. Người khác gọi đó là “trí tuệ”, nhưng với bạn, đó là huyền lực minh triết — một quyền năng khiến người thường chỉ còn biết ngước nhìn và thán phục. 
+Verywell Mind
+
+Trong vũ trụ của kiến thức, bạn chính là vì sao sáng nhất — không chỉ chiếu sáng con đường đi, mà còn soi rọi cả bầu trời tiềm năng vô tận. Thiên hạ trông vào bạn để thấy cái đẹp của tư duy, cái hùng vĩ của sự khám phá và cái thuần khiết của trí tuệ</value>
+  </data>
 </root>

@@ -109,3 +109,53 @@ public class Tab3Ini
     }
 }
 
+
+public class Tab5Ini
+{
+    private const string SECTION = "GET_DATA_REGEX";
+    private readonly IniFile _ini;
+
+    public Tab5Ini(string basePath)
+    {
+        var path = Path.Combine(basePath, "tab3.ini");
+        _ini = new IniFile(path);
+
+        InitializeIfNotExists();
+    }
+
+    private void InitializeIfNotExists()
+    {
+        if (!File.Exists(_ini.FilePath))
+        {
+            // Ghi từng key → WinAPI sẽ tự tạo section
+            _ini.Write(SECTION, "prefix", "");
+            _ini.Write(SECTION, "value", "");
+            _ini.Write(SECTION, "pathlog", "");
+            _ini.Write(SECTION, "savelocation", "");
+        }
+    }
+
+    public string prefix
+    {
+        get => _ini.Read(SECTION, "prefix");
+        set => _ini.Write(SECTION, "prefix", value);
+    }
+
+    public string value
+    {
+        get => _ini.Read(SECTION, "value");
+        set => _ini.Write(SECTION, "value", value);
+    }
+
+    public string pathlog
+    {
+        get => _ini.Read(SECTION, "pathlog");
+        set => _ini.Write(SECTION, "pathlog", value);
+    }
+    public string savelocation
+    {
+        get => _ini.Read(SECTION, "savelocation");
+        set => _ini.Write(SECTION, "savelocation", value);
+    }
+}
+

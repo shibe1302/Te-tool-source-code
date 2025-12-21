@@ -55,11 +55,12 @@ namespace hocWF
             // 
             // tabGetdatafromLog
             // 
+            tabGetdatafromLog.AllowDrop = true;
             tabGetdatafromLog.Controls.Add(tabPage3);
             tabGetdatafromLog.Controls.Add(tabPage4);
             tabGetdatafromLog.Controls.Add(tabPage5);
             tabGetdatafromLog.Controls.Add(tabPage2);
-            tabGetdatafromLog.Location = new Point(11, 12);
+            tabGetdatafromLog.Location = new Point(12, 12);
             tabGetdatafromLog.Name = "tabGetdatafromLog";
             tabGetdatafromLog.SelectedIndex = 0;
             tabGetdatafromLog.Size = new Size(1115, 675);
