@@ -17,18 +17,15 @@ namespace TE_TOOL.Services
         {
             if (!ValidateFilePath(model.SaveLocation) && !ValidateFilePath(model.PathLog))
             {
-                throw new ArgumentException(
-                    "Đường dẫn file không hợp lệ",
-                    nameof(model.PathLog)
-                );
+                MessageBox.Show("Vui lòng kiểm tra lại đường dẫn lưu file hoặc đường dẫn log!", "Lỗi đường dẫn", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             string scriptPath = PATH_FILE_CONSTANT.SCRIPT_PATH_GET_DATA_BY_REGEX;
             if (!File.Exists(scriptPath))
             {
-                throw new FileNotFoundException(
-                    $"Không tìm thấy script tại: {scriptPath}"
-                );
+                MessageBox.Show("Script không tồn tại!", "Lỗi file script", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             var startInfo = new ProcessStartInfo
@@ -41,10 +38,10 @@ namespace TE_TOOL.Services
 
                 CreateNoWindow = false,
 
-                WorkingDirectory = PATH_FILE_CONSTANT._scriptFolder
+                WorkingDirectory = PATH_FILE_CONSTANT._scripRegexFolder
             };
+            Process.Start(startInfo);
 
-            
         }
 
         public bool ValidateFilePath(string path)

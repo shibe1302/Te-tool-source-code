@@ -11,6 +11,7 @@ namespace TE_TOOL.CONFIG
     {
         private static readonly string _appDirectory;
         public static readonly string _scriptFolder;
+        public static readonly string _scripRegexFolder;
         public static readonly string SCRIPT_PATH_LOC_LOG;
         public static readonly string SCRIPT_PATH_LOC_LOG_OLD_FORMAT;
         public static readonly string SCRIPT_PATH_GET_DATA_BY_REGEX;
@@ -26,8 +27,8 @@ namespace TE_TOOL.CONFIG
 
 
             // path get data by regex script
-            var getDatabyRegex_Folder = Path.Combine(_appDirectory, "get-data-by-regex-ps1");
-            SCRIPT_PATH_GET_DATA_BY_REGEX = Path.Combine(getDatabyRegex_Folder, "get-data-by-regex.ps1");
+            _scripRegexFolder = Path.Combine(_appDirectory, "get-data-by-regex-ps1");
+            SCRIPT_PATH_GET_DATA_BY_REGEX = Path.Combine(_scripRegexFolder, "get-data-by-regex.ps1");
 
             // Có thể thêm các đường dẫn tệp khác tại đây
         }

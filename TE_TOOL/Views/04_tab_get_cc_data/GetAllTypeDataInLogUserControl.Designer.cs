@@ -48,7 +48,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(73, 50);
+            label1.Location = new Point(73, 51);
             label1.Name = "label1";
             label1.Size = new Size(455, 20);
             label1.TabIndex = 0;
@@ -58,7 +58,7 @@
             // linkLabel1
             // 
             linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(73, 70);
+            linkLabel1.Location = new Point(73, 69);
             linkLabel1.Name = "linkLabel1";
             linkLabel1.Size = new Size(163, 20);
             linkLabel1.TabIndex = 1;
@@ -67,10 +67,11 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(73, 154);
+            textBox1.Location = new Point(73, 155);
+            textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "Muốn biết ở đây viết gì thì đọc SOP";
-            textBox1.Size = new Size(438, 27);
+            textBox1.Size = new Size(438, 33);
             textBox1.TabIndex = 2;
             // 
             // label3
@@ -85,7 +86,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(556, 131);
+            label4.Location = new Point(555, 131);
             label4.Name = "label4";
             label4.Size = new Size(93, 20);
             label4.TabIndex = 5;
@@ -93,18 +94,20 @@
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(556, 154);
+            textBox2.Location = new Point(555, 155);
+            textBox2.Multiline = true;
             textBox2.Name = "textBox2";
             textBox2.PlaceholderText = "Thường là       (\\d+)";
-            textBox2.Size = new Size(455, 27);
+            textBox2.Size = new Size(448, 33);
             textBox2.TabIndex = 4;
             // 
             // textBox3
             // 
             textBox3.Location = new Point(73, 228);
+            textBox3.Multiline = true;
             textBox3.Name = "textBox3";
             textBox3.PlaceholderText = "Bạn có thể kéo thả folder hoặc paste path vào đây";
-            textBox3.Size = new Size(759, 27);
+            textBox3.Size = new Size(759, 33);
             textBox3.TabIndex = 6;
             // 
             // label2
@@ -118,9 +121,9 @@
             // 
             // button1
             // 
-            button1.Location = new Point(864, 228);
+            button1.Location = new Point(856, 228);
             button1.Name = "button1";
-            button1.Size = new Size(147, 27);
+            button1.Size = new Size(147, 33);
             button1.TabIndex = 8;
             button1.Text = "Open";
             button1.UseVisualStyleBackColor = true;
@@ -128,9 +131,9 @@
             // 
             // button2
             // 
-            button2.Location = new Point(864, 302);
+            button2.Location = new Point(856, 301);
             button2.Name = "button2";
-            button2.Size = new Size(147, 27);
+            button2.Size = new Size(147, 33);
             button2.TabIndex = 11;
             button2.Text = "Open";
             button2.UseVisualStyleBackColor = true;
@@ -147,18 +150,19 @@
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(73, 302);
+            textBox4.Location = new Point(73, 301);
+            textBox4.Multiline = true;
             textBox4.Name = "textBox4";
             textBox4.PlaceholderText = "Xuất ra đây";
             textBox4.ReadOnly = true;
-            textBox4.Size = new Size(759, 27);
+            textBox4.Size = new Size(759, 33);
             textBox4.TabIndex = 9;
             // 
             // button3
             // 
-            button3.Location = new Point(73, 372);
+            button3.Location = new Point(73, 383);
             button3.Name = "button3";
-            button3.Size = new Size(291, 35);
+            button3.Size = new Size(291, 55);
             button3.TabIndex = 12;
             button3.Text = "GET DATA";
             button3.UseVisualStyleBackColor = true;
