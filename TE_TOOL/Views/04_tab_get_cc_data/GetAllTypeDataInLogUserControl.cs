@@ -97,20 +97,60 @@ namespace TE_TOOL.Views._04_tab_get_cc_data
         void setLink()
         {
             linkLabel1.Text = "Hướng dẫn viết Regex, đọc để dùng được tool";
-            linkLabel1.Links.Add(0, linkLabel1.Text.Length,
-                "https://docs.google.com/document/d/1uAjkCWTzqnPBeXScbrXstW78r18WRluinHZHzINpH-w/edit?usp=sharing");
+
+            string pdfPath = GetPdfPath();
+            linkLabel1.Links.Add(0, linkLabel1.Text.Length, pdfPath);
+        }
+
+        private string GetPdfPath()
+        {
+            // Thử tìm PDF ở thư mục output trước (cho cả Debug và Release)
+            string outputPath = Path.Combine(Application.StartupPath, "Views", "04_tab_get_cc_data", "con cac.pdf");
+
+            if (File.Exists(outputPath))
+            {
+                return outputPath;
+            }
+
+            // Nếu không tìm thấy, thử tìm ở thư mục project (fallback cho Debug)
+            string projectPath = Path.GetFullPath(Path.Combine(Application.StartupPath, @"..\..\..\"));
+            string sourcePath = Path.Combine(projectPath, "Views", "04_tab_get_cc_data", "con cac.pdf");
+
+            if (File.Exists(sourcePath))
+            {
+                return sourcePath;
+            }
+
+            // Nếu vẫn không tìm thấy, trả về đường dẫn output (sẽ báo lỗi sau)
+            return outputPath;
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // Chỉ mở link, không đăng ký lại
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            try
             {
-                FileName = e.Link.LinkData.ToString(),
-                UseShellExecute = true
-            });
-        }
+                string pdfPath = e.Link.LinkData.ToString();
 
+                if (File.Exists(pdfPath))
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = pdfPath,
+                        UseShellExecute = true
+                    });
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy file PDF: " + pdfPath, "Lỗi",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi mở file PDF: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void label1_Click(object sender, EventArgs e)
         {
             new cangoi().ShowDialog();
