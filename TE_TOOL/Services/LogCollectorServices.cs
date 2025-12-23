@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using TE_TOOL.CONFIG;
 using TE_TOOL.Models;
 
 namespace TE_TOOL.Services
@@ -129,7 +130,7 @@ namespace TE_TOOL.Services
 
         private void ExecuteLocalScan(string sourcePath, LogCollectorFormData data, string scriptBasePath)
         {
-            string scriptPath = Path.Combine(scriptBasePath, "log_collection_ps1", "scan-local.ps1");
+            string scriptPath = PATH_FILE_CONSTANT.SCRIPT_LOG_COLLECTION_LOCAL;
 
             if (!File.Exists(scriptPath))
                 throw new FileNotFoundException("Không tìm thấy script scan-local.ps1!");
@@ -145,7 +146,7 @@ namespace TE_TOOL.Services
 
         private void ExecuteRemoteScan(string sourcePath, LogCollectorFormData data, string scriptBasePath)
         {
-            string scriptPath = Path.Combine(scriptBasePath, "log_collection_ps1", "hash-set.ps1");
+            string scriptPath = PATH_FILE_CONSTANT.SCRIPT_LOG_COLLECTION;
 
             if (!File.Exists(scriptPath))
                 throw new FileNotFoundException($"Không tìm thấy hash-set.ps1 tại:\n{scriptPath}");

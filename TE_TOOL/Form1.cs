@@ -82,8 +82,7 @@ namespace hocWF
             InitializeComponent();
             InitializeTabViews();
 
-
-
+            setIcon();
 
             debounceTimer1 = new System.Windows.Forms.Timer();
             debounceTimer1.Interval = DEBOUNCE_DELAY;
@@ -97,6 +96,19 @@ namespace hocWF
 
             InitializeMVP();
 
+        }
+
+        private void setIcon()
+        {
+            try
+            {
+                this.Icon = new Icon("Resources\\exe.ico");
+            }
+            catch (Exception)
+            {
+
+                Debug.WriteLine("Icon not found");
+            }
         }
 
         private void InitializeMVP()

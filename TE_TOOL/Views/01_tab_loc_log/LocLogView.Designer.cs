@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LocLogView));
             label3 = new Label();
             labelStatus = new Label();
             buttonRunPS = new Button();
@@ -36,6 +37,11 @@
             txtMacPath = new TextBox();
             odfMacPath = new OpenFileDialog();
             cbbTypeLog = new ComboBox();
+            pictureBox1 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            label1 = new Label();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
             // 
             // label3
@@ -115,10 +121,42 @@
             cbbTypeLog.Size = new Size(368, 28);
             cbbTypeLog.TabIndex = 13;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(45, 486);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(128, 128);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 14;
+            pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(208, 486);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(128, 128);
+            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox2.TabIndex = 15;
+            pictureBox2.TabStop = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(364, 574);
+            label1.Name = "label1";
+            label1.Size = new Size(276, 40);
+            label1.TabIndex = 16;
+            label1.Text = "Chào các bạn mình là Hoàng Anh coder \r\ntác giả của tool này";
+            // 
             // LocLogView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(label1);
+            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox1);
             Controls.Add(cbbTypeLog);
             Controls.Add(txtMacPath);
             Controls.Add(btnOpenFile);
@@ -128,6 +166,8 @@
             Controls.Add(txtFolderLog);
             Name = "LocLogView";
             Size = new Size(1108, 642);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -142,5 +182,8 @@
         private TextBox txtMacPath;
         private OpenFileDialog odfMacPath;
         private ComboBox cbbTypeLog;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox2;
+        private Label label1;
     }
 }

@@ -15,20 +15,20 @@ namespace TE_TOOL.CONFIG
         public static readonly string SCRIPT_PATH_LOC_LOG;
         public static readonly string SCRIPT_PATH_LOC_LOG_OLD_FORMAT;
         public static readonly string SCRIPT_PATH_GET_DATA_BY_REGEX;
+        public static readonly string SCRIPT_LOG_COLLECTION;
+        public static readonly string SCRIPT_LOG_COLLECTION_LOCAL;
 
 
         static PATH_FILE_CONSTANT()
         {
             // path loc log script
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            _scriptFolder = Path.Combine(_appDirectory, "loc-log-ps1");
-            SCRIPT_PATH_LOC_LOG = Path.Combine(_scriptFolder, "merge.ps1");
-            SCRIPT_PATH_LOC_LOG_OLD_FORMAT = Path.Combine(_scriptFolder, "merge-old-format.ps1");
-
-
-            // path get data by regex script
-            _scripRegexFolder = Path.Combine(_appDirectory, "get-data-by-regex-ps1");
-            SCRIPT_PATH_GET_DATA_BY_REGEX = Path.Combine(_scripRegexFolder, "get-data-by-regex.ps1");
+            _scriptFolder = Path.Combine(_appDirectory, "PS1File");
+            SCRIPT_PATH_LOC_LOG = Path.Combine(_scriptFolder, "01-loc-log.ps1");
+            SCRIPT_PATH_LOC_LOG_OLD_FORMAT = Path.Combine(_scriptFolder, "01-loc-log-old-format.ps1");
+            SCRIPT_PATH_GET_DATA_BY_REGEX = Path.Combine(_scriptFolder, "03-get-data-by-regex.ps1");
+            SCRIPT_LOG_COLLECTION = Path.Combine(_scriptFolder, "02-thu-thap-log.ps1");
+            SCRIPT_LOG_COLLECTION_LOCAL = Path.Combine(_scriptFolder, "02-thu-thap-log-local.ps1");
 
             // Có thể thêm các đường dẫn tệp khác tại đây
         }
