@@ -37,6 +37,9 @@ namespace hocWF
             tabPage4 = new TabPage();
             tabPage5 = new TabPage();
             tabPage2 = new TabPage();
+            tabPage1 = new TabPage();
+            label1 = new Label();
+            pictureBox1 = new PictureBox();
             openFileDialog3 = new OpenFileDialog();
             folderBrowserDialog1 = new FolderBrowserDialog();
             folderBrowserDialog2 = new FolderBrowserDialog();
@@ -46,7 +49,10 @@ namespace hocWF
             OFD_macFilePath = new OpenFileDialog();
             contextMenuStrip1 = new ContextMenuStrip(components);
             openFileDialog1 = new OpenFileDialog();
+            label2 = new Label();
             tabGetdatafromLog.SuspendLayout();
+            tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // openFileDialog2
@@ -60,6 +66,7 @@ namespace hocWF
             tabGetdatafromLog.Controls.Add(tabPage4);
             tabGetdatafromLog.Controls.Add(tabPage5);
             tabGetdatafromLog.Controls.Add(tabPage2);
+            tabGetdatafromLog.Controls.Add(tabPage1);
             tabGetdatafromLog.Location = new Point(12, 12);
             tabGetdatafromLog.Name = "tabGetdatafromLog";
             tabGetdatafromLog.SelectedIndex = 0;
@@ -108,6 +115,38 @@ namespace hocWF
             tabPage2.Text = "copy test funtion";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // tabPage1
+            // 
+            tabPage1.Controls.Add(label2);
+            tabPage1.Controls.Add(label1);
+            tabPage1.Controls.Add(pictureBox1);
+            tabPage1.Location = new Point(4, 29);
+            tabPage1.Name = "tabPage1";
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1107, 642);
+            tabPage1.TabIndex = 5;
+            tabPage1.Text = "Donate";
+            tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(280, 121);
+            label1.Name = "label1";
+            label1.Size = new Size(579, 20);
+            label1.TabIndex = 1;
+            label1.Text = "Nếu các bạn thấy tool này giải trí hãy donate để mình có thêm động lực nghỉ hưu sớm";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = TE_TOOL.Properties.Resources.QR;
+            pictureBox1.Location = new Point(395, 167);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(335, 308);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
             // openFileDialog3
             // 
             openFileDialog3.FileName = "openFileDialog3";
@@ -130,6 +169,16 @@ namespace hocWF
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(291, 487);
+            label2.Name = "label2";
+            label2.Size = new Size(586, 28);
+            label2.TabIndex = 2;
+            label2.Text = "如果你们觉得这个工具好玩，欢迎打赏一下，助我早日躺平退休";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -139,6 +188,9 @@ namespace hocWF
             Name = "Form1";
             Text = "TE-TOOL-V4";
             tabGetdatafromLog.ResumeLayout(false);
+            tabPage1.ResumeLayout(false);
+            tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
 
 
@@ -174,5 +226,9 @@ namespace hocWF
         private ContextMenuStrip contextMenuStrip1;
         private OpenFileDialog openFileDialog1;
         private TabPage tabPage5;
+        private TabPage tabPage1;
+        private PictureBox pictureBox1;
+        private Label label1;
+        private Label label2;
     }
 }
