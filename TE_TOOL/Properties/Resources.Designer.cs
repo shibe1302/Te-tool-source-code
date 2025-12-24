@@ -63,11 +63,16 @@ namespace TE_TOOL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap QR {
+        internal static System.Drawing.Bitmap happy {
             get {
-                object obj = ResourceManager.GetObject("QR", resourceCulture);
+                object obj = ResourceManager.GetObject("happy", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+
     }
 }

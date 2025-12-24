@@ -123,13 +123,14 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
             pictureBox1.Location = new Point(45, 486);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(128, 128);
-            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 14;
             pictureBox1.TabStop = false;
+            pictureBox1.MouseEnter += pictureBox1_MouseEnter;
+            pictureBox1.MouseLeave += pictureBox1_MouseLeave;
             // 
             // pictureBox2
             // 
@@ -137,9 +138,11 @@
             pictureBox2.Location = new Point(208, 486);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(128, 128);
-            pictureBox2.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 15;
             pictureBox2.TabStop = false;
+            pictureBox2.MouseEnter += pictureBox2_MouseLeave;
+            pictureBox2.MouseLeave += pictureBox2_MouseEnter;
             // 
             // label1
             // 

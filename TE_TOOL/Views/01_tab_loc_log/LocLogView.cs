@@ -44,8 +44,9 @@ namespace TE_TOOL.Views
             set => txtMacPath.Text = value; // Chưa implement
         }
 
-        public string modeLog { 
-        get => cbbTypeLog.SelectedItem.ToString();
+        public string modeLog
+        {
+            get => cbbTypeLog.SelectedItem.ToString();
         }
 
         // ===========================================
@@ -62,6 +63,7 @@ namespace TE_TOOL.Views
         private void InitSetupUI()
         {
             cbbTypeLog.SelectedIndex = 0;
+            pictureBox1.Image = Image.FromFile("Resources\\happy.png");
         }
 
         // ===========================================
@@ -202,6 +204,29 @@ namespace TE_TOOL.Views
             }
         }
 
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Image.FromFile("Resources\\sad.png");
+        }
 
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            // Dispose previous image to avoid file lock/memory leak
+            pictureBox1.Image?.Dispose();
+            // Use a valid resource that exists, e.g., QR (as per your Resources class)
+            pictureBox1.Image = Properties.Resources.happy;
+        }
+        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        {
+            pictureBox2.Image = Image.FromFile("Resources\\sad.png");
+        }
+
+        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        {
+            // Dispose previous image to avoid file lock/memory leak
+            pictureBox2.Image?.Dispose();
+            // Use a valid resource that exists, e.g., QR (as per your Resources class)
+            pictureBox2.Image = Properties.Resources.happy;
+        }
     }
 }

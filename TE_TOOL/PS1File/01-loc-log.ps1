@@ -31,7 +31,8 @@ function pr {
     param ([string]$p)
     Write-Host "=========== $p ============" -ForegroundColor Cyan
 }
-
+write-Host "new 1" -ForegroundColor Green
+start-sleep -Seconds 3
 function Auto-Detect-Version {
     param (
         [string]$logFolder,
@@ -325,7 +326,7 @@ if (Test-Path $failFolder) {
 New-Item -Path $passFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $failFolder -ItemType Directory -Force | Out-Null
 
-$cac_tram_test = @("DL","PT" ,"PT0", "PT1", "PT2", "PT3", "PT4", "BURN", "FT1", "FT2", "FT3", "FT4", "FT5", "FT6", "FT7","600I","25G")
+$cac_tram_test = @("DL","PT" ,"PT0", "PT1", "PT2", "PT3", "PT4","PT5","PT6", "BURN", "FT1", "FT2", "FT3", "FT4", "FT5", "FT6", "FT7", "FT8", "FT9", "FT10", "FT11", "FT12", "FT13", "FT14","FT15","FT","600I","25G")
 $cac_tram_test | ForEach-Object {
     New-Item -Path (Join-Path $passFolder $_) -ItemType Directory -Force | Out-Null
     New-Item -Path (Join-Path $failFolder $_) -ItemType Directory -Force | Out-Null
@@ -361,6 +362,15 @@ foreach ($file in $log_files) {
         "^PASS.*_FT5_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT5" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_FT6_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT6" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_FT7_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT7" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT8_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT8" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT9_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT9" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT10_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT10" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT11_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT11" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT12_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT12" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT13_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT13" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT14_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT14" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT15_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT15" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_FT_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT" -passFolder $passFolder; $count_pass++; continue }
     }
     
     # Phân loại FAIL
@@ -476,16 +486,42 @@ function Get-FileExtensions {
     if (-not (Test-Path $folderPath)) { return @() }
     
     $files = Get-ChildItem -Path $folderPath -File -ErrorAction SilentlyContinue
-    $extensions = $files | Select-Object -ExpandProperty Extension -Unique | 
-                  Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
-                  ForEach-Object { $_.TrimStart('.') + "File" }
+    
+    # LẤY UNIQUE THEO PATTERN _XXX.EXTENSION
+    $extensions = $files | ForEach-Object {
+        $fileName = $_.Name
+        # Tìm vị trí dấu _ cuối cùng trước extension
+        $lastUnderscoreIndex = $fileName.LastIndexOf('_')
+        
+        if ($lastUnderscoreIndex -ge 0) {
+            # Lấy phần từ dấu _ cuối đến hết (bao gồm extension)
+            $pattern = $fileName.Substring($lastUnderscoreIndex)
+            return $pattern
+        }
+        else {
+            # Nếu không có dấu _, chỉ lấy extension
+            return $_.Extension
+        }
+    } | Select-Object -Unique |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        ForEach-Object { 
+            # Chuyển _Val.xlsx thành Val_xlsxFile
+            # Chuyển _CAL.bin thành CAL_binFile
+            $pattern = $_.TrimStart('_')
+            $parts = $pattern -split '\.'
+            if ($parts.Count -eq 2) {
+                return $parts[0] + "_" + $parts[1] + "File"
+            }
+            else {
+                return $pattern.TrimStart('.') + "File"
+            }
+        }
     
     # ĐẢM BẢO TRẢ VỀ MẢNG
     if ($null -eq $extensions) {
         return @()
     }
     
-    # Chuyển đổi thành mảng nếu chỉ có 1 phần tử
     return @($extensions)
 }
 
@@ -495,8 +531,6 @@ function Organize-FilesByExtension {
     if (-not (Test-Path $otherFilesPath)) { return }
     
     $extensionTypes = Get-FileExtensions -folderPath $otherFilesPath
-    
-    # SỬA LỖI: Đảm bảo $extensionTypes là mảng trước khi kiểm tra Count
     $extensionTypes = @($extensionTypes)
     
     if ($extensionTypes.Count -le 1) {
@@ -507,15 +541,26 @@ function Organize-FilesByExtension {
     Write-Host "  Tim thay $($extensionTypes.Count) loai file: $($extensionTypes -join ', ')" -ForegroundColor Yellow
     
     foreach ($extType in $extensionTypes) {
-        $ext = $extType -replace 'File$', ''
+        # Chuyển ngược lại: Val_xlsxFile → _Val.xlsx
+        $pattern = $extType -replace 'File$', ''
+        $parts = $pattern -split '_'
+        
+        if ($parts.Count -eq 2) {
+            $searchPattern = "_$($parts[0]).$($parts[1])"
+        }
+        else {
+            $searchPattern = ".$pattern"
+        }
+        
         $subFolder = Join-Path $otherFilesPath $extType
         
         if (-not (Test-Path $subFolder)) {
             New-Item -Path $subFolder -ItemType Directory -Force | Out-Null
         }
         
+        # Tìm file theo pattern
         $filesToMove = Get-ChildItem -Path $otherFilesPath -File -ErrorAction SilentlyContinue |
-                       Where-Object { $_.Extension -eq ".$ext" }
+                       Where-Object { $_.Name -like "*$searchPattern" }
         
         foreach ($file in $filesToMove) {
             try {
@@ -526,7 +571,7 @@ function Organize-FilesByExtension {
             }
         }
         
-        Write-Host "  Da move $(@($filesToMove).Count) file .$ext vao $extType" -ForegroundColor Green
+        Write-Host "  Da move $(@($filesToMove).Count) file $searchPattern vao $extType" -ForegroundColor Green
     }
 }
 
@@ -685,7 +730,7 @@ function Get-AllFoldersWithFiles {
 }
 
 $folderStats = Get-AllFoldersWithFiles -rootPath $passFolder
-
+$folderStats= @($folderStats)
 if ($folderStats.Count -gt 0) {
     Write-Host ""
     Write-Host ("=" * 70) -ForegroundColor DarkGray

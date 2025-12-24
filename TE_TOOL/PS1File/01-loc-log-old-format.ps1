@@ -326,7 +326,7 @@ if (Test-Path $failFolder) {
 New-Item -Path $passFolder -ItemType Directory -Force | Out-Null
 New-Item -Path $failFolder -ItemType Directory -Force | Out-Null
 
-$cac_tram_test = @("DL","PT" ,"PT0", "PT1", "PT2", "PT3", "PT4", "BURN", "FT1", "FT2", "FT3", "FT4", "FT5", "FT6", "FT7","600I","25G")
+$cac_tram_test = @("DL","PT" ,"PT0", "PT1", "PT2", "PT3", "PT4","PT5","PT6", "BURN", "FT1", "FT2", "FT3", "FT4", "FT5", "FT6", "FT7", "FT8", "FT9", "FT10", "FT11", "FT12", "FT13", "FT14","FT15","FT","600I","25G")
 $cac_tram_test | ForEach-Object {
     New-Item -Path (Join-Path $passFolder $_) -ItemType Directory -Force | Out-Null
     New-Item -Path (Join-Path $failFolder $_) -ItemType Directory -Force | Out-Null
@@ -362,6 +362,14 @@ foreach ($file in $log_files) {
         "^PASS.*FT5" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT5" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*FT6" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT6" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*FT7" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT7" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT8" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT8" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT9" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT9" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT10" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT10" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT11" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT11" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT12" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT12" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT13" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT13" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT14" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT14" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*FT15" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT15" -passFolder $passFolder; $count_pass++; continue }
     }
     
     # Phân loại FAIL
@@ -684,7 +692,7 @@ function Get-AllFoldersWithFiles {
 }
 
 $folderStats = Get-AllFoldersWithFiles -rootPath $passFolder
-
+$folderStats= @($folderStats)
 if ($folderStats.Count -gt 0) {
     Write-Host ""
     Write-Host ("=" * 70) -ForegroundColor DarkGray
