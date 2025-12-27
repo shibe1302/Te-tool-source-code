@@ -87,6 +87,7 @@ public class Tab3Ini
             _ini.Write(SECTION, "item", "");
             _ini.Write(SECTION, "reoder", "");
             _ini.Write(SECTION, "select", "");
+            _ini.Write(SECTION, "exePath", "");
         }
     }
 
@@ -106,6 +107,12 @@ public class Tab3Ini
     {
         get => _ini.Read(SECTION, "select");
         set => _ini.Write(SECTION, "select", value);
+    }
+
+    public string exePath
+    {
+        get => _ini.Read(SECTION, "exePath");
+        set => _ini.Write(SECTION, "exePath", value);
     }
 }
 

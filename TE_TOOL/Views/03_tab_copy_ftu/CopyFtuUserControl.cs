@@ -61,9 +61,11 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             string selectedItemLog = tab3Ini.Item;
             string reorderJsonPath = tab3Ini.Reoder;
             string selectedItem = tab3Ini.Select;
+            string exePath = tab3Ini.exePath;
             txtGetItemFormLog.Text = selectedItemLog;
             txtReorderJson.Text = reorderJsonPath;
             txtSelectedItem.Text = selectedItem;
+            txtFTUexe.Text = exePath;
 
         }
         public void SetSelectedItemToIni()
@@ -88,6 +90,8 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             {
                 if (!string.IsNullOrEmpty(txtGetItemFormLog.Text))
                     tab3Ini.Item = txtGetItemFormLog.Text;
+                if (!string.IsNullOrEmpty(txtFTUexe.Text))
+                    tab3Ini.exePath = txtFTUexe.Text;
                 if (!string.IsNullOrEmpty(txtReorderJson.Text))
                     tab3Ini.Reoder = txtReorderJson.Text;
                 if (!string.IsNullOrEmpty(txtSelectedItem.Text))
@@ -210,6 +214,16 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             addItemToHashSet();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ofdFTUexe.Filter = "EXE files (*.exe)|*.exe|All files (*.*)|*.*";
+
+            if (ofdFTUexe.ShowDialog() == DialogResult.OK)
+            {
+                txtFTUexe.Text = ofdFTUexe.FileName;
+            }
+        }
+
         void ICopyFtuUserControl.LoadItemToCheckListBox(JsonElement items)
         {
             addItemToHashSet();
@@ -221,7 +235,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
                 count++;
                 int id = item.GetProperty("ID").GetInt32();
                 string name = item.GetProperty("Name").GetString();
-                if( itemHashSet.Contains(id))
+                if (itemHashSet.Contains(id))
                 {
                     clb_item_from_json.Items.Add($"{id} - {name}", true);
                 }
