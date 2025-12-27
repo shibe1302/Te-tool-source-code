@@ -26,5 +26,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         void LoadItemToCheckListBox(JsonElement items);
 
         void SetSelectedItemToIni();
+
+        public void addItemToHashSet();
     }
 }

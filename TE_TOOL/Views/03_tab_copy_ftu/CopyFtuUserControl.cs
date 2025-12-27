@@ -20,7 +20,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         private IDialogOldFtuView _dialog;
         private Tab3Ini tab3Ini;
         private List<string> listSelectedItem;
-
+        HashSet<int> itemHashSet = new HashSet<int>();
 
         public CopyFtuUserControl()
         {
@@ -28,13 +28,25 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             DangKySuKien();
             loadDataFromIni();
             disbaleSelectedBTN();
-   
+
         }
         public string JsonReorderPath { get => txtReorderJson.Text; }
 
         public string ItemFromLog { get => txtGetItemFormLog.Text; }
 
-
+        public void addItemToHashSet()
+        {
+            var items = txtGetItemFormLog.Text.Split(',')
+                .Select(s => s.Trim());
+            itemHashSet.Clear();
+            foreach (var item in items)
+            {
+                if (int.TryParse(item, out int id))
+                {
+                    itemHashSet.Add(id);
+                }
+            }
+        }
         private void disbaleSelectedBTN()
         {
             if (!string.IsNullOrEmpty(txtReorderJson.Text))
@@ -52,7 +64,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             txtGetItemFormLog.Text = selectedItemLog;
             txtReorderJson.Text = reorderJsonPath;
             txtSelectedItem.Text = selectedItem;
-            
+
         }
         public void SetSelectedItemToIni()
         {
@@ -94,7 +106,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             btnGetItemFromLog.Click += (s, e) =>
             {
                 btnOldFtuClicked?.Invoke(this, EventArgs.Empty);
-                
+
             };
             txtSelectedItem.TextChanged += (s, e) =>
             {
@@ -193,8 +205,14 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
 
         }
 
+        private void txtGetItemFormLog_Leave(object sender, EventArgs e)
+        {
+            addItemToHashSet();
+        }
+
         void ICopyFtuUserControl.LoadItemToCheckListBox(JsonElement items)
         {
+            addItemToHashSet();
             clb_item_from_json.Items.Clear();
             if (items.ValueKind != JsonValueKind.Array) return;
             var count = 0;
@@ -203,7 +221,15 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
                 count++;
                 int id = item.GetProperty("ID").GetInt32();
                 string name = item.GetProperty("Name").GetString();
-               clb_item_from_json.Items.Add($"{id} - {name}");
+                if( itemHashSet.Contains(id))
+                {
+                    clb_item_from_json.Items.Add($"{id} - {name}", true);
+                }
+                else
+                {
+                    clb_item_from_json.Items.Add($"{id} - {name}", false);
+                }
+
             }
             lbTotalItems.Text = $"Total items: {count}";
         }
