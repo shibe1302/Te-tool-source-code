@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace TE_TOOL.Services
@@ -11,6 +12,8 @@ namespace TE_TOOL.Services
         List<string> GetFunctionTest(string content);
         string TxtListFunctionTest { get; set; }
         List<string> ListItemTest { get; set; }
-        void LoadJsonOrderItems(string pathFile, string items);
+        JsonElement LoadJsonOrderItems(string pathFile, string items);
+        JsonElement ReorderJsonItem(string itemsFromLog);
+        void SaveFullJsonWithUpdatedItems(string pathFile);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TE_TOOL.Services;
 using TE_TOOL.ShowDialogForm;
@@ -15,6 +16,9 @@ namespace TE_TOOL.Presenters
         private readonly ICopyFtuUserControl _view;
         private readonly IDialogOldFtuView _viewDialog;
         private readonly ICopyFtuServices _service;
+
+        JsonElement items_from_json;
+        string Items;
         public CopyFtuPresenter(ICopyFtuUserControl view, IDialogOldFtuView viewDialog, ICopyFtuServices service)
         {
 
@@ -25,7 +29,15 @@ namespace TE_TOOL.Presenters
             RegisterEven();
             view.SetDialog(_viewDialog);
 
+            Items = _view.ItemFromLog;
+ 
 
+        }
+
+        private void reloadJson()
+        {
+            
+            items_from_json = _service.LoadJsonOrderItems(_view.JsonReorderPath, Items);
         }
 
         private void RegisterEven()
@@ -34,16 +46,25 @@ namespace TE_TOOL.Presenters
             _view.btnLoadClicked += OnLoadClicked;
             _viewDialog.SaveClicked += OnSaveClicked;
             _viewDialog.btnGetFuntionTestClicked += OnGetFuntionTestClicked;
+            _view.btnReoderClicked += OnReoderClicked;
 
+        }
 
+        private void OnReoderClicked(object? sender, EventArgs e)
+        {
+            _service.ReorderJsonItem(_view.ItemFromLog);
+            _service.SaveFullJsonWithUpdatedItems(_view.JsonReorderPath);
+            reloadJson();
+            _view.LoadItemToCheckListBox(items_from_json);
+            _view.SaveDatatoIni();
+            _view.SetSelectedItemToIni();
         }
 
         private void OnLoadClicked(object? sender, EventArgs e)
         {
-            string reoderJsonPathFile = _view.JsonReorderPath;
-            string Items=_view.ItemFromLog;
-            _service.LoadJsonOrderItems(reoderJsonPathFile,Items);
-
+            reloadJson();
+            _view.LoadItemToCheckListBox(items_from_json);
+            _view.SaveDatatoIni();
         }
 
         private void OnGetFuntionTestClicked(object? sender, EventArgs e)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TE_TOOL.Services;
 using TE_TOOL.ShowDialogForm;
@@ -13,6 +14,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         event EventHandler btnOldFtuClicked;
         event EventHandler textChangeSelectedTextbox;
         event EventHandler btnLoadClicked;
+        event EventHandler btnReoderClicked;
 
         string JsonReorderPath { get;  }
         string ItemFromLog { get; }
@@ -21,5 +23,8 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         void SetDialog(IDialogOldFtuView dialog);
         void DocListITem(List<string> list);
         void SaveDatatoIni();
+        void LoadItemToCheckListBox(JsonElement items);
+
+        void SetSelectedItemToIni();
     }
 }

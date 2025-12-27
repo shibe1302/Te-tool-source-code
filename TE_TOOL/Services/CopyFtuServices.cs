@@ -14,6 +14,8 @@ namespace TE_TOOL.Services
     {
         string txtListFunctionTest = "";
         List<string> listItemTest = new List<string>();
+        JsonElement tempItems;
+        List<JsonElement> tempItemsList;
 
         public string TxtListFunctionTest { get => txtListFunctionTest; set => txtListFunctionTest = value; }
         public List<string> ListItemTest { get => listItemTest; set => listItemTest = value; }
@@ -84,33 +86,97 @@ namespace TE_TOOL.Services
         }
 
 
-        public void LoadJsonOrderItems(string pathFile,string ItemsTxt)
+        bool FindAndSwapItems(int currentIndex, int value)
         {
-            using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(pathFile));
-            JsonElement root = doc.RootElement;
-            JsonElement items = root.GetProperty("DiagTestItems");
-            var ItemsFromLog = ItemsTxt.Split(", ").ToList();
-
-
-
-            foreach (JsonElement item in items.EnumerateArray())
+            for (int i = currentIndex; i < tempItemsList.Count; i++)
             {
-                try
+                int id = tempItemsList[i].GetProperty("ID").GetInt32();
+                string name = tempItemsList[i].GetProperty("Name").GetString();
+                if (id == value)
                 {
-                    string file = item.GetProperty("File").GetString();
-                    string name = item.GetProperty("Name").GetString();
-                    int id = item.GetProperty("ID").GetInt32();
-                    int check = item.GetProperty("Check").GetInt32();
-                    int en = item.GetProperty("EN").GetInt32();
-                    Debug.WriteLine($"{id}-----{name}");
+                    if (i != currentIndex)
+                    {
+                        SwapItemsInList(currentIndex, i);
+                    }
+                    return true;
                 }
-                catch (Exception)
+                if (i== tempItemsList.Count-1)
                 {
-                    MessageBox.Show("Có lỗi xảy ra.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                    MessageBox.Show($"Không tìm thấy item: {value}", "Lỗi khi ghi file JSON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
             }
 
+            return false;
+        }
+
+
+        void SwapItemsInList( int idx1, int idx2)
+        {
+            if (idx1 < 0 || idx2 < 0 || idx1 >= tempItemsList.Count || idx2 >= tempItemsList.Count)
+                throw new IndexOutOfRangeException();
+            (tempItemsList[idx1], tempItemsList[idx2]) = (tempItemsList[idx2], tempItemsList[idx1]);
+        }
+
+
+        public JsonElement LoadJsonOrderItems(string pathFile,string ItemsTxt)
+        {
+            try
+            {
+                using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(pathFile));
+                JsonElement root = doc.RootElement;
+                JsonElement items = root.GetProperty("DiagTestItems").Clone();
+                tempItemsList = items.EnumerateArray().ToList();
+                return items;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Kiểm tra lại file json !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return new JsonElement();
+            }
+
+        }
+
+        JsonElement ConvertListToJsonElement()
+        {
+            string json = JsonSerializer.Serialize(tempItemsList);
+            using JsonDocument doc = JsonDocument.Parse(json);
+            return doc.RootElement.Clone();
+        }
+
+        JsonElement ICopyFtuServices.ReorderJsonItem(string itemsFromLog)
+        {
+            List<string> listItem = itemsFromLog.Split(",").Select(x => x.Trim()).ToList();
+            for (int i = 0; i < listItem.Count; i++)
+            {
+                FindAndSwapItems(i, int.Parse(listItem[i]));
+            }
+            return ConvertListToJsonElement();
+        }
+        public void SaveFullJsonWithUpdatedItems(string pathFile)
+        {
+            try
+            {
+                // Đọc lại file gốc
+                using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(pathFile));
+                JsonElement root = doc.RootElement;
+
+                // Tạo dictionary từ root để chỉnh sửa (để serialize lại)
+                var rootDict = JsonSerializer.Deserialize<Dictionary<string, object>>(root.GetRawText());
+
+                // Update mảng DiagTestItems
+                rootDict["DiagTestItems"] = tempItemsList;
+
+                // Serialize lại cả object
+                string updatedJson = JsonSerializer.Serialize(rootDict, new JsonSerializerOptions { WriteIndented = true });
+
+                // Ghi ra file
+                File.WriteAllText(pathFile, updatedJson);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi khi ghi file JSON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

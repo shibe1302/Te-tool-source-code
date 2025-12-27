@@ -354,6 +354,8 @@ foreach ($file in $log_files) {
         "^PASS.*_PT2_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "PT2" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_PT3_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "PT3" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_PT4_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "PT4" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_PT5_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "PT5" -passFolder $passFolder; $count_pass++; continue }
+        "^PASS.*_PT6_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "PT6" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_PT_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "PT" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_FT1_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT1" -passFolder $passFolder; $count_pass++; continue }
         "^PASS.*_FT2_" { join_and_move_pass -log_dir $final_LOG_FOLDER -file_name $fileName -state "FT2" -passFolder $passFolder; $count_pass++; continue }

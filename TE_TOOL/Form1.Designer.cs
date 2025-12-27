@@ -137,7 +137,7 @@ namespace hocWF
             ClientSize = new Size(1141, 699);
             Controls.Add(tabGetdatafromLog);
             Name = "Form1";
-            Text = "TE-TOOL-V4";
+            Text = "TE-TOOL-V4.1";
             tabGetdatafromLog.ResumeLayout(false);
             ResumeLayout(false);
 

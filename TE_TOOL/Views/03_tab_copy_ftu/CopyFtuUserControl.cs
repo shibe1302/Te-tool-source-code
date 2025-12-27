@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TE_TOOL.Presenters;
@@ -27,20 +28,13 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             DangKySuKien();
             loadDataFromIni();
             disbaleSelectedBTN();
-            LoadItemToCheckListBox();
+   
         }
         public string JsonReorderPath { get => txtReorderJson.Text; }
 
         public string ItemFromLog { get => txtGetItemFormLog.Text; }
 
-        private void LoadItemToCheckListBox()
-        {
-            for (int i = 1; i < 50; i++)
-            {
-                clb_item_from_json.Items.Add($"Item {i}");
-            }
 
-        }
         private void disbaleSelectedBTN()
         {
             if (!string.IsNullOrEmpty(txtReorderJson.Text))
@@ -58,6 +52,23 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             txtGetItemFormLog.Text = selectedItemLog;
             txtReorderJson.Text = reorderJsonPath;
             txtSelectedItem.Text = selectedItem;
+            
+        }
+        public void SetSelectedItemToIni()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtSelectedItem.Text)) return;
+                IniFile a = new IniFile(txtSelectedItem.Text);
+                a.Write("ITEMS", "id", txtGetItemFormLog.Text);
+                MessageBox.Show("Ghi thanh cong !");
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Lỗi khi ghi file selected_items.ini", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+
         }
         void saveDatatoIni()
         {
@@ -93,16 +104,21 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             {
                 btnLoadClicked?.Invoke(this, EventArgs.Empty);
             };
+            btnReoder.Click += (s, e) =>
+            {
+                btnReoderClicked?.Invoke(this, EventArgs.Empty);
+            };
 
         }
 
         public event EventHandler btnOldFtuClicked;
         public event EventHandler textChangeSelectedTextbox;
         public event EventHandler btnLoadClicked;
+        public event EventHandler btnReoderClicked;
 
         public void UpdateStatus(List<string> list)
         {
-            string text = string.Join(", ", list);
+            string text = string.Join(",", list);
             txtGetItemFormLog.Text = text;
         }
 
@@ -175,6 +191,21 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
         {
             saveDatatoIni();
 
+        }
+
+        void ICopyFtuUserControl.LoadItemToCheckListBox(JsonElement items)
+        {
+            clb_item_from_json.Items.Clear();
+            if (items.ValueKind != JsonValueKind.Array) return;
+            var count = 0;
+            foreach (var item in items.EnumerateArray())
+            {
+                count++;
+                int id = item.GetProperty("ID").GetInt32();
+                string name = item.GetProperty("Name").GetString();
+               clb_item_from_json.Items.Add($"{id} - {name}");
+            }
+            lbTotalItems.Text = $"Total items: {count}";
         }
     }
 }
