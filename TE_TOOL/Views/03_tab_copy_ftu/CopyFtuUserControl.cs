@@ -201,6 +201,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
 
         private void txtReorderJson_TextChanged(object sender, EventArgs e)
         {
+            txtSelectedItem.Text = "";
             if (string.IsNullOrEmpty(txtReorderJson.Text))
             {
                 btnSelectedItem.Enabled = false;
@@ -249,28 +250,69 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
 
 
 
+        // Trong file CopyFtuUserControl.cs
+        // CHỈ CẦN SỬA method này:
+
         void ICopyFtuUserControl.LoadItemToCheckListBox(JsonElement items)
         {
             addItemToHashSet();
             clb_item_from_json.Items.Clear();
             if (items.ValueKind != JsonValueKind.Array) return;
+
             var count = 0;
             foreach (var item in items.EnumerateArray())
             {
                 count++;
-                int id = item.GetProperty("ID").GetInt32();
+
+                // SỬA PHẦN NÀY - Sử dụng helper method giống Services
+                int id = GetIdFromJsonElement(item);
                 string name = item.GetProperty("Name").GetString();
-                if (itemHashSet.Contains(id))
+
+                bool isChecked = itemHashSet.Contains(id);
+                clb_item_from_json.Items.Add($"{id} - {name}", isChecked);
+            }
+
+            lbTotalItems.Text = $"Total items: {count}";
+        }
+
+        // THÊM helper method này vào class CopyFtuUserControl
+        private int GetIdFromJsonElement(JsonElement item)
+        {
+            JsonElement idElement = item.GetProperty("ID");
+
+            if (idElement.ValueKind == JsonValueKind.Number)
+            {
+                return idElement.GetInt32();
+            }
+            else if (idElement.ValueKind == JsonValueKind.String)
+            {
+                string idStr = idElement.GetString();
+                if (int.TryParse(idStr, out int id))
                 {
-                    clb_item_from_json.Items.Add($"{id} - {name}", true);
+                    return id;
                 }
                 else
                 {
-                    clb_item_from_json.Items.Add($"{id} - {name}", false);
+                    MessageBox.Show(
+                        $"Invalid ID format: {idStr}",
+                        "Lỗi convert ID!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
+                    return -1; // hoặc throw exception
                 }
-
             }
-            lbTotalItems.Text = $"Total items: {count}";
+            else
+            {
+                MessageBox.Show(
+                    "ID has an unsupported format.",
+                    "Lỗi định dạng ID!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return -1;
+            }
         }
+
     }
 }

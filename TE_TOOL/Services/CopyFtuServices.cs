@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 
 namespace TE_TOOL.Services
 {
@@ -14,8 +13,13 @@ namespace TE_TOOL.Services
     {
         string txtListFunctionTest = "";
         List<string> listItemTest = new List<string>();
-        JsonElement tempItems;
-        List<JsonElement> tempItemsList;
+
+        // Giữ nguyên JsonElement thay vì deserialize
+        private JsonElement originalRootElement;
+        private List<JsonElement> tempItemsList;
+
+        // Cache kiểu dữ liệu ID để bảo toàn
+        private Dictionary<int, JsonValueKind> idTypeCache = new Dictionary<int, JsonValueKind>();
 
         public string TxtListFunctionTest { get => txtListFunctionTest; set => txtListFunctionTest = value; }
         public List<string> ListItemTest { get => listItemTest; set => listItemTest = value; }
@@ -24,27 +28,48 @@ namespace TE_TOOL.Services
         {
             Debug.WriteLine("GetFunctionTest in Service called");
             string logContent = GetContentInRange(content);
-            if (logContent == "")
+            if (string.IsNullOrEmpty(logContent))
             {
                 MessageBox.Show(
-            "Không tìm thấy 'Total Test Items:' ",
-            "Error",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Error
-            );
+                    "Không tìm thấy 'Total Test Items:' ",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
                 return null;
             }
             ListItemTest = GetListItem(logContent);
             return ListItemTest;
         }
 
+        private List<string> GetListItem(string txt)
+        {
+            string txtStart = "[";
+            string txtEnd = "]";
+            int startIdx = txt.IndexOf(txtStart);
+            int endIdx = txt.IndexOf(txtEnd);
 
+            if (startIdx == -1 || endIdx == -1)
+            {
+                return null;
+            }
+
+            var result = txt.Substring(startIdx + 1, endIdx - startIdx - 1);
+            this.TxtListFunctionTest = txt;
+
+            // Tách chuỗi và loại bỏ các ký tự không phải số
+            List<string> listItem = result
+                .Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(item => item.Trim().Trim('\'', '"')) // Loại bỏ khoảng trắng và dấu ngoặc kép/đơn
+                .Where(item => !string.IsNullOrWhiteSpace(item)) // Loại bỏ item rỗng
+                .ToList();
+
+            return listItem;
+        }
 
         private string GetContentInRange(string text)
         {
-
             string textStart = "Total Test Items:";
-
             int startIndex = text.IndexOf(textStart);
 
             if (startIndex != -1)
@@ -67,31 +92,35 @@ namespace TE_TOOL.Services
             return "";
         }
 
-        private List<string> GetListItem(string txt)
+
+
+        // Phương thức helper để lấy ID từ JsonElement (hỗ trợ cả string và int)
+        private int GetIdFromJsonElement(JsonElement item)
         {
-            string txtStart = "[";
-            string txtEnd = "]";
-            int startIdx = txt.IndexOf(txtStart);
-            int endIdx = txt.IndexOf(txtEnd);
-            if (startIdx == -1 || endIdx == -1)
+            JsonElement idElement = item.GetProperty("ID");
+
+            if (idElement.ValueKind == JsonValueKind.Number)
             {
-                return null;
+                return idElement.GetInt32();
+            }
+            else if (idElement.ValueKind == JsonValueKind.String)
+            {
+                string idStr = idElement.GetString();
+                if (int.TryParse(idStr, out int id))
+                {
+                    return id;
+                }
             }
 
-            var result = txt.Substring(startIdx + 1, endIdx - startIdx - 1);
-            this.TxtListFunctionTest = txt;
-            List<string> listItem = result.Split(", ").ToList();
-            return listItem;
-
+            throw new InvalidOperationException($"Cannot parse ID from element");
         }
-
 
         bool FindAndSwapItems(int currentIndex, int value)
         {
             for (int i = currentIndex; i < tempItemsList.Count; i++)
             {
-                int id = tempItemsList[i].GetProperty("ID").GetInt32();
-                string name = tempItemsList[i].GetProperty("Name").GetString();
+                int id = GetIdFromJsonElement(tempItemsList[i]);
+
                 if (id == value)
                 {
                     if (i != currentIndex)
@@ -100,9 +129,15 @@ namespace TE_TOOL.Services
                     }
                     return true;
                 }
-                if (i== tempItemsList.Count-1)
+
+                if (i == tempItemsList.Count - 1)
                 {
-                    MessageBox.Show($"Không tìm thấy item: {value}", "Lỗi khi ghi file JSON", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        $"Không tìm thấy item: {value}",
+                        "Lỗi khi ghi file JSON",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                    );
                     return false;
                 }
             }
@@ -110,42 +145,58 @@ namespace TE_TOOL.Services
             return false;
         }
 
-
-        void SwapItemsInList( int idx1, int idx2)
+        void SwapItemsInList(int idx1, int idx2)
         {
             if (idx1 < 0 || idx2 < 0 || idx1 >= tempItemsList.Count || idx2 >= tempItemsList.Count)
                 throw new IndexOutOfRangeException();
+
             (tempItemsList[idx1], tempItemsList[idx2]) = (tempItemsList[idx2], tempItemsList[idx1]);
         }
 
-
-        public JsonElement LoadJsonOrderItems(string pathFile,string ItemsTxt)
+        public JsonElement LoadJsonOrderItems(string pathFile, string ItemsTxt)
         {
-            
             try
             {
-                using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(pathFile));
-                JsonElement root = doc.RootElement;
-                JsonElement items = root.GetProperty("DiagTestItems").Clone();
+                string jsonContent = File.ReadAllText(pathFile);
+                using JsonDocument doc = JsonDocument.Parse(jsonContent);
+
+                // Lưu toàn bộ root element
+                originalRootElement = doc.RootElement.Clone();
+
+                JsonElement items = originalRootElement.GetProperty("DiagTestItems");
                 tempItemsList = items.EnumerateArray().ToList();
+
+                // Cache kiểu dữ liệu ID
+                CacheIdTypes(items);
+
                 return items;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Kiểm tra lại file json !", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    e.Message,
+                    "Kiểm tra lại file json !",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
                 return new JsonElement();
             }
-
         }
 
-        JsonElement ConvertListToJsonElement()
+        // Cache kiểu dữ liệu của ID để bảo toàn khi ghi lại
+        private void CacheIdTypes(JsonElement items)
         {
-            string json = JsonSerializer.Serialize(tempItemsList);
-            using JsonDocument doc = JsonDocument.Parse(json);
-            return doc.RootElement.Clone();
+            idTypeCache.Clear();
+
+            foreach (var item in items.EnumerateArray())
+            {
+                JsonElement idElement = item.GetProperty("ID");
+                int id = GetIdFromJsonElement(item);
+                idTypeCache[id] = idElement.ValueKind;
+            }
         }
 
-        JsonElement ICopyFtuServices.ReorderJsonItem(string itemsFromLog)
+        public JsonElement ReorderJsonItem(string itemsFromLog)
         {
             if (tempItemsList == null)
             {
@@ -153,18 +204,23 @@ namespace TE_TOOL.Services
                 return default(JsonElement);
             }
 
-            List<string> listItem = itemsFromLog.Split(",").Select(x => x.Trim()).ToList();
+            List<string> listItem = itemsFromLog.Split(",")
+                .Select(x => x.Trim())
+                .ToList();
+
             for (int i = 0; i < listItem.Count; i++)
             {
                 FindAndSwapItems(i, int.Parse(listItem[i]));
             }
-            return ConvertListToJsonElement();
+
+            // Không convert, giữ nguyên JsonElement
+            return default(JsonElement); // Không cần return vì đã swap tại chỗ
         }
+
         public void SaveFullJsonWithUpdatedItems(string pathFile)
         {
             try
             {
-                
                 if (tempItemsList == null)
                 {
                     MessageBox.Show(
@@ -173,10 +229,9 @@ namespace TE_TOOL.Services
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning
                     );
-                    return; 
+                    return;
                 }
 
-                
                 if (string.IsNullOrWhiteSpace(pathFile))
                 {
                     MessageBox.Show(
@@ -188,7 +243,6 @@ namespace TE_TOOL.Services
                     return;
                 }
 
-                // Kiểm tra file tồn tại
                 if (!File.Exists(pathFile))
                 {
                     MessageBox.Show(
@@ -200,27 +254,46 @@ namespace TE_TOOL.Services
                     return;
                 }
 
-                using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(pathFile));
-                JsonElement root = doc.RootElement;
-                var rootDict = JsonSerializer.Deserialize<Dictionary<string, object>>(root.GetRawText());
-
-                if (rootDict == null)
+                // Sử dụng Utf8JsonWriter để bảo toàn hoàn toàn cấu trúc
+                using var stream = new MemoryStream();
+                using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
                 {
-                    MessageBox.Show(
-                        "Không thể đọc dữ liệu JSON từ file!",
-                        "Lỗi đọc JSON",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                    return;
+                    Indented = true
+                }))
+                {
+                    writer.WriteStartObject();
+
+                    // Ghi lại tất cả properties của root trừ DiagTestItems
+                    foreach (var prop in originalRootElement.EnumerateObject())
+                    {
+                        if (prop.Name == "DiagTestItems")
+                        {
+                            // Ghi DiagTestItems đã được reorder
+                            writer.WritePropertyName("DiagTestItems");
+                            writer.WriteStartArray();
+
+                            foreach (var item in tempItemsList)
+                            {
+                                // Clone từng item để giữ nguyên 100% cấu trúc
+                                item.WriteTo(writer);
+                            }
+
+                            writer.WriteEndArray();
+                        }
+                        else
+                        {
+                            // Giữ nguyên các properties khác
+                            writer.WritePropertyName(prop.Name);
+                            prop.Value.WriteTo(writer);
+                        }
+                    }
+
+                    writer.WriteEndObject();
                 }
 
-                rootDict["DiagTestItems"] = tempItemsList;
-
-                string updatedJson = JsonSerializer.Serialize(rootDict, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(pathFile, updatedJson);
-
-                
+                // Ghi file
+                string jsonOutput = Encoding.UTF8.GetString(stream.ToArray());
+                File.WriteAllText(pathFile, jsonOutput);
             }
             catch (JsonException ex)
             {
@@ -258,11 +331,11 @@ namespace TE_TOOL.Services
 
         string getUniFi(string rootDir)
         {
-            var targetPath= Path.Combine(rootDir, "data", "config_files");
+            var targetPath = Path.Combine(rootDir, "data", "config_files");
             string[] subDirs = Directory.GetDirectories(targetPath);
+
             if (subDirs.Length == 1)
             {
-
                 string folderName = Path.GetFileName(subDirs[0]);
                 return folderName;
             }

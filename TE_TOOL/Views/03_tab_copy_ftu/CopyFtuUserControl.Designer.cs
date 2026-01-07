@@ -50,20 +50,18 @@
             // 
             // btnGetItemFromLog
             // 
-            btnGetItemFromLog.Location = new Point(38, 39);
-            btnGetItemFromLog.Margin = new Padding(3, 2, 3, 2);
+            btnGetItemFromLog.Location = new Point(43, 52);
             btnGetItemFromLog.Name = "btnGetItemFromLog";
-            btnGetItemFromLog.Size = new Size(128, 25);
+            btnGetItemFromLog.Size = new Size(146, 33);
             btnGetItemFromLog.TabIndex = 9;
             btnGetItemFromLog.Text = "LẤY ITEM TỪ LOG";
             btnGetItemFromLog.UseVisualStyleBackColor = true;
             // 
             // btnSelectedItem
             // 
-            btnSelectedItem.Location = new Point(38, 123);
-            btnSelectedItem.Margin = new Padding(3, 2, 3, 2);
+            btnSelectedItem.Location = new Point(43, 164);
             btnSelectedItem.Name = "btnSelectedItem";
-            btnSelectedItem.Size = new Size(128, 25);
+            btnSelectedItem.Size = new Size(146, 33);
             btnSelectedItem.TabIndex = 8;
             btnSelectedItem.Text = "SELECTED_ITEM.INI";
             btnSelectedItem.UseVisualStyleBackColor = true;
@@ -71,10 +69,9 @@
             // 
             // btnReorder
             // 
-            btnReorder.Location = new Point(38, 81);
-            btnReorder.Margin = new Padding(3, 2, 3, 2);
+            btnReorder.Location = new Point(43, 108);
             btnReorder.Name = "btnReorder";
-            btnReorder.Size = new Size(128, 25);
+            btnReorder.Size = new Size(146, 33);
             btnReorder.TabIndex = 11;
             btnReorder.Text = "REORDER.JSON";
             btnReorder.UseVisualStyleBackColor = true;
@@ -90,28 +87,31 @@
             // 
             // txtGetItemFormLog
             // 
-            txtGetItemFormLog.Location = new Point(188, 41);
+            txtGetItemFormLog.Location = new Point(215, 55);
+            txtGetItemFormLog.Margin = new Padding(3, 4, 3, 4);
             txtGetItemFormLog.Name = "txtGetItemFormLog";
             txtGetItemFormLog.PlaceholderText = "Copy nội dung file log";
-            txtGetItemFormLog.Size = new Size(283, 23);
+            txtGetItemFormLog.Size = new Size(323, 27);
             txtGetItemFormLog.TabIndex = 12;
             txtGetItemFormLog.Leave += txtGetItemFormLog_Leave;
             // 
             // txtSelectedItem
             // 
-            txtSelectedItem.Location = new Point(188, 125);
+            txtSelectedItem.Location = new Point(215, 167);
+            txtSelectedItem.Margin = new Padding(3, 4, 3, 4);
             txtSelectedItem.Name = "txtSelectedItem";
             txtSelectedItem.PlaceholderText = "Tìm file selected_items.ini trong FTU/data";
             txtSelectedItem.ReadOnly = true;
-            txtSelectedItem.Size = new Size(283, 23);
+            txtSelectedItem.Size = new Size(323, 27);
             txtSelectedItem.TabIndex = 13;
             // 
             // txtReorderJson
             // 
-            txtReorderJson.Location = new Point(188, 83);
+            txtReorderJson.Location = new Point(215, 111);
+            txtReorderJson.Margin = new Padding(3, 4, 3, 4);
             txtReorderJson.Name = "txtReorderJson";
             txtReorderJson.PlaceholderText = "Tìm file _reorder.sjon trong FTU/products/";
-            txtReorderJson.Size = new Size(283, 23);
+            txtReorderJson.Size = new Size(323, 27);
             txtReorderJson.TabIndex = 14;
             txtReorderJson.TextChanged += txtReorderJson_TextChanged;
             // 
@@ -119,26 +119,27 @@
             // 
             panel1.BorderStyle = BorderStyle.Fixed3D;
             panel1.Controls.Add(clb_item_from_json);
-            panel1.Location = new Point(494, 41);
+            panel1.Location = new Point(565, 55);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(454, 496);
+            panel1.Size = new Size(518, 660);
             panel1.TabIndex = 15;
             // 
             // clb_item_from_json
             // 
             clb_item_from_json.FormattingEnabled = true;
-            clb_item_from_json.Location = new Point(13, 21);
+            clb_item_from_json.Location = new Point(15, 28);
+            clb_item_from_json.Margin = new Padding(3, 4, 3, 4);
             clb_item_from_json.Name = "clb_item_from_json";
-            clb_item_from_json.Size = new Size(423, 454);
+            clb_item_from_json.Size = new Size(483, 598);
             clb_item_from_json.TabIndex = 0;
             clb_item_from_json.SelectedIndexChanged += checkedListBox1_SelectedIndexChanged;
             // 
             // btnLoad
             // 
-            btnLoad.Location = new Point(38, 161);
-            btnLoad.Margin = new Padding(3, 2, 3, 2);
+            btnLoad.Location = new Point(43, 215);
             btnLoad.Name = "btnLoad";
-            btnLoad.Size = new Size(433, 25);
+            btnLoad.Size = new Size(495, 33);
             btnLoad.TabIndex = 16;
             btnLoad.Text = "LOAD";
             btnLoad.UseVisualStyleBackColor = true;
@@ -146,28 +147,26 @@
             // lbTotalItems
             // 
             lbTotalItems.AutoSize = true;
-            lbTotalItems.Location = new Point(494, 19);
+            lbTotalItems.Location = new Point(565, 25);
             lbTotalItems.Name = "lbTotalItems";
-            lbTotalItems.Size = new Size(70, 15);
+            lbTotalItems.Size = new Size(89, 20);
             lbTotalItems.TabIndex = 17;
             lbTotalItems.Text = "Total items :";
             // 
             // btnReoder
             // 
-            btnReoder.Location = new Point(38, 199);
-            btnReoder.Margin = new Padding(3, 2, 3, 2);
+            btnReoder.Location = new Point(43, 265);
             btnReoder.Name = "btnReoder";
-            btnReoder.Size = new Size(433, 25);
+            btnReoder.Size = new Size(495, 33);
             btnReoder.TabIndex = 18;
             btnReoder.Text = "Sắp xếp funtion test từ log lên trên cùng";
             btnReoder.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            button1.Location = new Point(38, 453);
-            button1.Margin = new Padding(3, 2, 3, 2);
+            button1.Location = new Point(43, 604);
             button1.Name = "button1";
-            button1.Size = new Size(128, 25);
+            button1.Size = new Size(146, 33);
             button1.TabIndex = 19;
             button1.Text = "FTU.exe";
             button1.UseVisualStyleBackColor = true;
@@ -175,10 +174,9 @@
             // 
             // txtFTUexe
             // 
-            txtFTUexe.Location = new Point(188, 456);
-            txtFTUexe.Margin = new Padding(3, 2, 3, 2);
+            txtFTUexe.Location = new Point(215, 608);
             txtFTUexe.Name = "txtFTUexe";
-            txtFTUexe.Size = new Size(283, 23);
+            txtFTUexe.Size = new Size(323, 27);
             txtFTUexe.TabIndex = 20;
             // 
             // ofdFTUexe
@@ -187,17 +185,17 @@
             // 
             // btnOpenFTU
             // 
-            btnOpenFTU.Location = new Point(38, 493);
-            btnOpenFTU.Margin = new Padding(3, 2, 3, 2);
+            btnOpenFTU.Location = new Point(43, 657);
             btnOpenFTU.Name = "btnOpenFTU";
-            btnOpenFTU.Size = new Size(433, 25);
+            btnOpenFTU.Size = new Size(495, 33);
             btnOpenFTU.TabIndex = 21;
             btnOpenFTU.Text = "Mở FTU";
             btnOpenFTU.UseVisualStyleBackColor = true;
             // 
             // CopyFtuUserControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AllowDrop = true;
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btnOpenFTU);
             Controls.Add(txtFTUexe);
@@ -212,8 +210,9 @@
             Controls.Add(btnReorder);
             Controls.Add(btnGetItemFromLog);
             Controls.Add(btnSelectedItem);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "CopyFtuUserControl";
-            Size = new Size(970, 567);
+            Size = new Size(1109, 756);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
