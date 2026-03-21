@@ -34,5 +34,6 @@ namespace TE_TOOL.Views._01_tab_loc_log
         event EventHandler OpenMacFileClicked;
 
         event EventHandler LogPathDropped;
+        event EventHandler LocLogThuCongClicked;
     }
 }

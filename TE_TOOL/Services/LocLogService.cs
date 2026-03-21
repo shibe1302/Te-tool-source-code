@@ -22,6 +22,27 @@ namespace TE_TOOL.Services
             return File.Exists(scriptPath);
         }
 
+        public Process? LocTrungMacThuCong()
+        {
+            string scriptPath = PATH_FILE_CONSTANT.PATH_loc_trung_mac_thu_cong;
+
+            if (!File.Exists(scriptPath))
+            {
+                throw new FileNotFoundException(
+                    $"Không tìm thấy script tại: {scriptPath}"
+                );
+            }
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = scriptPath,          // chạy trực tiếp file .bat
+                UseShellExecute = true,         // dùng shell để thực thi
+                CreateNoWindow = false,         // có thể hiện cửa sổ console
+                WorkingDirectory = PATH_FILE_CONSTANT._scriptFolder
+            };
+
+            return Process.Start(startInfo);
+        }
 
         public Process RunFilterScript(string filePath, string fileMac)
         {

@@ -20,6 +20,7 @@ namespace TE_TOOL.Views
         public event EventHandler RunScriptClicked;
         public event EventHandler OpenMacFileClicked;
         public event EventHandler LogPathDropped;
+        public event EventHandler LocLogThuCongClicked;
 
         // ===========================================
         // PROPERTIES - Expose UI controls data
@@ -77,6 +78,7 @@ namespace TE_TOOL.Views
         {
             // Khi user click nút Run, raise event cho Presenter biết
             buttonRunPS.Click += (sender, e) => RunScriptClicked?.Invoke(this, EventArgs.Empty);
+            btnLocLogThuCong.Click+= (sender, e) => LocLogThuCongClicked?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

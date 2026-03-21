@@ -18,9 +18,10 @@ namespace TE_TOOL.CONFIG
         public static readonly string SCRIPT_LOG_COLLECTION;
         public static readonly string SCRIPT_LOG_COLLECTION_LOCAL;
         public static readonly string PATH_PRODUCT_NAME_JSON;
+        public static readonly string PATH_loc_trung_mac_thu_cong;
 
 
-         static PATH_FILE_CONSTANT()
+        static PATH_FILE_CONSTANT()
         {
             // path loc log script
             _appDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -30,9 +31,10 @@ namespace TE_TOOL.CONFIG
             SCRIPT_PATH_GET_DATA_BY_REGEX = Path.Combine(_scriptFolder, "03-get-data-by-regex.ps1");
             SCRIPT_LOG_COLLECTION = Path.Combine(_scriptFolder, "02-thu-thap-log.ps1");
             SCRIPT_LOG_COLLECTION_LOCAL = Path.Combine(_scriptFolder, "02-thu-thap-log-local.ps1");
+            PATH_loc_trung_mac_thu_cong = Path.Combine(_scriptFolder, "remove_dup_mac.bat");
 
             // FILE JSON PRODUCT NAME
-            PATH_PRODUCT_NAME_JSON= Path.Combine(_appDirectory, "Resources", "products_data.json");
+            PATH_PRODUCT_NAME_JSON = Path.Combine(_appDirectory, "Resources", "products_data.json");
         }
     }
 }

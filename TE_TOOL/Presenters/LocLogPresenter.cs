@@ -58,6 +58,12 @@ namespace TE_TOOL.Presenters
             _view.RunScriptClicked += OnRunScriptClicked;
             _view.OpenMacFileClicked += OnOpenMacFileClicked;
             _view.LogPathDropped += OnLogPathDropped;
+            _view.LocLogThuCongClicked += LocTrungMacThuCong;
+        }
+
+        private void LocTrungMacThuCong(object? sender, EventArgs e)
+        {
+            _service.LocTrungMacThuCong();
         }
 
         /// <summary>

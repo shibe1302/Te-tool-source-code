@@ -38,6 +38,7 @@
             cbbTypeLog = new ComboBox();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
+            btnLocLogThuCong = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -47,9 +48,9 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 40F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.DarkCyan;
-            label3.Location = new Point(149, 92);
+            label3.Location = new Point(170, 123);
             label3.Name = "label3";
-            label3.Size = new Size(620, 72);
+            label3.Size = new Size(768, 89);
             label3.TabIndex = 10;
             label3.Text = "Kéo thả file zip vào đây";
             // 
@@ -58,9 +59,9 @@
             labelStatus.AutoSize = true;
             labelStatus.BackColor = SystemColors.ButtonHighlight;
             labelStatus.Font = new Font("Segoe UI", 12F);
-            labelStatus.Location = new Point(168, 230);
+            labelStatus.Location = new Point(192, 307);
             labelStatus.Name = "labelStatus";
-            labelStatus.Size = new Size(0, 21);
+            labelStatus.Size = new Size(0, 28);
             labelStatus.TabIndex = 9;
             // 
             // buttonRunPS
@@ -68,10 +69,9 @@
             buttonRunPS.BackColor = SystemColors.ButtonHighlight;
             buttonRunPS.Cursor = Cursors.Hand;
             buttonRunPS.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            buttonRunPS.Location = new Point(537, 284);
-            buttonRunPS.Margin = new Padding(3, 2, 3, 2);
+            buttonRunPS.Location = new Point(614, 379);
             buttonRunPS.Name = "buttonRunPS";
-            buttonRunPS.Size = new Size(250, 39);
+            buttonRunPS.Size = new Size(286, 52);
             buttonRunPS.TabIndex = 8;
             buttonRunPS.Text = "🚀 Chạy Script Lọc Log";
             buttonRunPS.UseVisualStyleBackColor = false;
@@ -79,19 +79,17 @@
             // txtFolderLog
             // 
             txtFolderLog.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtFolderLog.Location = new Point(168, 191);
-            txtFolderLog.Margin = new Padding(3, 2, 3, 2);
+            txtFolderLog.Location = new Point(192, 255);
             txtFolderLog.Name = "txtFolderLog";
             txtFolderLog.PlaceholderText = "Nhập đường dẫn file/folder hoặc kéo thả vào đây...";
-            txtFolderLog.Size = new Size(620, 23);
+            txtFolderLog.Size = new Size(708, 27);
             txtFolderLog.TabIndex = 7;
             // 
             // btnOpenFile
             // 
-            btnOpenFile.Location = new Point(686, 236);
-            btnOpenFile.Margin = new Padding(3, 2, 3, 2);
+            btnOpenFile.Location = new Point(784, 315);
             btnOpenFile.Name = "btnOpenFile";
-            btnOpenFile.Size = new Size(102, 22);
+            btnOpenFile.Size = new Size(117, 29);
             btnOpenFile.TabIndex = 11;
             btnOpenFile.Text = "Open file";
             btnOpenFile.UseVisualStyleBackColor = true;
@@ -100,12 +98,11 @@
             // txtMacPath
             // 
             txtMacPath.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMacPath.Location = new Point(168, 237);
-            txtMacPath.Margin = new Padding(3, 2, 3, 2);
+            txtMacPath.Location = new Point(192, 316);
             txtMacPath.Multiline = true;
             txtMacPath.Name = "txtMacPath";
             txtMacPath.PlaceholderText = "Nhập đường dẫn file MAC để kiểm tra xem có thiếu file không ...";
-            txtMacPath.Size = new Size(494, 22);
+            txtMacPath.Size = new Size(564, 28);
             txtMacPath.TabIndex = 12;
             // 
             // odfMacPath
@@ -116,20 +113,18 @@
             // 
             cbbTypeLog.DropDownStyle = ComboBoxStyle.DropDownList;
             cbbTypeLog.FormattingEnabled = true;
-            cbbTypeLog.ItemHeight = 15;
+            cbbTypeLog.ItemHeight = 20;
             cbbTypeLog.Items.AddRange(new object[] { "New format", "Old format" });
-            cbbTypeLog.Location = new Point(168, 284);
-            cbbTypeLog.Margin = new Padding(3, 2, 3, 2);
+            cbbTypeLog.Location = new Point(192, 379);
             cbbTypeLog.Name = "cbbTypeLog";
-            cbbTypeLog.Size = new Size(322, 23);
+            cbbTypeLog.Size = new Size(367, 28);
             cbbTypeLog.TabIndex = 13;
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(0, 364);
-            pictureBox1.Margin = new Padding(3, 2, 3, 2);
+            pictureBox1.Location = new Point(0, 485);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(210, 203);
+            pictureBox1.Size = new Size(240, 271);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 14;
             pictureBox1.TabStop = false;
@@ -139,20 +134,29 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.du_sad;
-            pictureBox2.Location = new Point(775, 327);
-            pictureBox2.Margin = new Padding(3, 2, 3, 2);
+            pictureBox2.Location = new Point(886, 436);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(195, 240);
+            pictureBox2.Size = new Size(223, 320);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 15;
             pictureBox2.TabStop = false;
             pictureBox2.MouseEnter += pictureBox2_MouseLeave;
             pictureBox2.MouseLeave += pictureBox2_MouseEnter;
             // 
+            // btnLocLogThuCong
+            // 
+            btnLocLogThuCong.Location = new Point(361, 496);
+            btnLocLogThuCong.Name = "btnLocLogThuCong";
+            btnLocLogThuCong.Size = new Size(367, 48);
+            btnLocLogThuCong.TabIndex = 16;
+            btnLocLogThuCong.Text = "Lọc trùng mac thủ công";
+            btnLocLogThuCong.UseVisualStyleBackColor = true;
+            // 
             // LocLogView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnLocLogThuCong);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
             Controls.Add(cbbTypeLog);
@@ -162,9 +166,8 @@
             Controls.Add(labelStatus);
             Controls.Add(buttonRunPS);
             Controls.Add(txtFolderLog);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "LocLogView";
-            Size = new Size(970, 567);
+            Size = new Size(1109, 756);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
@@ -183,5 +186,6 @@
         private ComboBox cbbTypeLog;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
+        private Button btnLocLogThuCong;
     }
 }
