@@ -40,10 +40,9 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(52, 40);
-            textBox1.Margin = new Padding(3, 2, 3, 2);
+            textBox1.Location = new Point(59, 53);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(390, 23);
+            textBox1.Size = new Size(445, 27);
             textBox1.TabIndex = 0;
             // 
             // dataGridView1
@@ -54,12 +53,11 @@
             dataGridView1.BackgroundColor = SystemColors.ButtonFace;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { ProductName1, ModelName1, PathServer });
-            dataGridView1.Location = new Point(52, 83);
-            dataGridView1.Margin = new Padding(3, 2, 3, 2);
+            dataGridView1.Location = new Point(59, 111);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(883, 441);
+            dataGridView1.Size = new Size(1009, 588);
             dataGridView1.TabIndex = 2;
             // 
             // ProductName1
@@ -91,12 +89,14 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(860, 40);
+            btnAdd.Location = new Point(983, 53);
+            btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(75, 23);
+            btnAdd.Size = new Size(86, 31);
             btnAdd.TabIndex = 3;
             btnAdd.Text = "Add data";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Visible = false;
             btnAdd.Click += btnAdd_Click;
             // 
             // ofdAdd
@@ -105,14 +105,13 @@
             // 
             // ViewSearchModelName
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btnAdd);
             Controls.Add(dataGridView1);
             Controls.Add(textBox1);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "ViewSearchModelName";
-            Size = new Size(970, 567);
+            Size = new Size(1109, 756);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

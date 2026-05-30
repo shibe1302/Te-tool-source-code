@@ -29,11 +29,63 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             loadDataFromIni();
             disbaleSelectedBTN();
             enableBtnReoder();
+            this.AllowDrop = true;
+            this.DragEnter += OnDragEnter;
+            this.DragDrop += OnDragDrop;
+
 
         }
+
+        private void OnDragDrop(object? sender, DragEventArgs e)
+        {
+            string[] dropped = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (dropped == null || dropped.Length == 0) return;
+
+            // Lấy folder: nếu kéo thả folder thì lấy thẳng, nếu kéo file thì lấy thư mục cha
+            string folder = Directory.Exists(dropped[0])
+                ? dropped[0]
+                : Path.GetDirectoryName(dropped[0]);
+
+            AutoFillPaths(folder);
+        }
+
+        private void OnDragEnter(object? sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+        private void AutoFillPaths(string rootFolder)
+        {
+            // --- 1. Tìm *_reorder.json (tìm đệ quy trong folder) ---
+            var reorderFiles = Directory.GetFiles(rootFolder, "*_reorder.json", SearchOption.AllDirectories);
+            if (reorderFiles.Length > 0)
+                txtReorderJson.Text = reorderFiles[0];
+            else
+                MessageBox.Show("Không tìm thấy file *_reorder.json", "Thiếu file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            // --- 2. Tìm selected_items.ini ---
+            var selectedFiles = Directory.GetFiles(rootFolder, "selected_items.ini", SearchOption.AllDirectories);
+            if (selectedFiles.Length > 0)
+                txtSelectedItem.Text = selectedFiles[0];
+            else
+                MessageBox.Show("Không tìm thấy file selected_items.ini", "Thiếu file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            // --- 3. Tìm FTU_*.exe ---
+            var ftuFiles = Directory.GetFiles(rootFolder, "FTU_*.exe", SearchOption.AllDirectories);
+            if (ftuFiles.Length > 0)
+                txtFTUexe.Text = ftuFiles[0];
+            else
+                MessageBox.Show("Không tìm thấy file FTU_*.exe", "Thiếu file", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            saveDatatoIni();
+        }
+
         public string JsonReorderPath { get => txtReorderJson.Text; }
 
-        public string ItemFromLog { get => txtGetItemFormLog.Text; }
+        // CopyFtuUserControl.cs
+        public string ItemFromLog { get => txtGetItemFormLog.Text.Replace(" ", ""); }
 
         public string getFtuPath { get => txtFTUexe.Text; }
 
@@ -92,7 +144,7 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             {
                 if (string.IsNullOrEmpty(txtSelectedItem.Text)) return;
                 IniFile a = new IniFile(txtSelectedItem.Text);
-                a.Write("ITEMS", "id", txtGetItemFormLog.Text);
+                a.Write("ITEMS", "id", ItemFromLog);
 
             }
             catch (Exception)
@@ -314,5 +366,24 @@ namespace TE_TOOL.Views._03_tab_copy_ftu
             }
         }
 
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // Đặt link bạn muốn mở
+            string url = "https://www.google.com/search?q=check+diff+text+online";
+
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể mở link: " + ex.Message);
+            }
+
+        }
     }
 }

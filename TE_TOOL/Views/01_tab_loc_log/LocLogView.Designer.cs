@@ -69,9 +69,9 @@
             buttonRunPS.BackColor = SystemColors.ButtonHighlight;
             buttonRunPS.Cursor = Cursors.Hand;
             buttonRunPS.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            buttonRunPS.Location = new Point(614, 379);
+            buttonRunPS.Location = new Point(314, 469);
             buttonRunPS.Name = "buttonRunPS";
-            buttonRunPS.Size = new Size(286, 52);
+            buttonRunPS.Size = new Size(501, 86);
             buttonRunPS.TabIndex = 8;
             buttonRunPS.Text = "🚀 Chạy Script Lọc Log";
             buttonRunPS.UseVisualStyleBackColor = false;
@@ -117,7 +117,7 @@
             cbbTypeLog.Items.AddRange(new object[] { "New format", "Old format" });
             cbbTypeLog.Location = new Point(192, 379);
             cbbTypeLog.Name = "cbbTypeLog";
-            cbbTypeLog.Size = new Size(367, 28);
+            cbbTypeLog.Size = new Size(564, 28);
             cbbTypeLog.TabIndex = 13;
             // 
             // pictureBox1
@@ -145,9 +145,9 @@
             // 
             // btnLocLogThuCong
             // 
-            btnLocLogThuCong.Location = new Point(361, 496);
+            btnLocLogThuCong.Location = new Point(603, 701);
             btnLocLogThuCong.Name = "btnLocLogThuCong";
-            btnLocLogThuCong.Size = new Size(367, 48);
+            btnLocLogThuCong.Size = new Size(212, 34);
             btnLocLogThuCong.TabIndex = 16;
             btnLocLogThuCong.Text = "Lọc trùng mac thủ công";
             btnLocLogThuCong.UseVisualStyleBackColor = true;

@@ -45,7 +45,11 @@
             txtFTUexe = new TextBox();
             ofdFTUexe = new OpenFileDialog();
             btnOpenFTU = new Button();
+            panel2 = new Panel();
+            label1 = new Label();
+            linkLabel1 = new LinkLabel();
             panel1.SuspendLayout();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // btnGetItemFromLog
@@ -164,7 +168,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(43, 604);
+            button1.Location = new Point(43, 583);
             button1.Name = "button1";
             button1.Size = new Size(146, 33);
             button1.TabIndex = 19;
@@ -174,7 +178,7 @@
             // 
             // txtFTUexe
             // 
-            txtFTUexe.Location = new Point(215, 608);
+            txtFTUexe.Location = new Point(215, 587);
             txtFTUexe.Name = "txtFTUexe";
             txtFTUexe.Size = new Size(323, 27);
             txtFTUexe.TabIndex = 20;
@@ -185,18 +189,53 @@
             // 
             // btnOpenFTU
             // 
-            btnOpenFTU.Location = new Point(43, 657);
+            btnOpenFTU.Location = new Point(43, 628);
             btnOpenFTU.Name = "btnOpenFTU";
             btnOpenFTU.Size = new Size(495, 33);
             btnOpenFTU.TabIndex = 21;
             btnOpenFTU.Text = "Mở FTU";
             btnOpenFTU.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.White;
+            panel2.BorderStyle = BorderStyle.Fixed3D;
+            panel2.Controls.Add(label1);
+            panel2.Location = new Point(43, 319);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(495, 235);
+            panel2.TabIndex = 22;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 22.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(64, 90);
+            label1.Name = "label1";
+            label1.Size = new Size(357, 50);
+            label1.TabIndex = 0;
+            label1.Text = "Kéo thả FTU vào đây";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // linkLabel1
+            // 
+            linkLabel1.AutoSize = true;
+            linkLabel1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            linkLabel1.Location = new Point(43, 687);
+            linkLabel1.Name = "linkLabel1";
+            linkLabel1.Size = new Size(170, 28);
+            linkLabel1.TabIndex = 23;
+            linkLabel1.TabStop = true;
+            linkLabel1.Text = "Kiểm tra config.ini";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
+            // 
             // CopyFtuUserControl
             // 
             AllowDrop = true;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(linkLabel1);
+            Controls.Add(panel2);
             Controls.Add(btnOpenFTU);
             Controls.Add(txtFTUexe);
             Controls.Add(button1);
@@ -214,6 +253,8 @@
             Name = "CopyFtuUserControl";
             Size = new Size(1109, 756);
             panel1.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -236,5 +277,8 @@
         private TextBox txtFTUexe;
         private OpenFileDialog ofdFTUexe;
         private Button btnOpenFTU;
+        private Panel panel2;
+        private Label label1;
+        private LinkLabel linkLabel1;
     }
 }

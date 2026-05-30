@@ -20,6 +20,7 @@ using TE_TOOL.Views._02_tab_thu_thap_log;
 using TE_TOOL.Views._03_tab_copy_ftu;
 using TE_TOOL.Views._04_tab_get_cc_data;
 using TE_TOOL.Views._05_tab_search_model_name;
+using TE_TOOL.Views._06_tab_Switch_GPT;
 
 namespace hocWF
 {
@@ -37,6 +38,7 @@ namespace hocWF
         private LocLogView locLogView;
         private LogCollectorView logCollectorView;
         private GetAllTypeDataInLogUserControl getAllTypeDataInLogUserControl;
+        private ViewSwitchGPT viewChatDST;
 
 
 
@@ -138,6 +140,13 @@ namespace hocWF
             }
             tabPageSearch.Controls.Clear();
             tabPageSearch.Controls.Add(viewSearchModelName);
+
+            viewChatDST = new ViewSwitchGPT();
+            {
+                Dock = DockStyle.Fill;
+            }
+            tabchatDST.Controls.Clear();
+            tabchatDST.Controls.Add(viewChatDST);
 
         }
 

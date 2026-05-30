@@ -47,6 +47,7 @@ namespace hocWF
             OFD_macFilePath = new OpenFileDialog();
             contextMenuStrip1 = new ContextMenuStrip(components);
             openFileDialog1 = new OpenFileDialog();
+            tabchatDST = new TabPage();
             tabGetdatafromLog.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,21 +63,20 @@ namespace hocWF
             tabGetdatafromLog.Controls.Add(tabPage5);
             tabGetdatafromLog.Controls.Add(tabPage2);
             tabGetdatafromLog.Controls.Add(tabPageSearch);
-            tabGetdatafromLog.Location = new Point(10, 9);
-            tabGetdatafromLog.Margin = new Padding(3, 2, 3, 2);
+            tabGetdatafromLog.Controls.Add(tabchatDST);
+            tabGetdatafromLog.Location = new Point(11, 12);
             tabGetdatafromLog.Name = "tabGetdatafromLog";
             tabGetdatafromLog.SelectedIndex = 0;
-            tabGetdatafromLog.Size = new Size(976, 595);
+            tabGetdatafromLog.Size = new Size(1115, 793);
             tabGetdatafromLog.TabIndex = 11;
             // 
             // tabPage3
             // 
             tabPage3.AllowDrop = true;
-            tabPage3.Location = new Point(4, 24);
-            tabPage3.Margin = new Padding(3, 2, 3, 2);
+            tabPage3.Location = new Point(4, 29);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3, 2, 3, 2);
-            tabPage3.Size = new Size(968, 567);
+            tabPage3.Padding = new Padding(3, 3, 3, 3);
+            tabPage3.Size = new Size(1107, 760);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Lọc Log";
             tabPage3.UseVisualStyleBackColor = true;
@@ -84,44 +84,40 @@ namespace hocWF
             // 
             // tabPage4
             // 
-            tabPage4.Location = new Point(4, 24);
-            tabPage4.Margin = new Padding(3, 2, 3, 2);
+            tabPage4.Location = new Point(4, 29);
             tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3, 2, 3, 2);
-            tabPage4.Size = new Size(968, 567);
+            tabPage4.Padding = new Padding(3, 3, 3, 3);
+            tabPage4.Size = new Size(1107, 760);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Thu thập log trên sever";
             tabPage4.UseVisualStyleBackColor = true;
             // 
             // tabPage5
             // 
-            tabPage5.Location = new Point(4, 24);
-            tabPage5.Margin = new Padding(3, 2, 3, 2);
+            tabPage5.Location = new Point(4, 29);
             tabPage5.Name = "tabPage5";
-            tabPage5.Padding = new Padding(3, 2, 3, 2);
-            tabPage5.Size = new Size(968, 567);
+            tabPage5.Padding = new Padding(3, 3, 3, 3);
+            tabPage5.Size = new Size(1107, 760);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Tool cc gì cũng get được từ Log";
             tabPage5.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Margin = new Padding(3, 2, 3, 2);
+            tabPage2.Location = new Point(4, 29);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3, 2, 3, 2);
-            tabPage2.Size = new Size(968, 567);
+            tabPage2.Padding = new Padding(3, 3, 3, 3);
+            tabPage2.Size = new Size(1107, 760);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "copy test funtion";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPageSearch
             // 
-            tabPageSearch.Location = new Point(4, 24);
-            tabPageSearch.Margin = new Padding(3, 2, 3, 2);
+            tabPageSearch.Location = new Point(4, 29);
             tabPageSearch.Name = "tabPageSearch";
-            tabPageSearch.Padding = new Padding(3, 2, 3, 2);
-            tabPageSearch.Size = new Size(968, 567);
+            tabPageSearch.Padding = new Padding(3, 3, 3, 3);
+            tabPageSearch.Size = new Size(1107, 760);
             tabPageSearch.TabIndex = 5;
             tabPageSearch.Text = "Tool tìm kiếm";
             tabPageSearch.UseVisualStyleBackColor = true;
@@ -148,15 +144,24 @@ namespace hocWF
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // tabchatDST
+            // 
+            tabchatDST.Location = new Point(4, 29);
+            tabchatDST.Name = "tabchatDST";
+            tabchatDST.Padding = new Padding(3);
+            tabchatDST.Size = new Size(1107, 760);
+            tabchatDST.TabIndex = 6;
+            tabchatDST.Text = "Chat dược sĩ tiến";
+            tabchatDST.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(998, 615);
+            ClientSize = new Size(1141, 820);
             Controls.Add(tabGetdatafromLog);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
-            Text = "TE-TOOL-V5";
+            Text = "TE-TOOL-Ver những ngày cuối ở foxconn";
             tabGetdatafromLog.ResumeLayout(false);
             ResumeLayout(false);
 
@@ -194,5 +199,6 @@ namespace hocWF
         private OpenFileDialog openFileDialog1;
         private TabPage tabPage5;
         private TabPage tabPageSearch;
+        private TabPage tabchatDST;
     }
 }
